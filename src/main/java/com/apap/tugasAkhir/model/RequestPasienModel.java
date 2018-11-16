@@ -29,10 +29,9 @@ public class RequestPasienModel implements Serializable {
 	@Column(name = "assign", nullable = false)
 	private Integer assign;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_pasien", referencedColumnName = "id", nullable = false)
-	@OnDelete(action = OnDeleteAction.NO_ACTION)
-	private PasienModel pasienRequest;
+	@NotNull
+	@Column(name = "id_pasien", nullable = false)
+	private Long idPasien;
 
 	public Long getId() {
 		return id;
@@ -50,13 +49,12 @@ public class RequestPasienModel implements Serializable {
 		this.assign = assign;
 	}
 
-	public PasienModel getPasienRequest() {
-		return pasienRequest;
+	public Long getIdPasien() {
+		return idPasien;
 	}
 
-	public void setPasienRequest(PasienModel pasienRequest) {
-		this.pasienRequest = pasienRequest;
+	public void setIdPasien(Long idPasien) {
+		this.idPasien = idPasien;
 	}
-	
-	
+		
 }

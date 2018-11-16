@@ -39,10 +39,9 @@ public class KamarModel implements Serializable{
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private PaviliunModel paviliunKamar;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_pasien", referencedColumnName = "id")
-	@OnDelete(action = OnDeleteAction.NO_ACTION)
-	private PasienModel pasienKamar;
+	@NotNull
+	@Column(name = "id_pasien", nullable = false)
+	private Long idPasien;
 
 	public Long getId() {
 		return id;
@@ -68,13 +67,12 @@ public class KamarModel implements Serializable{
 		this.paviliunKamar = paviliunKamar;
 	}
 
-	public PasienModel getPasienKamar() {
-		return pasienKamar;
+	public Long getIdPasien() {
+		return idPasien;
 	}
 
-	public void setPasienKamar(PasienModel pasienKamar) {
-		this.pasienKamar = pasienKamar;
+	public void setIdPasien(Long idPasien) {
+		this.idPasien = idPasien;
 	}
-	
 	
 }

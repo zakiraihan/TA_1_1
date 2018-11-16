@@ -35,27 +35,6 @@ public class PasienModel implements Serializable{
 	@Size(max = 255)
 	@Column(name = "nama", nullable = false)
 	private String nama;
-	
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="status", referencedColumnName="id", nullable=false)
-    @OnDelete(action= OnDeleteAction.NO_ACTION)
-    private StatusPasienModel statusPasien;
-    
-    @OneToMany(mappedBy="pasienPeriksa", fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
-    @JsonIgnore
-    private List<PemeriksaanModel> pemeriksaanPasien;
-    
-	@OneToOne(mappedBy = "pasienRequest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private RequestPasienModel requestPasien;
-	
-	@OneToMany(mappedBy="pasienObat", fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
-    @JsonIgnore
-    private List<RequestObatModel> obatPasien;
-	
-	@OneToOne(mappedBy = "pasienKamar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private KamarModel kamarPasien;
 
 	public Long getId() {
 		return id;
@@ -72,46 +51,5 @@ public class PasienModel implements Serializable{
 	public void setNama(String nama) {
 		this.nama = nama;
 	}
-
-	public StatusPasienModel getStatusPasien() {
-		return statusPasien;
-	}
-
-	public void setStatusPasien(StatusPasienModel statusPasien) {
-		this.statusPasien = statusPasien;
-	}
-
-	public List<PemeriksaanModel> getPemeriksaanPasien() {
-		return pemeriksaanPasien;
-	}
-
-	public void setPemeriksaanPasien(List<PemeriksaanModel> pemeriksaanPasien) {
-		this.pemeriksaanPasien = pemeriksaanPasien;
-	}
-
-	public RequestPasienModel getRequestPasien() {
-		return requestPasien;
-	}
-
-	public void setRequestPasien(RequestPasienModel requestPasien) {
-		this.requestPasien = requestPasien;
-	}
-
-	public List<RequestObatModel> getObatPasien() {
-		return obatPasien;
-	}
-
-	public void setObatPasien(List<RequestObatModel> obatPasien) {
-		this.obatPasien = obatPasien;
-	}
-
-	public KamarModel getKamarPasien() {
-		return kamarPasien;
-	}
-
-	public void setKamarPasien(KamarModel kamarPasien) {
-		this.kamarPasien = kamarPasien;
-	}
-	
 	
 }
