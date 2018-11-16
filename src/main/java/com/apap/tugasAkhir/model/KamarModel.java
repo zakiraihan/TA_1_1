@@ -64,13 +64,13 @@ public class KamarModel implements Serializable{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	
-	public String getNama() {
-		return nama;
+
+	public Integer getNomorKamar() {
+		return nomorKamar;
 	}
 
-	public void setNama(String nama) {
-		this.nama = nama;
+	public void setNomorKamar(Integer nomorKamar) {
+		this.nomorKamar = nomorKamar;
 	}
 
 	public PaviliunModel getPaviliunKamar() {
