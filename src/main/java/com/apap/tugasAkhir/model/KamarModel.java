@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -34,13 +35,18 @@ public class KamarModel implements Serializable{
 	@Column(name = "status", nullable = false)
 	private Integer status;
 	
+	@NotNull
+	@Size(max = 255)
+	@Column(name = "nama", nullable = false)
+	private String nama;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_paviliun", referencedColumnName = "id", nullable = false)
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private PaviliunModel paviliunKamar;
 	
 	@NotNull
-	@Column(name = "id_pasien", nullable = false)
+	@Column(name = "id_pasien")
 	private Long idPasien;
 
 	public Long getId() {
@@ -57,6 +63,14 @@ public class KamarModel implements Serializable{
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	public String getNama() {
+		return nama;
+	}
+
+	public void setNama(String nama) {
+		this.nama = nama;
 	}
 
 	public PaviliunModel getPaviliunKamar() {
