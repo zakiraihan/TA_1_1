@@ -37,8 +37,8 @@ public class KamarModel implements Serializable{
 	
 	@NotNull
 	@Size(max = 255)
-	@Column(name = "nama", nullable = false)
-	private String nama;
+	@Column(name = "nomor_kamar", nullable = false)
+	private Integer nomorKamar;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_paviliun", referencedColumnName = "id", nullable = false)
