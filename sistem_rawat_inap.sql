@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 19 Nov 2018 pada 11.25
+-- Waktu pembuatan: 19 Nov 2018 pada 11.36
 -- Versi server: 10.1.36-MariaDB
 -- Versi PHP: 7.2.10
 
@@ -21,7 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `sistem_rawat_inap`
 --
-
+CREATE DATABASE IF NOT EXISTS `sistem_rawat_inap`` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `sistem_rawat_inap`;
 -- --------------------------------------------------------
 
 --
@@ -224,6 +225,14 @@ CREATE TABLE `user_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data untuk tabel `user_role`
+--
+
+INSERT INTO `user_role` (`id`, `password`, `role`, `username`) VALUES
+(1, '$2a$10$ncZkvopRnbEG8e1U.bk4.uWOFHWHknapnD6AUSUHb21wBv51hiH8e', 'Admin', 'admin123'),
+(2, '$2a$10$1rMQGYjg.NrMA75ldaVlPOtZP76I44fvmGPGB/kYXXuRC5YKKIrpu', 'Dokter', 'dokter123');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -341,7 +350,7 @@ ALTER TABLE `request_pasien`
 -- AUTO_INCREMENT untuk tabel `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
