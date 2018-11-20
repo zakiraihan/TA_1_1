@@ -10,7 +10,7 @@ public class Setting {
 	final public static String getDokterByIdUrl = "http://si-appointment.herokuapp.com/api/getDokter/";
 	
 	 //url used for retrieving all pasien data
-	final public static String getAllPasienUrl = "http://si-appointment.herokuapp.com/api/getAllDokter";
+	final public static String getAllPasienUrl = "http://si-appointment.herokuapp.com/api/1/getAllPasien";
 		
 	//url used to get specific pasien by id
 	//example: "http://si-appointment.herokuapp.com/api/getPasien/1" used for getting pasien with id 1
