@@ -11,4 +11,6 @@ public interface KamarService {
 
 	Optional<KamarModel> getKamarById(Long idKamar);
 
+	KamarModel addKamar(KamarModel kamar);
+
 }
