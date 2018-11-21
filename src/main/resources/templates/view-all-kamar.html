@@ -21,7 +21,7 @@
 		</thead>
 		<span th:each="kamar : ${allKamar}">
 			<tr>
-				<td th:text="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.nomorKamar}"></td>
+				<td th:text="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}"></td>
 				<td th:text="${kamar.paviliunKamar.namaPaviliun}"></td>
 				<td>
 					<div th:switch="${kamar.status}">
