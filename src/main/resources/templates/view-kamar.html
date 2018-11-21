@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>List Kamar</title>
+
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+</head>
+
+<style>
+
+</style>
+
+<body>
+	<div class="row"  style="margin-left: 20px; margin-top:25px">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header">
+					Detail Kamar
+				</div>
+				<div class="card-body">
+					<table>
+						<tr>
+							<td width="200" height="50">Nomor Kamar:</td>
+							<td th:text="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.nomorKamar}"></td>
+						</tr>
+						<tr>
+							<td height="50">Nama Pasien:</td>
+							<div th:switch="${kamar.status}">
+								<td th:case="1" th:text="${pasien.nama}"></td>
+								<td th:case="0">Tidak Ada Pasien</td>
+							</div>
+						</tr>
+						<tr>
+							<td height="50">Paviliun:</td>
+							<td th:text="${kamar.paviliunKamar.namaPaviliun}"></td>
+						</tr>
+						<tr>
+							<td height="50">Status:</td>
+							<div th:switch="${kamar.status}">
+								  <td th:case="1">Kamar Terisi</td>
+								  <td th:case="0">Tersedia</td>
+							</div>
+						</tr>
+					</table>
+					<div class="row">
+						<div class="col-md-3">
+							<a class="btn btn-primary" th:href="@{/}">Update Kamar</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
