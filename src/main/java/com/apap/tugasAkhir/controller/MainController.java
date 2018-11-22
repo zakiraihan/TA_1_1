@@ -7,14 +7,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
 import com.apap.tugasAkhir.model.KamarModel;
+import com.apap.tugasAkhir.model.PaviliunModel;
+import com.apap.tugasAkhir.rest.PatienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.Setting;
 import com.apap.tugasAkhir.service.KamarService;
+import com.apap.tugasAkhir.service.PaviliunService;
+import com.apap.tugasAkhir.service.RestService;
 
 @Controller
 public class MainController {
@@ -23,6 +28,12 @@ public class MainController {
 	
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Autowired
+	RestService restService;
+	
+	@Autowired
+	private PaviliunService paviliunService;
 	
 	@Bean
 	public RestTemplate RestTemplate() {
@@ -66,9 +77,15 @@ public class MainController {
 	/**
 	 * TODO: Melakukan insert data penanganan harian rawat jalan 	
 	 */
-	@PostMapping("/penanganan/{idPasien}/insert")
-	private String insertPenangananPasien(@PathVariable("idPasien") long idPasien, Model model) {
+	@PostMapping("/penanganan/insert")
+	private String insertPenangananPasienSubmit(Model model) {
 		return "insert-penanganan-pasien"; 
+	}
+	
+	@GetMapping("/penanganan/insert")
+	private String insertPenangananPasien(Model model) {
+		
+		return "insert-penanganan-pasien";
 	}
 	
 	/**
@@ -87,11 +104,20 @@ public class MainController {
 		return "update-penanganan-pasien";
 	}
 	
+	@GetMapping("/kamar/insert")
+	private String insertDataKamar(Model model) {
+		List<PaviliunModel> listOfPaviliun = paviliunService.getAllPaviliun();
+		model.addAttribute(new KamarModel());
+		model.addAttribute("listOfPaviliun",listOfPaviliun);
+ 		return "add-kamar";
+	}
+	
 	/**
 	 * TODO: Menambah data suatu kamar
 	 */
 	@PostMapping("/kamar/insert")
-	private String insertDataKamar() {
+	private String insertDataKamarSubmit(@ModelAttribute KamarModel kamar) {
+		kamarService.addKamar(kamar);
 		return "view-all-kamar";
 	}
 	
@@ -112,8 +138,7 @@ public class MainController {
 	private String viewKamar(@PathVariable ("idKamar") long idKamar, Model model) {
 		KamarModel kamar = kamarService.getKamarById(idKamar).get();
 		model.addAttribute("kamar", kamar);
-		String pathPasien = Setting.getPasienByIdUrl + kamar.getIdPasien();
-		PatienRestModel patienIdResponse = restTemplate.getForObject(pathPasien, PatienRestModel.class);
+		PatienRestModel patienIdResponse = restService.getPasienById(kamar.getIdPasien());
 		if (patienIdResponse.getStatus() == 200) {
 			System.out.println(patienIdResponse.getResult().getNama());
 			model.addAttribute("pasien", patienIdResponse.getResult());

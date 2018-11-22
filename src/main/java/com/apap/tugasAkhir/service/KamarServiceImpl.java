@@ -26,4 +26,9 @@ public class KamarServiceImpl implements KamarService{
 	public Optional<KamarModel> getKamarById(Long idKamar) {
 		return kamarDb.findById(idKamar);
 	}
-}
+	
+	@Override
+	public KamarModel addKamar(KamarModel kamar){
+		return kamarDb.save(kamar);
+	}
+ }
