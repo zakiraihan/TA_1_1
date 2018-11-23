@@ -32,9 +32,9 @@
 				<tr style="height:3rem">
 					<td>Nama Paviliun</td>
 					<td>
-						<select class="form-control" th:name="idPaviliun">
+						<select class="form-control" th:name="paviliunJaga">
 							<option disabled="disabled" selected="selected" >Pilih Paviliun</option>
-					    	<option th:each="paviliun : ${allPaviliun}" th:value="${paviliun.id}" th:text="${paviliun.nama}"></option>
+					    	<option th:each="paviliun : ${allPaviliun}" th:value="${paviliun.id}" th:text="${paviliun.namaPaviliun}"></option>
 					    </select>
 					</td>
 				</tr>

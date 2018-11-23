@@ -4,14 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apap.tugasAkhir.model.KamarModel;
+import com.apap.tugasAkhir.model.RequestObatModel;
 import com.apap.tugasAkhir.model.RequestPasienModel;
+import com.apap.tugasAkhir.rest.Setting;
 import com.apap.tugasAkhir.service.KamarService;
+import com.apap.tugasAkhir.service.RequestObatService;
 import com.apap.tugasAkhir.service.RequestPasienService;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -20,6 +24,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class ApiController {
 	@Autowired
 	private RequestPasienService requestPasienService;
+	
+	@Autowired
+	private RequestObatService requestObatService;
 	
 	@Autowired
 	private KamarService kamarService;
@@ -48,24 +55,17 @@ public class ApiController {
 		return sent;
 	}
 	
-	/*
-    @RequestMapping(value = "/jadwal-jaga/update/{jadwalJagaId}", method = RequestMethod.POST)
-    private @ResponseBody JadwalJagaModel updateJadwalJagaSubmit(@ModelAttribute JadwalJagaModel jadwalJaga, Model model) {
-        jadwalJagaService.addJadwalJaga(jadwalJaga);
-        return jadwalJaga;
-    }*/
-	
     /**
 	 * TODO: Request obat ke Farmasi IS
 	 */
-	/*
+	
     @PostMapping(value = "/obat/request/{requestObatId}")
 	private String postRequest(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
 		String path = Setting.obatRequestUrl;
 		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
-		//DealerDetail detail = restTemplate.postForObject(path,dealer, DealerDetail.class);
+		//DealerDetail detail = restTemplate.postForObject(path,requestObat, RequestObatModel.class);
 		return "request-success";
-	}*/
+	}
 	
     /*
     @GetMapping(value = "/full/{dealerId}")

@@ -245,8 +245,11 @@ public class MainController {
 	@GetMapping(value = "jadwal-jaga/update/{jadwalJagaId}")
 	private String updateJadwalJaga(@PathVariable(value = "jadwalJagaId") Long jadwalJagaId, Model model) {
 		JadwalJagaModel jadwalJaga = jadwalJagaService.findById(jadwalJagaId).get();
+		DokterAllRestModel allDokter = restService.getAllDokter();
 		model.addAttribute("jadwalJaga", jadwalJaga);
-		return "udpate-jadwal-jaga";
+		model.addAttribute("allDokter", allDokter.getResult());
+		model.addAttribute("allPaviliun", paviliunService.getAllPaviliun());
+		return "update-jadwal-jaga";
 	}
 	
 	@PutMapping(value = "/jadwal-jaga/update/{jadwalJagaId}")
@@ -270,9 +273,12 @@ public class MainController {
 	/**
 	 * TODO: View jadwal jaga
 	 */
-	@GetMapping()
+	@GetMapping(value = "/jadwal-jaga/view")
 	private String viewJadwalJaga(Model model){
+		DokterAllRestModel allDokter = restService.getAllDokter();
+		model.addAttribute("allDokter", allDokter.getResult());
 		model.addAttribute("allJadwalJaga", jadwalJagaService.viewAll());
+		model.addAttribute("allPaviliun", paviliunService.getAllPaviliun());
 		return "view-all-jadwal-jaga";
 	}
 	

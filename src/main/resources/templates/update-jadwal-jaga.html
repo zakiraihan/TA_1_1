@@ -12,16 +12,16 @@
 	<nav th:replace="fragments/fragment :: navbar"></nav>
 	<br>
 	<div style="margin-left:2rem">
-		<p th:text="${message}" style="color:#d4af37"></p>
 		<h4>Ubah Jadwal Jaga</h4>
-		<form th:action="@{/jadwal-jaga/update{jadwalJagaId}(jadwalJagaId=${jadwalJaga.id})}}" th:object="${jadwalJaga}" method="POST">
-			<input type="hidden" th:field="*{jadwalJagaId}" />
+		<form th:action="@{/jadwal-jaga/update/{jadwalJagaId} (jadwalJagaId=${jadwalJaga.id})}" th:object="${jadwalJaga}" method="PUT">
+			<input type="hidden" th:field="*{id}" />
 			<table>
 				<tr style="height:3rem">
 					<td style="width:10rem">Status Dokter</td>
 					<td></td>
-					<td><input type="text" name="statusDokter" maxlength="255" class="form-control" required="required" /></td>
+					<td><input type="text" name="statusDokter" maxlength="255" class="form-control" required="required" th:value="${jadwalJaga.statusDokter}"/></td>
 				</tr>
+				
 				<tr style="height:3rem">
 					<td>Nama Dokter</td>
 					<td>
@@ -34,9 +34,9 @@
 				<tr style="height:3rem">
 					<td>Nama Paviliun</td>
 					<td>
-						<select class="form-control" th:name="idPaviliun">
+						<select class="form-control" th:name="paviliunJaga">
 							<option disabled="disabled" selected="selected" >Pilih Paviliun</option>
-					    	<option th:each="paviliun : ${allPaviliun}" th:value="${paviliun.id}" th:text="${paviliun.nama}"></option>
+					    	<option th:each="paviliun : ${allPaviliun}" th:value="${paviliun.id}" th:text="${paviliun.namaPaviliun}"></option>
 					    </select>
 					</td>
 				</tr>
