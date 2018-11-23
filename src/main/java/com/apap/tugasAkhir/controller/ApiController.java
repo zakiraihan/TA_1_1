@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.apap.tugasAkhir.model.JadwalJagaModel;
@@ -19,29 +19,9 @@ import com.apap.tugasAkhir.service.JadwalJagaService;
 import com.apap.tugasAkhir.service.RequestObatService;
 
 public class ApiController {
-	@Autowired
-	private JadwalJagaService jadwalJagaService;
 	
 	@Autowired
 	private RequestObatService requestObatService;
-	/**
-	 * TODO: Insert jadwal jaga
-	 */
-	/*@RequestMapping(value = "/jadwal-jaga/insert/{dokterId}", method = RequestMethod.GET)
-    private String addJadwal(Model model) {
-        model.addAttribute("dealer", new JadwalJagaModel());
-        return "add-jadwal";
-    }*/
-	
-	@PostMapping(value = "/jadwal-jaga/insert")
-	private JadwalJagaModel addJadwalJagaSubmit(@RequestBody JadwalJagaModel jadwalJaga) {
-		jadwalJagaService.addJadwalJaga(jadwalJaga);
-		return jadwalJaga;
-	}
-	/**
-	 * TODO: Filter list dokter yang available dari jadwal rawat jalan
-	 */
-	
 	
 	
 	/*	
@@ -86,26 +66,7 @@ public class ApiController {
         return "add";
     }*/
 	
-	/**
-	 * TODO: Update jadwal jaga
-	 */
-	@PutMapping(value = "/jadwal-jaga/update/{jadwalJagaId}")
-	private String updateJadwalJagaSubmit(
-			@PathVariable(value = "jadwalJagaId") Long jadwalJagaId,
-			@RequestParam("statusDokter") String statusDokter,
-			@RequestParam("daftarHariJaga") String daftarHariJaga,
-			@RequestParam("idDokter") Long idDokter,
-			@RequestParam("paviliunJaga") PaviliunModel paviliunJaga){
-				JadwalJagaModel jadwalJaga = (JadwalJagaModel) jadwalJagaService.findById(jadwalJagaId).get();
-				if(jadwalJaga.equals(null)) {
-					return "Couldn't find yer schedule";
-				}
-				jadwalJaga.setStatusDokter(statusDokter);
-				jadwalJaga.setDaftarHariJaga(daftarHariJaga);
-				jadwalJaga.setIdDokter(idDokter);
-				jadwalJaga.setPaviliunJaga(paviliunJaga);
-				return "update success";
-	}
+	
     /*@RequestMapping(value = "/jadwal-jaga/update/{jadwalJagaId}", method = RequestMethod.GET)
     private String updateJadwalJaga(@PathVariable(value = "jadwalJagaId") Long jadwalJagaId, Model model) {
     	JadwalJagaModel jadwalJaga = jadwalJagaService.findById(jadwalJagaId).get();
@@ -119,13 +80,7 @@ public class ApiController {
         return jadwalJaga;
     }*/
     
-	/**
-	 * TODO: View jadwal jaga
-	 */
-	@GetMapping()
-	private List<JadwalJagaModel> viewJadwalJaga(Model model){
-		return jadwalJagaService.viewAll();
-	}
+	
 	
     /**
 	 * TODO: Request obat ke Farmasi IS
