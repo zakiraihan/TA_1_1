@@ -12,15 +12,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.apap.tugasAkhir.model.KamarModel;
 import com.apap.tugasAkhir.model.PaviliunModel;
+import com.apap.tugasAkhir.model.RequestPasienModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
-import com.apap.tugasAkhir.rest.PatienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
-import com.apap.tugasAkhir.rest.Setting;
 import com.apap.tugasAkhir.service.KamarService;
 import com.apap.tugasAkhir.service.PaviliunService;
 import com.apap.tugasAkhir.service.RequestPasienService;
@@ -62,17 +65,37 @@ public class MainController {
 	 * TODO: Menampilkan semua request pasien yang ingin masuk ke rawat inap
 	 */
 	@GetMapping("/daftar-request")
-	private String viewDaftarRequest() {
+	private String viewDaftarRequest(Model model) {
+		List<RequestPasienModel> allRequest = requestPasienService.getAllRequest();
+		model.addAttribute("allRequest", allRequest);
+		
+		String[] listOfIdPasien = new String[allRequest.size()];
+		for (int i = 0 ; i< listOfIdPasien.length ; i++) {
+			listOfIdPasien[i] = Long.toString(allRequest.get(i).getId());
+		}
+		
+		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+		List<PaviliunModel> selectedPaviliun = paviliunService.getActivePaviliun();
+		model.addAttribute("allPaviliun", selectedPaviliun);
+		model.addAttribute("allPasien", allPasienReq.getResult());	
 		return "view-daftar-request";
+	}
+	
+	@RequestMapping(value = "/daftar-request/getFromPaviliun", method= RequestMethod.GET)
+	@ResponseBody
+	public List<KamarModel> getKamar(@RequestParam(value = "idPaviliun", required = true) Long idPaviliun){
+		PaviliunModel selectedpaviliun = paviliunService.findPaviliundById(idPaviliun).get();
+		return kamarService.getActiveKamarFromPaviliun(selectedpaviliun);
 	}
 	
 	/**
 	 * TODO: Membuat algoritma assign kamar @Santos 
 	 */
-	@PostMapping("/daftar-request/assign/{idPasien}")
-	private String assignKamarPasien(@PathVariable("idPasien") long idPasien, Model model) {
-		return "assign-kamar-pasien";
-	}
+	//private String assignKamarPasien(@PathVariable("idPasien") long idPasien, Model model) {
+	//	return "assign-kamar-pasien";
+	//}
+	
+	
 	
 	/**
 	 * TODO: Menampilkan semua penanganan yang ada di rawat inap
