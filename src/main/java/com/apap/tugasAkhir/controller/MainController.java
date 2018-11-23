@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.apap.tugasAkhir.model.KamarModel;
 import com.apap.tugasAkhir.model.PaviliunModel;
@@ -116,9 +117,10 @@ public class MainController {
 	 * TODO: Menambah data suatu kamar
 	 */
 	@PostMapping("/kamar/insert")
-	private String insertDataKamarSubmit(@ModelAttribute KamarModel kamar) {
+	private RedirectView insertDataKamarSubmit(@ModelAttribute KamarModel kamar) {
+		kamar.setNomorKamar(0);
 		kamarService.addKamar(kamar);
-		return "view-all-kamar";
+		return new RedirectView("/kamar");
 	}
 	
 	/**

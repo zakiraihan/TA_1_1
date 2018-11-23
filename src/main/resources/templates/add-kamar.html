@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <title>Add Dealer</title>
-
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<title>Tambah Pegawai</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
-</head>
-
+    </head>
 <body>
-    <nav th:replace="fragments/fragment :: navbar"></nav>
-
-    <h2>Insert Kamar Baru</h2>
-
-    <form th:action="@{/kamar/insert}" th:object="${kamar}" method="POST">
-        Nama: <br>
-        <input type="text" name="nama" />
-        <br>
-        Alamat: <br>
-        <input type="text" name="alamat" />
-        <br>
-        No. Telp: <br>
-        <input type="text" name="noTelp" />
-        <br><br>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</body>
-
-</html>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class="container-full-bg">
+		<div class="container vertical-center" style="padding-top: 32px;">
+			<h1>Tambah Kamar</h1>
+			<div class="container">
+				<form th:action="@{/kamar/insert}" th:object="${kamar}" method="POST">
+				<div>
+            		<input type="hidden" name="nomorKamar" class="form-control" th:value="0">
+            	</div>
+            	<div>
+            		<input type="hidden" name="status" class="form-control" th:value="0">
+            	</div>
+            	<div>
+            		<input type="hidden" name="idPasien" class="form-control" th:value="0">
+            	</div>
+            	<div>
+            		<label for="tahunMasuk">Paviliun :</label>
+               		<select class="form-control" name="paviliunKamar">
+            		  <option>Pilih Paviliun</option>
+					  <option th:each="paviliun : ${listOfPaviliun}" 
+					          th:value="${paviliun.id}" 
+					          th:text="${paviliun.namaPaviliun}"></option>
+					</select>
+            	</div>
+		      	<div class="card-body">
+                	<input type="submit" name="submit" class="btn btn-primary"  value="Tambah">
+            	</div>
+            	</form>
+           	</div>
+       	</div>
+   	</div>
+            	
