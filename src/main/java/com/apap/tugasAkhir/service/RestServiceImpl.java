@@ -53,4 +53,5 @@ public class RestServiceImpl implements RestService{
 		String path = pathPasien + listId + "&resultType=Map";
 		return restTemplate.getForObject(path, PatienAllRestModel.class);
 	}
+	
 }

@@ -33,5 +33,4 @@ public class RequestPasienServiceImpl implements RequestPasienService{
 		return requestPasienDb.save(requestPasien);
 	}
 	
-	
 }
