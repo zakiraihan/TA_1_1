@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner.Mode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +18,15 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.apap.tugasAkhir.model.KamarModel;
 import com.apap.tugasAkhir.model.PaviliunModel;
+import com.apap.tugasAkhir.model.PemeriksaanModel;
+import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.Setting;
 import com.apap.tugasAkhir.service.KamarService;
 import com.apap.tugasAkhir.service.PaviliunService;
+import com.apap.tugasAkhir.service.PemeriksaanService;
 import com.apap.tugasAkhir.service.RequestPasienService;
 import com.apap.tugasAkhir.service.RestService;
 
@@ -42,6 +46,9 @@ public class MainController {
 
 	@Autowired 
 	private RequestPasienService requestPasienService;
+	
+	@Autowired
+	private PemeriksaanService pemeriksaanService;
 	
 	@Bean
 	public RestTemplate RestTemplate() {
@@ -86,13 +93,23 @@ public class MainController {
 	 * TODO: Melakukan insert data penanganan harian rawat jalan 	
 	 */
 	@PostMapping("/penanganan/insert")
-	private String insertPenangananPasienSubmit(Model model) {
-		return "insert-penanganan-pasien"; 
+	private RedirectView insertPenangananPasienSubmit(@ModelAttribute PemeriksaanModel pemeriksaan) {
+		pemeriksaanService.addPemeriksaan(pemeriksaan);
+		return new RedirectView("/"); 
 	}
 	
 	@GetMapping("/penanganan/insert")
 	private String insertPenangananPasien(Model model) {
-		
+		List<KamarModel> allKamar = kamarService.getActiveKamar();
+		String[] listOfIdPasien = new String[allKamar.size()];
+		for (int i = 0; i < listOfIdPasien.length; i++) {
+			listOfIdPasien[i] = Long.toString(allKamar.get(i).getIdPasien());
+		}
+		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+		DokterAllRestModel dokterAll = restService.getAllDokter();
+		model.addAttribute(new PemeriksaanModel());
+		model.addAttribute("allPasien", allPasienReq.getResult());
+		model.addAttribute("allDokter", dokterAll.getResult());
 		return "insert-penanganan-pasien";
 	}
 	
