@@ -1,5 +1,7 @@
 package com.apap.tugasAkhir.service;
 
-public interface PemeriksaanService {
+import com.apap.tugasAkhir.model.PemeriksaanModel;
 
+public interface PemeriksaanService {
+	PemeriksaanModel addPemeriksaan(PemeriksaanModel pemeriksaan);
 }
