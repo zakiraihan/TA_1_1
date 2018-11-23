@@ -6,18 +6,24 @@
 
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
-    <nav th:replace="fragments/fragment :: navbar"></nav>
+    <object th:include="fragments/fragment :: fonts"></object>
 </head>
-<body>
-<!-- Page Content -->
-    <div class="container">
 
-      <!-- Jumbotron Header -->
-      <header class="jumbotron my-4">
-        <h1 class="display-3">Selamat datang!</h1>
-        <p class="lead">Halaman ini merupakan halaman pertama dari Sistem Rawat Inap</p>
-        <!-- <a href="#" class="btn btn-primary btn-lg">Call to action!</a>  -->
-      </header>
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+    
+    <div class="container-fluid">
+    
+    <div class="align-items-center d-flex cover section-aquamarine py-5" style="background-image: url(&quot;assets/restaurant/cover_light.jpg&quot;);">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 align-self-center text-lg-left text-center">
+          <h1 class="mb-0 mt-5 display-3">Sistem Informasi Rawat Inap</h1>
+          <p class="mb-5">Kelompok 1</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
       <!-- Page Features -->
       <div class="row text-center">
@@ -26,7 +32,7 @@
           <div class="card">
             <img class="card-img-top" src="http://placehold.it/500x325" alt="">
             <div class="card-body">
-              <h4 class="card-title">List Kamar di Rumah Sakit</h4>
+              <h4 class="card-title">Daftar Kamar di Rumah Sakit</h4>
               <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
             </div>
             <div class="card-footer">
@@ -52,11 +58,11 @@
           <div class="card">
             <img class="card-img-top" src="http://placehold.it/500x325" alt="">
             <div class="card-body">
-              <h4 class="card-title">Card title</h4>
+              <h4 class="card-title">Daftar Pasien Rawat Inap</h4>
               <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
             </div>
             <div class="card-footer">
-              <a href="#" class="btn btn-primary">Find Out More!</a>
+              <a href="/daftar-ranap" class="btn btn-primary">Lihat</a>
             </div>
           </div>
         </div>

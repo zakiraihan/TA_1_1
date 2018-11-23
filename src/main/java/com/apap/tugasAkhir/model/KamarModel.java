@@ -36,7 +36,6 @@ public class KamarModel implements Serializable{
 	private Integer status;
 	
 	@NotNull
-	@Size(max = 255)
 	@Column(name = "nomor_kamar", nullable = false)
 	private Integer nomorKamar;
 	

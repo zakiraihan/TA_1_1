@@ -12,4 +12,6 @@ import com.apap.tugasAkhir.model.PaviliunModel;
 public interface KamarDb extends JpaRepository<KamarModel, Long> {
 	List<KamarModel> findByPaviliunKamar(PaviliunModel paviliun);
 	KamarModel findByIdPasien(Long idPasien);
+	List<KamarModel> findByPaviliunKamarAndStatus(PaviliunModel paviliun, Integer status);
+	List<KamarModel> findByStatus(Integer status);
 }

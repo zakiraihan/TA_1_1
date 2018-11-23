@@ -3,7 +3,7 @@ package com.apap.tugasAkhir.rest;
 public class Setting {
 	
 	 //url used for retrieving all dokter data
-	final public static String getAllDokterUrl = "http://si-appointment.herokuapp.com/api/getAllDokter";
+	final public static String getAllDokterUrl = "http://si-appointment.herokuapp.com/api/1/getAllDokter";
 	
 	//url used to get specific dokter by id
 	//example: "http://si-appointment.herokuapp.com/api/getDokter/1" used for getting dokter with id 1
@@ -26,5 +26,9 @@ public class Setting {
 	
 	//url for request obat
 	final public static String obatRequestUrl = "";
+	
+	//url used for get all pasien with coresponding id in list
+	//example: "http://si-appointment.herokuapp.com/api/getPasien?listId=5,10,15,908" used for getting pasien with id 5, 10, 15, 908
+	final public static String getPasienByListIdUrl = "http://si-appointment.herokuapp.com/api/getPasien?listId=";
 }
 

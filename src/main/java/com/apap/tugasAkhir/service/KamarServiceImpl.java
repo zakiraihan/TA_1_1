@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.apap.tugasAkhir.model.KamarModel;
+import com.apap.tugasAkhir.model.PaviliunModel;
 import com.apap.tugasAkhir.repository.KamarDb;
 
 @Service
@@ -30,5 +31,15 @@ public class KamarServiceImpl implements KamarService{
 	@Override
 	public KamarModel addKamar(KamarModel kamar){
 		return kamarDb.save(kamar);
+	}
+	
+	@Override 
+	public List<KamarModel> getActiveKamarFromPaviliun(PaviliunModel paviliun){
+		return kamarDb.findByPaviliunKamarAndStatus(paviliun, 0);
+	}
+	
+	@Override
+	public List<KamarModel> getActiveKamar(){
+		return kamarDb.findByStatus(1);
 	}
  }

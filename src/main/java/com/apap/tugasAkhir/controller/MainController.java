@@ -2,6 +2,8 @@ package com.apap.tugasAkhir.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
@@ -13,15 +15,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.apap.tugasAkhir.model.JadwalJagaModel;
 import com.apap.tugasAkhir.model.KamarModel;
 import com.apap.tugasAkhir.model.PaviliunModel;
+import com.apap.tugasAkhir.rest.PatienAllRestModel;
+import com.apap.tugasAkhir.rest.PatienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.service.DokterService;
 import com.apap.tugasAkhir.service.JadwalJagaService;
 import com.apap.tugasAkhir.service.KamarService;
 import com.apap.tugasAkhir.service.PaviliunService;
+import com.apap.tugasAkhir.service.RequestPasienService;
 import com.apap.tugasAkhir.service.RestService;
 
 @Controller
@@ -37,6 +43,9 @@ public class MainController {
 	
 	@Autowired
 	private PaviliunService paviliunService;
+
+	@Autowired 
+	private RequestPasienService requestPasienService;
 	
 	@Autowired
 	private JadwalJagaService jadwalJagaService;
@@ -125,9 +134,10 @@ public class MainController {
 	 * TODO: Menambah data suatu kamar
 	 */
 	@PostMapping("/kamar/insert")
-	private String insertDataKamarSubmit(@ModelAttribute KamarModel kamar) {
+	private RedirectView insertDataKamarSubmit(@ModelAttribute KamarModel kamar) {
+		kamar.setNomorKamar(0);
 		kamarService.addKamar(kamar);
-		return "view-all-kamar";
+		return new RedirectView("/kamar");
 	}
 	
 	/**
@@ -164,11 +174,32 @@ public class MainController {
 	}
 	
 	/**
+	 * TODO: Menampilkan semua pasien di kamar
+	 */
+	@GetMapping("/daftar-ranap")
+	private String viewAllRanap(Model model) {
+		List<KamarModel> allKamar = kamarService.getActiveKamar();
+		String[] listOfIdPasien = new String[allKamar.size()];
+		for (int i = 0; i < listOfIdPasien.length; i++) {
+			listOfIdPasien[i] = Long.toString(allKamar.get(i).getIdPasien());
+		}
+		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+		model.addAttribute("allKamar", allKamar);
+		model.addAttribute("allPasien", allPasienReq.getResult());
+		return "daftar-ranap";
+	}
+	
+	/**
 	 * TODO: Mengeluarkan pasien dari kamar
 	 */
 	@PostMapping("/daftar-ranap/pulang/{idKamar}")
-	private String deleteRanap() {
-		return "daftar-ranap";
+	private RedirectView deleteRanap(@PathVariable Long idKamar, HttpServletRequest req) {
+		Long idPasien =  Long.valueOf(req.getParameter("idPasien"));
+		KamarModel kamar = kamarService.getKamarById(idKamar).get();
+		kamar.setIdPasien((long) 0);
+		kamar.setStatus(0);
+		kamarService.addKamar(kamar);
+		return new RedirectView("/daftar-ranap");
 	}
 	
 	/**
