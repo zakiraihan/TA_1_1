@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.apap.tugasAkhir.model.KamarModel;
+import com.apap.tugasAkhir.model.PaviliunModel;
 
 public interface KamarService {
 
@@ -12,5 +13,9 @@ public interface KamarService {
 	Optional<KamarModel> getKamarById(Long idKamar);
 
 	KamarModel addKamar(KamarModel kamar);
+
+	List<KamarModel> getActiveKamarFromPaviliun(PaviliunModel paviliun);
+
+	List<KamarModel> getActiveKamar();
 
 }
