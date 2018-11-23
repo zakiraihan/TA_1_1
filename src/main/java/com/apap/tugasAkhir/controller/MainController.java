@@ -301,15 +301,4 @@ public class MainController {
 				jadwalJaga.setPaviliunJaga(paviliunJaga);
 				return "update success";
 	}
-	
-	/**
-	 * TODO: View jadwal jaga
-	 */
-	@GetMapping()
-	private String viewJadwalJaga(Model model){
-		model.addAttribute("allJadwalJaga", jadwalJagaService.viewAll());
-		return "view-all-jadwal-jaga";
-	}
-	
-	
 }
