@@ -13,6 +13,8 @@ public class PatienModel implements Serializable{
 	
 	private StatusModel statusPasien;
 	
+	private PoliRujukanModel poliRujukan;
+	
 	public Long getId() {
 		return id;
 	}
@@ -45,4 +47,11 @@ public class PatienModel implements Serializable{
 		this.statusPasien = statusPasien;
 	}
 
+	public PoliRujukanModel getPoliRujukan() {
+		return poliRujukan;
+	}
+
+	public void setPoliRujukan(PoliRujukanModel poliRujukan) {
+		this.poliRujukan = poliRujukan;
+	}
 }
