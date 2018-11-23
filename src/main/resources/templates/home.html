@@ -7,10 +7,11 @@
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
     <object th:include="fragments/fragment :: fonts"></object>
-    <nav th:replace="fragments/fragment :: navbar"></nav>
 </head>
 
 <body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+    
     <div class="container-fluid">
     
     <div class="align-items-center d-flex cover section-aquamarine py-5" style="background-image: url(&quot;assets/restaurant/cover_light.jpg&quot;);">
