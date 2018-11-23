@@ -24,6 +24,9 @@ public class Setting {
 	//if the dokter atleast has assigned there, tolak
 	final public static String getAllAssignedDokterUrl = "{{fill the url here}}";
 	
+	//url for request obat
+	final public static String obatRequestUrl = "";
+	
 	//url used for get all pasien with coresponding id in list
 	//example: "http://si-appointment.herokuapp.com/api/getPasien?listId=5,10,15,908" used for getting pasien with id 5, 10, 15, 908
 	final public static String getPasienByListIdUrl = "http://si-appointment.herokuapp.com/api/getPasien?listId=";

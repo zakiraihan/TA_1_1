@@ -1,5 +1,9 @@
 package com.apap.tugasAkhir.service;
 
-public interface RequestObatService {
+import java.util.Optional;
 
+import com.apap.tugasAkhir.model.RequestObatModel;
+
+public interface RequestObatService {
+	Optional<RequestObatModel> findById(Long id);
 }

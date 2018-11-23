@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Tambah Jadwal Jaga</title>
+
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<br>
+	<div style="margin-left:2rem">
+		<h4>Tambah Jadwal Jaga</h4>
+		<form th:action="@{/jadwal-jaga/insert}" th:object="${jadwalJaga}" method="POST">
+			<table>
+				<tr style="height:3rem">
+					<td style="width:10rem">Status Dokter</td>
+					<td></td>
+					<td><input type="text" name="statusDokter" maxlength="255" class="form-control" required="required" /></td>
+				</tr>
+				<tr style="height:3rem">
+					<td>Nama Dokter</td>
+					<td>
+						<select class="form-control" th:name="idDokter">
+							<option disabled="disabled" selected="selected" >Pilih Dokter</option>
+					    	<option th:each="dokter : ${allDokter}" th:value="${dokter.id}" th:text="${dokter.nama}"></option>
+					    </select>
+					</td>
+				</tr>
+				<tr style="height:3rem">
+					<td>Nama Paviliun</td>
+					<td>
+						<select class="form-control" th:name="idPaviliun">
+							<option disabled="disabled" selected="selected" >Pilih Paviliun</option>
+					    	<option th:each="paviliun : ${allPaviliun}" th:value="${paviliun.id}" th:text="${paviliun.nama}"></option>
+					    </select>
+					</td>
+				</tr>
+				<tr style="height:3rem">
+					<td>Hari Jaga</td>
+					<td></td>
+					<td><input type="text" name="daftarHariJaga" maxlength="255" class="form-control" required="required"  /></td>
+				</tr>
+			
+			</table>
+			<br>
+			<button type="submit" class="btn" style="background-color: #696969; color:white">Simpan</button>
+		</form>
+	</div>
+</body>
+
+
+</html>

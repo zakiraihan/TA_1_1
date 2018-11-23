@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.apap.tugasAkhir.model.JadwalJagaModel;
 import com.apap.tugasAkhir.model.KamarModel;
 import com.apap.tugasAkhir.model.PaviliunModel;
 import com.apap.tugasAkhir.model.RequestPasienModel;
@@ -27,6 +29,7 @@ import com.apap.tugasAkhir.model.PemeriksaanModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
+import com.apap.tugasAkhir.service.JadwalJagaService;
 import com.apap.tugasAkhir.service.KamarService;
 import com.apap.tugasAkhir.service.PaviliunService;
 import com.apap.tugasAkhir.service.PemeriksaanService;
@@ -49,6 +52,9 @@ public class MainController {
 
 	@Autowired 
 	private RequestPasienService requestPasienService;
+	
+	@Autowired
+	private JadwalJagaService jadwalJagaService;
 	
 	@Autowired
 	private PemeriksaanService pemeriksaanService;
@@ -244,4 +250,66 @@ public class MainController {
 		kamarService.addKamar(kamar);
 		return new RedirectView("/daftar-ranap");
 	}
+	
+	/**
+	 * TODO: Insert jadwal jaga
+	 */	
+	@GetMapping(value = "/jadwal-jaga/insert")
+	private String addJadwalJaga(Model model) {
+		//model.addAttribute(new JadwalJagaModel());
+		DokterAllRestModel allDokter = restService.getAllDokter();
+		model.addAttribute("jadwalJaga", new JadwalJagaModel());
+		model.addAttribute("allDokter", allDokter.getResult());
+		model.addAttribute("allPaviliun", paviliunService.getAllPaviliun());
+		return "add-jadwal-jaga";
+	}
+	
+	@PostMapping(value = "/jadwal-jaga/insert")
+	private String addJadwalJagaSubmit(@ModelAttribute JadwalJagaModel jadwalJaga) {
+		jadwalJagaService.addJadwalJaga(jadwalJaga);
+		return "view-all-jadwal-jaga";
+	}
+	
+	/**
+	 * TODO: Filter list dokter yang paling available dari jadwal rawat jalan
+	 */
+	
+	/**
+	 * TODO: Update jadwal jaga
+	 */
+	@GetMapping(value = "jadwal-jaga/update/{jadwalJagaId}")
+	private String updateJadwalJaga(@PathVariable(value = "jadwalJagaId") Long jadwalJagaId, Model model) {
+		JadwalJagaModel jadwalJaga = jadwalJagaService.findById(jadwalJagaId).get();
+		model.addAttribute("jadwalJaga", jadwalJaga);
+		return "udpate-jadwal-jaga";
+	}
+	
+	@PutMapping(value = "/jadwal-jaga/update/{jadwalJagaId}")
+	private String updateJadwalJagaSubmit(
+			@PathVariable(value = "jadwalJagaId") Long jadwalJagaId,
+			@RequestParam("statusDokter") String statusDokter,
+			@RequestParam("daftarHariJaga") String daftarHariJaga,
+			@RequestParam("idDokter") Long idDokter,
+			@RequestParam("paviliunJaga") PaviliunModel paviliunJaga){
+				JadwalJagaModel jadwalJaga = (JadwalJagaModel) jadwalJagaService.findById(jadwalJagaId).get();
+				if(jadwalJaga.equals(null)) {
+					return "Couldn't find yer schedule";
+				}
+				jadwalJaga.setStatusDokter(statusDokter);
+				jadwalJaga.setDaftarHariJaga(daftarHariJaga);
+				jadwalJaga.setIdDokter(idDokter);
+				jadwalJaga.setPaviliunJaga(paviliunJaga);
+				return "update success";
+	}
+	
+	/**
+	 * TODO: View jadwal jaga
+	 */
+	@GetMapping()
+	private String viewJadwalJaga(Model model){
+		model.addAttribute("allJadwalJaga", jadwalJagaService.viewAll());
+		return "view-all-jadwal-jaga";
+	}
+	
+	
 }

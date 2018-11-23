@@ -47,5 +47,33 @@ public class ApiController {
 		sent += listOfId + "]}";
 		return sent;
 	}
-
+	
+	/*
+    @RequestMapping(value = "/jadwal-jaga/update/{jadwalJagaId}", method = RequestMethod.POST)
+    private @ResponseBody JadwalJagaModel updateJadwalJagaSubmit(@ModelAttribute JadwalJagaModel jadwalJaga, Model model) {
+        jadwalJagaService.addJadwalJaga(jadwalJaga);
+        return jadwalJaga;
+    }*/
+	
+    /**
+	 * TODO: Request obat ke Farmasi IS
+	 */
+	/*
+    @PostMapping(value = "/obat/request/{requestObatId}")
+	private String postRequest(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
+		String path = Setting.obatRequestUrl;
+		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
+		//DealerDetail detail = restTemplate.postForObject(path,dealer, DealerDetail.class);
+		return "request-success";
+	}*/
+	
+    /*
+    @GetMapping(value = "/full/{dealerId}")
+	private DealerDetail postStatus(@PathVariable ("dealerId") Long dealerId) throws Exception{
+		String path = Setting.dealerUrl + "/dealer";
+		DealerModel dealer = dealerService.getDealerDetailById(dealerId).get();
+		DealerDetail detail = restTemplate.postForObject(path,dealer, DealerDetail.class);
+		return detail;
+	}
+	*/
 }
