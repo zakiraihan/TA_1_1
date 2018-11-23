@@ -16,7 +16,7 @@ public class DokterAllRestModel implements Serializable{
 	
 	private String message;
 	
-	private HashMap<Long, DokterModel> result;
+	private List<DokterModel> result;
 
 	public String getMessage() {
 		return message;
@@ -26,29 +26,11 @@ public class DokterAllRestModel implements Serializable{
 		this.message = message;
 	}
 
-	public HashMap<Long, DokterModel> getResult() {
+	public List<DokterModel> getResult() {
 		return result;
 	}
 
-	public void setResult(HashMap<Long, DokterModel> result) {
+	public void setResult(List<DokterModel> result) {
 		this.result = result;
 	}
-	
-	@SuppressWarnings("unchecked")
-    @JsonProperty("result")
-    private void unpackNested(JsonNode result) {
-		try {
-			String resultString = result.toString();
-			ObjectMapper mapper = new ObjectMapper();
-			HashMap<Long, DokterModel> hashMap = new HashMap<Long, DokterModel>();
-			hashMap = mapper.readValue(resultString, new TypeReference<HashMap<Long, DokterModel>>(){});
-			this.result = hashMap;
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
 }
