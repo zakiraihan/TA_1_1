@@ -11,4 +11,5 @@ import com.apap.tugasAkhir.model.PaviliunModel;
 public interface PaviliunDb extends JpaRepository<PaviliunModel, Long>{
 	PaviliunModel findByNamaPaviliun(String namaPaviliun);
 	List<PaviliunModel> findByStatus(Integer status);
+	
 }

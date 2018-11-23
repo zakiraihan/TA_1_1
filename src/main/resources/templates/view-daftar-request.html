@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>List Request Pasien</title>
+
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+</head>
+
+<body  style="margin:50;padding:50">
+	<!-- Buat form untuk assign pasien -->
+	<div class="row"  style="margin-left: 20px;margin-top:20px">
+		<div class="col-md-6">
+			<div class="card" id="form">
+				<div class="card-header">
+					Assign Pasien Ke Kamar
+				</div>
+				<div class="card-body">
+					<form th:action="@{/daftar-request/assign}" id="assignPasien" method="POST">
+						<input class="form-control" type="hidden" id="idRequestPasien" required="required" name="idRequestPasien"/>
+						<input class="form-control" type="hidden" id="idPasien" required="required" name="idPasien"/>
+						<table>
+							<tr>
+								<td width="100" height="50">Nama Pasien</td>
+								<td><input class="form-control" type="text" id="namaPasien" required="required" name="namaPasien" disabled /></td>
+							</tr>
+							<tr>
+								<td height="50">Paviliun</td>
+								<td>
+									<select  class="form-control" required="required" name="paviliun" id="paviliun" th:value="${allPaviliun}" form="assignPasien">
+										<option disabled="disabled" selected="selected" >Pilih Paviliun</option>
+									    <option th:each="paviliun : ${allPaviliun}" th:value="${paviliun.id}" th:text="${paviliun.namaPaviliun}" ></option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td height="50">Kamar</td>
+								<td>
+									<select  class="form-control" required="required" name="kamar" id="kamar" form="assignPasien">
+										<option disabled="disabled" selected="selected" >Pilih Kamar</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+						<button type="submit">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End -->
+	<h3 style="margin-top:20px">List Semua Request Pasien</h3>
+	<br>
+	<table id="table">
+		<thead>
+			<th>Nama Pasien</th>
+			<th>Status Pasien</th>
+			<th>Status Assign Kamar</th>
+			<th>Assign Kamar</th>
+		</thead>
+		<span th:each="request, iterator : ${allRequest}">
+			<tr>
+				<td th:text="${allPasien.get(request.idPasien).nama}" ></td>
+				<td th:text="${allPasien.get(request.idPasien).statusPasien.jenis}"></td>
+				<td>
+					<div th:switch="${request.assign}">
+					  <p th:case="1">Assigned</p>
+					  <p th:case="0">Pending</p>
+					</div>
+				</td>
+				<td>
+					<div th:switch="${request.assign}">
+					  <a th:case="0" href="#form"class="btn btn-primary" th:namaPasien="${allPasien.get(request.idPasien).nama}" 
+					  th:idPasien="${allPasien.get(request.idPasien).id}" th:requestId="${request.id}" 
+					  th:onclick="javascript:getName(this.getAttribute('namaPasien'), this.getAttribute('idPasien'), this.getAttribute('requestId'));">Assign Kamar</a>
+					  <p th:case="1">Has Assigned</p>
+					</div>
+				</td>
+			</tr>
+		</span>
+	</table>
+</body>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+ 
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	$(document).ready( function () {
+	    $('#table').DataTable();
+	} );
+	
+	$('#paviliun').change(
+     function() {
+         $.getJSON("/daftar-request/getFromPaviliun", {
+             idPaviliun : $(this).val(),
+             ajax : 'true'
+         }, function(data) {
+             var html = '<option value="">Pilih Kamar</option>';
+             var len = data.length;
+             if (len>0){
+            	 for ( var i = 0; i < len; i++) {
+                     html += '<option value="' + data[i].id + '">'
+                             + data[i].id + '</option>';
+                 }
+                 html += '</option>';
+                 
+             }
+             else{
+            	 html = '<option value="">Kamar Penuh</option>';
+             }
+             $('#kamar').html(html); 
+         });
+     });
+	
+	function getName(namaPasien, idPasien, idRequestPasien){
+		var inputNama = document.getElementById("namaPasien");
+		inputNama.value= namaPasien;
+		
+		var inputIdPasien = document.getElementById("idPasien");
+		inputIdPasien.value= idPasien;
+		
+		var inputIdRequestPasien = document.getElementById("idRequestPasien");
+		inputIdRequestPasien.value= idRequestPasien;
+	}
+	/*]]>*/
+</script>
+
+
+</html>
+
