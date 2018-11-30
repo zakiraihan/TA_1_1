@@ -1,5 +1,6 @@
 package com.apap.tugasAkhir.service;
 
+import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
@@ -19,4 +20,6 @@ public interface RestService {
 	PatienAllRestModel getListOfPasien(String[] listOfString);
 	
 	String postPasienStatus(PatienModel pasien);
+
+	DokterAllRestMapModel getListOfDokter(String[] listOfString);
 }

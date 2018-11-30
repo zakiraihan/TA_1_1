@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
@@ -56,6 +57,17 @@ public class RestServiceImpl implements RestService{
 		}
 		String path = pathPasien + listId + "&resultType=Map";
 		return restTemplate.getForObject(path, PatienAllRestModel.class);
+	}
+	
+	@Override
+	public DokterAllRestMapModel getListOfDokter(String[] listOfString) {
+		String pathPasien = Setting.getDokterByListIdUrl;
+		String listId = listOfString[0];
+		for (int i = 1; i < listOfString.length; i++) {
+			listId += "," + listOfString[i];
+		}
+		String path = pathPasien + listId + "&resultType=Map";
+		return restTemplate.getForObject(path, DokterAllRestMapModel.class);
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package com.apap.tugasAkhir.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import com.apap.tugasAkhir.model.KamarModel;
 import com.apap.tugasAkhir.model.PaviliunModel;
 import com.apap.tugasAkhir.model.RequestPasienModel;
 import com.apap.tugasAkhir.model.PemeriksaanModel;
+import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
@@ -283,14 +285,14 @@ public class MainController {
 		DokterAllRestModel allDokter = restService.getAllDokter();
 		model.addAttribute("jadwalJaga", new JadwalJagaModel());
 		model.addAttribute("allDokter", allDokter.getResult());
-		model.addAttribute("allPaviliun", paviliunService.getAllPaviliun());
+		model.addAttribute("allPaviliun", paviliunService.getActivePaviliun());
 		return "add-jadwal-jaga";
 	}
 	
 	@PostMapping(value = "/jadwal-jaga/insert")
-	private String addJadwalJagaSubmit(@ModelAttribute JadwalJagaModel jadwalJaga) {
+	private RedirectView addJadwalJagaSubmit(@ModelAttribute JadwalJagaModel jadwalJaga) {
 		jadwalJagaService.addJadwalJaga(jadwalJaga);
-		return "view-all-jadwal-jaga";
+		return new RedirectView("/jadwal-jaga");
 	}
 	
 	/**
@@ -306,7 +308,7 @@ public class MainController {
 		DokterAllRestModel allDokter = restService.getAllDokter();
 		model.addAttribute("jadwalJaga", jadwalJaga);
 		model.addAttribute("allDokter", allDokter.getResult());
-		model.addAttribute("allPaviliun", paviliunService.getAllPaviliun());
+		model.addAttribute("allPaviliun", paviliunService.getActivePaviliun());
 		return "update-jadwal-jaga";
 	}
 	
@@ -331,12 +333,28 @@ public class MainController {
 	/**
 	 * TODO: View jadwal jaga
 	 */
-	@GetMapping(value = "/jadwal-jaga/view")
+	@GetMapping(value = "/jadwal-jaga")
 	private String viewJadwalJaga(Model model){
-		DokterAllRestModel allDokter = restService.getAllDokter();
-		model.addAttribute("allDokter", allDokter.getResult());
-		model.addAttribute("allJadwalJaga", jadwalJagaService.viewAll());
-		model.addAttribute("allPaviliun", paviliunService.getAllPaviliun());
+		List<JadwalJagaModel> allJadwalJaga = jadwalJagaService.viewAll();
+		model.addAttribute("allJadwalJaga", allJadwalJaga);
+		
+		String[] listOfIdDokter = new String[allJadwalJaga.size()];
+		for (int i = 0; i < listOfIdDokter.length; i++) {
+			listOfIdDokter[i] = Long.toString(allJadwalJaga.get(i).getIdDokter());
+		}
+		
+		DokterAllRestMapModel allDokterReq = restService.getListOfDokter(listOfIdDokter);
+		model.addAttribute("allDokterReq", allDokterReq.getResult());
+		
+		List<PaviliunModel> allListPaviliun = paviliunService.getAllPaviliun();
+		
+		HashMap<Long, PaviliunModel> mapOfPaviliun = new HashMap<Long, PaviliunModel>();
+		for (PaviliunModel paviliun : allListPaviliun) {
+			mapOfPaviliun.put(paviliun.getId(), paviliun);
+		}
+		
+		
+		model.addAttribute("allPaviliun", mapOfPaviliun);
 		return "view-all-jadwal-jaga";
 	}
 	

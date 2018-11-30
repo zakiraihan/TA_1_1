@@ -16,10 +16,6 @@ public class Setting {
 	//example: "http://si-appointment.herokuapp.com/api/getPasien/1" used for getting pasien with id 1
 	final public static String getPasienByIdUrl = "http://si-appointment.herokuapp.com/api/getPasien/";
 	
-	//url used for update pasien status by it's id
-	//don't forget to use POST method
-	final public static String updateStatusPasienByIdUrl = "http://si-appointment.herokuapp.com/api/updatePasien";
-	
 	//url used for get all dokter assigned in rawat jalan
 	//if the dokter atleast has assigned there, tolak
 	final public static String getAllAssignedDokterUrl = "{{fill the url here}}";
@@ -30,6 +26,11 @@ public class Setting {
 	//url used for get all pasien with coresponding id in list
 	//example: "http://si-appointment.herokuapp.com/api/getPasien?listId=5,10,15,908" used for getting pasien with id 5, 10, 15, 908
 	final public static String getPasienByListIdUrl = "http://si-appointment.herokuapp.com/api/getPasien?listId=";
+
+	//url used for get all dokter with coresponding id in list
+	//example: "http://si-appointment.herokuapp.com/api/getDokter?listId=5,10,15,908" used for getting dokter with id 5, 10, 15, 908
+	final public static String getDokterByListIdUrl = "http://si-appointment.herokuapp.com/api/getDokter?listId=";
+
 	
 	//url used for update patien status
 	//using post method
