@@ -13,4 +13,6 @@ public interface RequestPasienService {
 
 	RequestPasienModel addRequestPasien(RequestPasienModel requestPasien);
 
+	RequestPasienModel getReqByIdPasien(Long idPasien);
+
 }

@@ -3,12 +3,16 @@ package com.apap.tugasAkhir.service;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
+import com.apap.tugasAkhir.rest.PatienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.Setting;
 
@@ -52,6 +56,21 @@ public class RestServiceImpl implements RestService{
 		}
 		String path = pathPasien + listId + "&resultType=Map";
 		return restTemplate.getForObject(path, PatienAllRestModel.class);
+	}
+	
+	@Override
+	public String postPasienStatus(PatienModel pasien) {
+		RestTemplate template = new RestTemplate();
+	     HttpEntity<PatienModel> requestEntity= new HttpEntity<PatienModel>(pasien);
+	    String response = "";
+	     try{
+	        ResponseEntity<String> responseEntity = template.exchange(Setting.postPasienStatusUrl, HttpMethod.POST, requestEntity,  String.class);
+	        response = responseEntity.getBody();
+	    }
+	    catch(Exception e){
+	        response = e.getMessage();
+	    }
+	    return response;
 	}
 	
 }

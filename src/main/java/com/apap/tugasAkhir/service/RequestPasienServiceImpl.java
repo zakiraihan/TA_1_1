@@ -33,4 +33,9 @@ public class RequestPasienServiceImpl implements RequestPasienService{
 		return requestPasienDb.save(requestPasien);
 	}
 	
+	@Override
+	public RequestPasienModel getReqByIdPasien(Long idPasien) {
+		return requestPasienDb.findByIdPasien(idPasien);
+	}
+	
 }
