@@ -113,6 +113,16 @@ public class MainController {
 		KamarModel kamar = kamarService.getKamarById(idKamar).get();
 		kamar.setIdPasien(idPasien);
 		kamar.setStatus(1);
+		PatienRestModel patienIdResponse = restService.getPasienById(idPasien);
+		if (patienIdResponse.getStatus() == 200) {
+			System.out.println(patienIdResponse.getResult().getNama());
+			StatusModel status = new StatusModel();
+			status.setId((long)5);
+			status.setJenis("Berada di Rawat Inap");
+			patienIdResponse.getResult().setStatusPasien(status);
+			String result = restService.postPasienStatus(patienIdResponse.getResult());
+			System.out.println(result);
+		}
 		RequestPasienModel request= requestPasienService.getReqPasienById(idRequestPasien).get();
 		request.setAssign(1);
 		requestPasienService.addRequestPasien(request);
