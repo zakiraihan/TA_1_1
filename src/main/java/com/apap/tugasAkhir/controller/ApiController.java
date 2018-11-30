@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.apap.tugasAkhir.model.KamarModel;
 import com.apap.tugasAkhir.model.RequestObatModel;
 import com.apap.tugasAkhir.model.RequestPasienModel;
+import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.Setting;
+import com.apap.tugasAkhir.rest.StatusModel;
 import com.apap.tugasAkhir.service.KamarService;
 import com.apap.tugasAkhir.service.RequestObatService;
 import com.apap.tugasAkhir.service.RequestPasienService;
+import com.apap.tugasAkhir.service.RestService;
 import com.fasterxml.jackson.databind.JsonNode;
 
 @RestController
@@ -31,6 +34,9 @@ public class ApiController {
 	@Autowired
 	private KamarService kamarService;
 	
+	@Autowired
+	RestService restService;
+	
 	@PostMapping(value = "/daftar-ranap")
 	private String addRequestPasien(@RequestBody JsonNode req) {
 		String resultString = req.get("idPasien").toString();
@@ -39,6 +45,16 @@ public class ApiController {
 		newReq.setAssign(0);
 		newReq.setIdPasien(Long.parseLong(resultString));
 		requestPasienService.addRequestPasien(newReq);
+		PatienRestModel patienIdResponse = restService.getPasienById(Long.parseLong(resultString));
+		if (patienIdResponse.getStatus() == 200) {
+			System.out.println(patienIdResponse.getResult().getNama());
+			StatusModel status = new StatusModel();
+			status.setId((long)4);
+			status.setJenis("Mendaftar di Rawat Inap");
+			patienIdResponse.getResult().setStatusPasien(status);
+			String result = restService.postPasienStatus(patienIdResponse.getResult());
+			System.out.println(result);
+		}
 		String returnMessage = "{\"status\" : 200, \"message\" : \"success\"}";
 		return returnMessage;
 	}

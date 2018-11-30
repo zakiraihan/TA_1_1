@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Home</title>
-
+    <head th:fragment="headerFragment (pageTitle)">
+    	<title th:text="${pageTitle}"></title>
+    </head>
+    
     <head th:fragment="css">
         <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
         <link rel="stylesheet" th:href="@{/css/style.css}">

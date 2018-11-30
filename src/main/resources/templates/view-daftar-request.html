@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>List Request Pasien</title>
-
+	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Daftar Request')"></title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
-    <nav th:replace="fragments/fragment :: navbar"></nav>
+    <object th:include="fragments/fragment :: fonts"></object>
 </head>
 
-<body  style="margin:50;padding:50">
+<body style="margin:50;padding:50">
+    <nav th:replace="fragments/fragment :: navbar"></nav>
 	<!-- Buat form untuk assign pasien -->
 	<div class="row"  style="margin-left: 20px;margin-top:20px">
 		<div class="col-md-6">

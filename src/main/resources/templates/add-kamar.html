@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-	<title>Tambah Pegawai</title>
-	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Kamar: Tambah')"></title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
-    </head>
+    <object th:include="fragments/fragment :: fonts"></object>
+</head>
+
 <body>
-	<nav th:replace="fragments/fragment :: navbar"></nav>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
 	<div class="container-full-bg">
 		<div class="container vertical-center" style="padding-top: 32px;">
 			<h1>Tambah Kamar</h1>
