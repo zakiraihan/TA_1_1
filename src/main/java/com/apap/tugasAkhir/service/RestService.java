@@ -17,4 +17,6 @@ public interface RestService {
 	DokterAllRestModel getAllDokter();
 
 	PatienAllRestModel getListOfPasien(String[] listOfString);
+	
+	String postPasienStatus(PatienModel pasien);
 }

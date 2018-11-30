@@ -29,6 +29,7 @@ import com.apap.tugasAkhir.model.PemeriksaanModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
+import com.apap.tugasAkhir.rest.StatusModel;
 import com.apap.tugasAkhir.service.JadwalJagaService;
 import com.apap.tugasAkhir.service.KamarService;
 import com.apap.tugasAkhir.service.PaviliunService;
@@ -244,7 +245,19 @@ public class MainController {
 	@PostMapping("/daftar-ranap/pulang/{idKamar}")
 	private RedirectView deleteRanap(@PathVariable Long idKamar, HttpServletRequest req) {
 		Long idPasien =  Long.valueOf(req.getParameter("idPasien"));
+		System.out.println(idPasien);
 		KamarModel kamar = kamarService.getKamarById(idKamar).get();
+		PatienRestModel patienIdResponse = restService.getPasienById(kamar.getIdPasien());
+		if (patienIdResponse.getStatus() == 200) {
+			System.out.println(patienIdResponse.getResult().getNama());
+			StatusModel status = new StatusModel();
+			status.setId((long)6);
+			status.setJenis("Selesai di Rawat Inap");
+			patienIdResponse.getResult().setStatusPasien(status);
+			String result = restService.postPasienStatus(patienIdResponse.getResult());
+			System.out.println(result);
+		}
+		requestPasienService.getReqByIdPasien(idPasien).setAssign(2);
 		kamar.setIdPasien((long) 0);
 		kamar.setStatus(0);
 		kamarService.addKamar(kamar);

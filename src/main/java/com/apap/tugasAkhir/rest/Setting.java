@@ -30,5 +30,9 @@ public class Setting {
 	//url used for get all pasien with coresponding id in list
 	//example: "http://si-appointment.herokuapp.com/api/getPasien?listId=5,10,15,908" used for getting pasien with id 5, 10, 15, 908
 	final public static String getPasienByListIdUrl = "http://si-appointment.herokuapp.com/api/getPasien?listId=";
+	
+	//url used for update patien status
+	//using post method
+	final public static String postPasienStatusUrl = "http://si-appointment.herokuapp.com/api/1/updatePasien";
 }
 

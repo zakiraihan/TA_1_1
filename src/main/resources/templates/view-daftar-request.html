@@ -76,6 +76,7 @@
 					  th:idPasien="${allPasien.get(request.idPasien).id}" th:requestId="${request.id}" 
 					  th:onclick="javascript:getName(this.getAttribute('namaPasien'), this.getAttribute('idPasien'), this.getAttribute('requestId'));">Assign Kamar</a>
 					  <p th:case="1">Has Assigned</p>
+					  <p th:case="1">Has Released</p>
 					</div>
 				</td>
 			</tr>
