@@ -3,12 +3,14 @@ package com.apap.tugasAkhir.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.apap.tugasAkhir.model.KamarModel;
 import com.apap.tugasAkhir.model.RequestObatModel;
@@ -34,8 +36,8 @@ public class ApiController {
 	@Autowired
 	private KamarService kamarService;
 	
-	@Autowired
-	RestService restService;
+//	@Autowired
+//	private RestService restService;
 	
 	@PostMapping(value = "/daftar-ranap")
 	private String addRequestPasien(@RequestBody JsonNode req) {
@@ -45,16 +47,16 @@ public class ApiController {
 		newReq.setAssign(0);
 		newReq.setIdPasien(Long.parseLong(resultString));
 		requestPasienService.addRequestPasien(newReq);
-		PatienRestModel patienIdResponse = restService.getPasienById(Long.parseLong(resultString));
-		if (patienIdResponse.getStatus() == 200) {
-			System.out.println(patienIdResponse.getResult().getNama());
-			StatusModel status = new StatusModel();
-			status.setId((long)4);
-			status.setJenis("Mendaftar di Rawat Inap");
-			patienIdResponse.getResult().setStatusPasien(status);
-			String result = restService.postPasienStatus(patienIdResponse.getResult());
-			System.out.println(result);
-		}
+//		PatienRestModel patienIdResponse = restService.getPasienById(Long.parseLong(resultString));
+//		if (patienIdResponse.getStatus() == 200) {
+//			System.out.println(patienIdResponse.getResult().getNama());
+//			StatusModel status = new StatusModel();
+//			status.setId((long)4);
+//			status.setJenis("Mendaftar di Rawat Inap");
+//			patienIdResponse.getResult().setStatusPasien(status);
+//			String result = restService.postPasienStatus(patienIdResponse.getResult());
+//			System.out.println(result);
+//		}
 		String returnMessage = "{\"status\" : 200, \"message\" : \"success\"}";
 		return returnMessage;
 	}
