@@ -36,8 +36,16 @@ public class ApiController {
 	@Autowired
 	private KamarService kamarService;
 	
-//	@Autowired
-//	private RestService restService;
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Autowired
+	RestService restService;
+	
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
 	
 	@PostMapping(value = "/daftar-ranap")
 	private String addRequestPasien(@RequestBody JsonNode req) {
@@ -47,16 +55,16 @@ public class ApiController {
 		newReq.setAssign(0);
 		newReq.setIdPasien(Long.parseLong(resultString));
 		requestPasienService.addRequestPasien(newReq);
-//		PatienRestModel patienIdResponse = restService.getPasienById(Long.parseLong(resultString));
-//		if (patienIdResponse.getStatus() == 200) {
-//			System.out.println(patienIdResponse.getResult().getNama());
-//			StatusModel status = new StatusModel();
-//			status.setId((long)4);
-//			status.setJenis("Mendaftar di Rawat Inap");
-//			patienIdResponse.getResult().setStatusPasien(status);
-//			String result = restService.postPasienStatus(patienIdResponse.getResult());
-//			System.out.println(result);
-//		}
+		PatienRestModel patienIdResponse = restService.getPasienById(Long.parseLong(resultString));
+		if (patienIdResponse.getStatus() == 200) {
+			System.out.println(patienIdResponse.getResult().getNama());
+			StatusModel status = new StatusModel();
+			status.setId((long)4);
+			status.setJenis("Mendaftar di Rawat Inap");
+			patienIdResponse.getResult().setStatusPasien(status);
+			String result = restService.postPasienStatus(patienIdResponse.getResult());
+			System.out.println(result);
+		}
 		String returnMessage = "{\"status\" : 200, \"message\" : \"success\"}";
 		return returnMessage;
 	}
