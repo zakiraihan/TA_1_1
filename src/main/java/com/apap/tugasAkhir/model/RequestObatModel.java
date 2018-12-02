@@ -95,4 +95,5 @@ public class RequestObatModel implements Serializable {
 		this.idPasien = idPasien;
 	}
 
+	
 }

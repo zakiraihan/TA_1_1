@@ -1,12 +1,13 @@
 package com.apap.tugasAkhir.controller;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner.Mode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,21 +15,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.apap.tugasAkhir.model.JadwalJagaModel;
 import com.apap.tugasAkhir.model.KamarModel;
 import com.apap.tugasAkhir.model.PaviliunModel;
-import com.apap.tugasAkhir.model.RequestPasienModel;
 import com.apap.tugasAkhir.model.PemeriksaanModel;
+import com.apap.tugasAkhir.model.RequestObatModel;
+import com.apap.tugasAkhir.model.RequestPasienModel;
 import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
+import com.apap.tugasAkhir.rest.DokterModel;
+import com.apap.tugasAkhir.rest.DokterRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.StatusModel;
@@ -36,6 +40,7 @@ import com.apap.tugasAkhir.service.JadwalJagaService;
 import com.apap.tugasAkhir.service.KamarService;
 import com.apap.tugasAkhir.service.PaviliunService;
 import com.apap.tugasAkhir.service.PemeriksaanService;
+import com.apap.tugasAkhir.service.RequestObatService;
 import com.apap.tugasAkhir.service.RequestPasienService;
 import com.apap.tugasAkhir.service.RestService;
 
@@ -43,6 +48,9 @@ import com.apap.tugasAkhir.service.RestService;
 public class MainController {
 	@Autowired
 	private KamarService kamarService;
+	
+	@Autowired
+	private RequestObatService obatService;
 	
 	@Autowired
 	RestTemplate restTemplate;
@@ -173,15 +181,80 @@ public class MainController {
 	 */
 	@GetMapping("/penanganan/{idPasien}")
 	private String viewPenangananPasien(@PathVariable("idPasien") long idPasien, Model model) {
+		//ambil pemeriksaan yang pasiennya idPasien
+		PatienRestModel pasien = restService.getPasienById(idPasien);
+		List<PemeriksaanModel> pemeriksaanPasiens = pemeriksaanService.getPemeriksaanByIdPasien(idPasien);
+		ArrayList<DokterModel> dokters = new ArrayList<DokterModel>();
+		//reqObat per pemeriksaan
+		ArrayList<List<RequestObatModel>> reqObats = new ArrayList<List<RequestObatModel>>();
+		
+		for (PemeriksaanModel a: pemeriksaanPasiens) {
+			DokterModel dokter = restService.getDokterById(a.getIdDokter()).getResult();
+			List<RequestObatModel> reqObatTemp = obatService.findAll();
+			List<RequestObatModel> reqObat = new ArrayList<RequestObatModel>();
+			for (RequestObatModel x: reqObatTemp) {
+				if (x.getPemeriksaan().getId().equals(a.getId())) {
+					reqObat.add(x);
+				}
+			}
+			dokters.add(dokter);
+			reqObats.add(reqObat);
+		}
+		System.out.println(reqObats);
+		model.addAttribute("count", pemeriksaanPasiens.size());
+		model.addAttribute("pasien", pasien.getResult());
+		model.addAttribute("dokters", dokters);
+		model.addAttribute("pemeriksaans", pemeriksaanPasiens);
+		model.addAttribute("obats", reqObats);
 		return "view-penanganan-pasien";
 	}
 	
 	/**
 	 * TODO: Update penanganan yang diterima oleh pasien
 	 */
-	@PostMapping("/penanganan/{idPasien}/{idPenanganan}")
-	private String updatePenangananPasien(@PathVariable("idPasien") long idPasien, Model model) {
+	@GetMapping("/penanganan/{idPasien}/{idPenanganan}")
+	private String updatePenangananPasien(@PathVariable("idPenanganan") long idPasien, Model model) {
+		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPasien); 
+		PatienRestModel pasien = restService.getPasienById(idPasien);
+		DokterRestModel dokter = restService.getDokterById(pemeriksaanPasien.getIdDokter());
+		List<DokterModel> dokters = restService.getAllDokter().getResult();
+		//Mengambil req obat 
+		ArrayList<List<RequestObatModel>> reqObats = new ArrayList<List<RequestObatModel>>();
+		List<RequestObatModel> reqObatTemp = obatService.findAll();
+		List<RequestObatModel> reqObat = new ArrayList<RequestObatModel>();
+		for (RequestObatModel x: reqObatTemp) {
+			if (x.getPemeriksaan().getId().equals(pemeriksaanPasien.getId())) {
+				reqObat.add(x);
+			}
+		}
+		
+		model.addAttribute("pasien", pasien.getResult());
+		model.addAttribute("dokter", dokter.getResult());
+		model.addAttribute("pemeriksaan", pemeriksaanPasien);
+		model.addAttribute("obat", reqObat);
+		model.addAttribute("dokters", dokters);
 		return "update-penanganan-pasien";
+	}
+	
+	@PostMapping("/penanganan/{idPasien}/{idPenanganan}")
+	private String updatePenangananPasienPost(
+			@PathVariable("idPasien") long idPasien,
+			@RequestParam("id") long idPenanganan,
+			@RequestParam("dokter") long idDokter,
+			@RequestParam("deskripsi") String deskripsi,
+			@RequestParam("waktu") String waktu,
+			Model model
+			) {
+		String[] waktuSplit = waktu.split("T");
+		System.out.println(waktu);
+		//1990 format new timestamp
+		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,Integer.parseInt(waktuSplit[1].split(":")[2])-1,0);
+		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPenanganan); 
+		pemeriksaanPasien.setIdDokter(idDokter);
+		pemeriksaanPasien.setPemeriksaan(deskripsi);
+		pemeriksaanPasien.setWaktu(dateTime);
+		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
+		return "redirect:/penanganan/"+idPasien;
 	}
 	
 	@GetMapping("/kamar/insert")
