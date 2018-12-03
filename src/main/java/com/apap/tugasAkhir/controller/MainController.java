@@ -219,7 +219,6 @@ public class MainController {
 		DokterRestModel dokter = restService.getDokterById(pemeriksaanPasien.getIdDokter());
 		List<DokterModel> dokters = restService.getAllDokter().getResult();
 		//Mengambil req obat 
-		ArrayList<List<RequestObatModel>> reqObats = new ArrayList<List<RequestObatModel>>();
 		List<RequestObatModel> reqObatTemp = obatService.findAll();
 		List<RequestObatModel> reqObat = new ArrayList<RequestObatModel>();
 		for (RequestObatModel x: reqObatTemp) {
@@ -227,7 +226,7 @@ public class MainController {
 				reqObat.add(x);
 			}
 		}
-		
+		System.out.println(reqObat);
 		model.addAttribute("pasien", pasien.getResult());
 		model.addAttribute("dokter", dokter.getResult());
 		model.addAttribute("pemeriksaan", pemeriksaanPasien);

@@ -12,46 +12,54 @@
 <nav th:replace="fragments/fragment :: navbar"></nav>	
 	<!-- <h3 style="margin-top:20px" th:text="'Penanganan Pasien '+${pasien.nama}"></h3> -->
 	<div class="col-md">
-	<br>
-                <div class="card">
-                    <div class="card-header">
-                       <h5 th:text="'Update Penanganan Pasien '+${pasien.nama}"></h5>
-                    </div>
-                    <div class="card-body">
-   					  <div class="container">
-					      <form th:action="''" method="POST">
-					       <input type="hidden" name="id" th:value="${pemeriksaan.id}"/>
-					         <div class="form-group">
-						          <label for="nama">Nama Pasien</label>
-						          <input type="text" disabled class="form-control" name="nama" th:value="${pasien.nama}" aria-describedby="emailHelp" placeholder="">
-						      </div>
-						      <div class="form-group">
-					          	<label for="dokter">Dokter</label>
-					          	<br>
-					          	<select name="dokter">
-					          		<div th:each="dokterPilih : ${dokters}" >
-					          			<!-- kondisi untuk milih dokter.id di database all dokter -->
-					          			<option th:if="${dokter.id==dokterPilih.id}" selected th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
-					          			<option th:unless="${dokter.id==dokterPilih.id}" th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
-					          		</div>
-					          	</select>
-					         </div>
-					         <div class="form-group">
-					          	<label for="waktu">Waktu</label>
-					          	<input type="datetime-local" class="form-control" name="waktu" th:value="${#strings.replace(pemeriksaan.waktu,' ','T')}" aria-describedby="emailHelp" required="required" placeholder="">
-					         </div>
-					         <div class="form-group">
-					          	<label for="deskripsi">Deskripsi Penanganan</label>
-					          	<input type="text" class="form-control" name="deskripsi" th:value="${pemeriksaan.pemeriksaan}" aria-describedby="emailHelp" required="required" placeholder="">
-	        				 </div>
-      				        <button value="submit" class="btn btn-primary">Simpan</button> 
-	        				 
-	        			</form>
-	        
-          			</div>
-          		</div>
-          	</div>
-          </div>
+		<br>
+            <div class="card">
+                <div class="card-header">
+                   <h5 th:text="'Update Penanganan Pasien '+${pasien.nama}"></h5>
+                </div>
+                <div class="card-body">
+				  <div class="container">
+	      <form th:action="''" method="POST">
+	       <input type="hidden" name="id" th:value="${pemeriksaan.id}"/>
+	         <div class="form-group">
+		          <label for="nama">Nama Pasien</label>
+		          <input type="text" disabled class="form-control" name="nama" th:value="${pasien.nama}" aria-describedby="emailHelp" placeholder="">
+		      </div>
+		      <div class="form-group">
+	          	<label for="dokter">Dokter</label>
+	          	<br>
+	          	<select name="dokter">
+	          		<div th:each="dokterPilih : ${dokters}" >
+	          			<!-- kondisi untuk milih dokter.id di database all dokter -->
+	          			<option th:if="${dokter.id==dokterPilih.id}" selected th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
+	          			<option th:unless="${dokter.id==dokterPilih.id}" th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
+	          		</div>
+	          	</select>
+	         </div>
+	         <div class="form-group">
+	          	<label for="waktu">Waktu</label>
+	          	<input type="datetime-local" class="form-control" name="waktu" th:value="${#strings.replace(pemeriksaan.waktu,' ','T')}" aria-describedby="emailHelp" required="required" placeholder="">
+	         </div>
+	         <div class="form-group">
+	          	<label for="deskripsi">Deskripsi Penanganan</label>
+	          	<input type="text" class="form-control" name="deskripsi" th:value="${pemeriksaan.pemeriksaan}" aria-describedby="emailHelp" required="required" placeholder="">
+     		 </div>
+     		 <ul class="list-group">
+	               		<li th:each="requestObat : ${obat}">
+	                   	<p th:text="${requestObat.namaObat}"></p>
+	               		</li>
+	        </ul>
+				
+   		 		 
+	       	 <button value="submit" class="btn btn-primary">Simpan</button> 
+     				 
+			</form>
+			
+	
+				</div>
+	 		</div>
+	 	</div>
+	</div>
           
 	
 </body>
