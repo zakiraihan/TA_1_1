@@ -213,7 +213,12 @@ public class MainController {
 	 * TODO: Update penanganan yang diterima oleh pasien
 	 */
 	@GetMapping("/penanganan/{idPasien}/{idPenanganan}")
-	private String updatePenangananPasien(@PathVariable("idPenanganan") long idPasien, Model model) {
+	//Masih salah nih mestinya nge get id Pasien bukan id Penanganan
+	private String updatePenangananPasien(
+			@PathVariable("idPenanganan") long idPenanganan, 
+			@PathVariable("idPasien") long idPasien, 
+			Model model) {
+		
 		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPasien); 
 		PatienRestModel pasien = restService.getPasienById(idPasien);
 		DokterRestModel dokter = restService.getDokterById(pemeriksaanPasien.getIdDokter());
