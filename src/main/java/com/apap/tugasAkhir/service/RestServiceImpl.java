@@ -74,6 +74,7 @@ public class RestServiceImpl implements RestService{
 	public String postPasienStatus(PatienModel pasien) {
 		RestTemplate template = new RestTemplate();
 	     HttpEntity<PatienModel> requestEntity= new HttpEntity<PatienModel>(pasien);
+	     System.out.println(requestEntity.toString());
 	    String response = "";
 	     try{
 	        ResponseEntity<String> responseEntity = template.exchange(Setting.postPasienStatusUrl, HttpMethod.POST, requestEntity,  String.class);

@@ -35,10 +35,15 @@
 						</tr>
 						<tr>
 							<td height="50">Status:</td>
-							<div th:switch="${kamar.status}">
+							<span th:if="${kamar.paviliunKamar.status == 1}">
+								<div th:switch="${kamar.status}">
 								  <td th:case="1">Kamar Terisi</td>
 								  <td th:case="0">Tersedia</td>
-							</div>
+								</div>
+							</span>
+							<span th:unless="${kamar.paviliunKamar.status == 1}">
+								<td>Kamar Rusak</td>					
+							</span>
 						</tr>
 					</table>
 					<div class="row">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 19 Nov 2018 pada 11.36
+-- Waktu pembuatan: 05 Des 2018 pada 17.30
 -- Versi server: 10.1.36-MariaDB
 -- Versi PHP: 7.2.10
 
@@ -25,17 +25,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `dokter`
---
-
-CREATE TABLE `dokter` (
-  `id` bigint(20) NOT NULL,
-  `nama` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Struktur dari tabel `jadwal_jaga`
 --
 
@@ -52,11 +41,7 @@ CREATE TABLE `jadwal_jaga` (
 --
 
 INSERT INTO `jadwal_jaga` (`id`, `daftar_hari_jaga`, `id_dokter`, `status_dokter`, `id_paviliun`) VALUES
-(1, 'Senin', 1, 'Available mungkin?', 1),
-(2, 'Senin', 2, 'Available mungkin?', 2),
-(3, 'Selasa', 3, 'Available mungkin?', 3),
-(4, 'Rabu', 4, 'Available mungkin?', 4),
-(5, 'Kamis', 5, 'Available mungkin?', 5);
+(1, '2018-12-08', 103, 'Bisa Full day', 1);
 
 -- --------------------------------------------------------
 
@@ -67,7 +52,6 @@ INSERT INTO `jadwal_jaga` (`id`, `daftar_hari_jaga`, `id_dokter`, `status_dokter
 CREATE TABLE `kamar` (
   `id` bigint(20) NOT NULL,
   `id_pasien` bigint(20) NOT NULL,
-  `nomor_kamar` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   `id_paviliun` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -76,33 +60,22 @@ CREATE TABLE `kamar` (
 -- Dumping data untuk tabel `kamar`
 --
 
-INSERT INTO `kamar` (`id`, `id_pasien`, `nomor_kamar`, `status`, `id_paviliun`) VALUES
-(1, 3001, 1, 1, 1),
-(2, 3003, 2, 1, 1),
-(3, 3006, 3, 1, 1),
-(4, 3009, 1, 1, 4),
-(5, 3012, 2, 1, 4),
-(6, 3015, 3, 1, 4),
-(7, 3018, 1, 1, 5),
-(8, 3021, 2, 1, 5),
-(9, 3024, 3, 1, 5),
-(10, 0, 1, 0, 2),
-(11, 0, 2, 0, 2),
-(12, 0, 3, 0, 2),
-(13, 0, 1, 0, 3),
-(14, 0, 2, 0, 3),
-(15, 0, 3, 0, 3);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `pasien`
---
-
-CREATE TABLE `pasien` (
-  `id` bigint(20) NOT NULL,
-  `nama` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `kamar` (`id`, `id_pasien`, `status`, `id_paviliun`) VALUES
+(10, 0, 0, 2),
+(11, 0, 0, 2),
+(12, 0, 0, 2),
+(13, 0, 0, 3),
+(14, 0, 0, 3),
+(15, 0, 0, 3),
+(23, 3799, 1, 1),
+(24, 0, 0, 1),
+(25, 0, 0, 1),
+(26, 97, 1, 4),
+(27, 0, 0, 4),
+(28, 0, 0, 4),
+(29, 0, 0, 5),
+(30, 0, 0, 5),
+(31, 0, 0, 5);
 
 -- --------------------------------------------------------
 
@@ -142,18 +115,6 @@ CREATE TABLE `pemeriksaan` (
   `waktu` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data untuk tabel `pemeriksaan`
---
-
-INSERT INTO `pemeriksaan` (`id`, `id_dokter`, `id_pasien`, `pemeriksaan`, `waktu`) VALUES
-(1, 1, 1, 'Memeriksa', '2018-11-30 02:22:39'),
-(2, 1, 3001, 'Memeriksa', '2018-11-30 02:22:39'),
-(3, 2, 3003, 'Memeriksa', '2018-11-30 02:22:39'),
-(4, 3, 3006, 'Memeriksa', '2018-11-30 02:22:39'),
-(5, 4, 3009, 'Memeriksa', '2018-11-30 02:22:39'),
-(6, 5, 3012, 'Memeriksa', '2018-11-30 02:22:39');
-
 -- --------------------------------------------------------
 
 --
@@ -167,17 +128,6 @@ CREATE TABLE `request_obat` (
   `nama_obat` varchar(255) NOT NULL,
   `id_pemeriksaan` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `request_obat`
---
-
-INSERT INTO `request_obat` (`id`, `id_pasien`, `jumlah`, `nama_obat`, `id_pemeriksaan`) VALUES
-(1, 3001, 2, 'Parasetamol', 2),
-(2, 3003, 2, 'Parasetamol', 3),
-(3, 3006, 2, 'Parasetamol', 4),
-(4, 3009, 2, 'Parasetamol', 5),
-(5, 3012, 2, 'Parasetamol', 6);
 
 -- --------------------------------------------------------
 
@@ -196,19 +146,11 @@ CREATE TABLE `request_pasien` (
 --
 
 INSERT INTO `request_pasien` (`id`, `assign`, `id_pasien`) VALUES
-(1, 0, 20),
-(2, 0, 21),
-(3, 0, 22),
-(4, 0, 23),
-(5, 0, 24),
-(6, 0, 25),
-(7, 0, 26),
-(8, 1, 27),
-(9, 1, 28),
-(10, 1, 29),
-(11, 1, 30),
-(12, 1, 31),
-(13, 1, 32);
+(1, 1, 3799),
+(2, 0, 91),
+(3, 1, 97),
+(4, 0, 85),
+(5, 0, 103);
 
 -- --------------------------------------------------------
 
@@ -236,12 +178,6 @@ INSERT INTO `user_role` (`id`, `password`, `role`, `username`) VALUES
 --
 
 --
--- Indeks untuk tabel `dokter`
---
-ALTER TABLE `dokter`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks untuk tabel `jadwal_jaga`
 --
 ALTER TABLE `jadwal_jaga`
@@ -254,12 +190,6 @@ ALTER TABLE `jadwal_jaga`
 ALTER TABLE `kamar`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FKkjr0f0qqrt72u0fnuxxq4nwnl` (`id_paviliun`);
-
---
--- Indeks untuk tabel `pasien`
---
-ALTER TABLE `pasien`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `paviliun`
@@ -298,28 +228,16 @@ ALTER TABLE `user_role`
 --
 
 --
--- AUTO_INCREMENT untuk tabel `dokter`
---
-ALTER TABLE `dokter`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT untuk tabel `jadwal_jaga`
 --
 ALTER TABLE `jadwal_jaga`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `kamar`
 --
 ALTER TABLE `kamar`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT untuk tabel `pasien`
---
-ALTER TABLE `pasien`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT untuk tabel `paviliun`
@@ -331,19 +249,19 @@ ALTER TABLE `paviliun`
 -- AUTO_INCREMENT untuk tabel `pemeriksaan`
 --
 ALTER TABLE `pemeriksaan`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `request_obat`
 --
 ALTER TABLE `request_obat`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `request_pasien`
 --
 ALTER TABLE `request_pasien`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_role`

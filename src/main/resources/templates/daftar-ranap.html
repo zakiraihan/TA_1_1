@@ -12,27 +12,32 @@
 	<nav th:replace="fragments/fragment :: navbar"></nav>
 	<h3 style="margin-top:20px">List Semua Pasien</h3>
 	<br>
-	<table id="table">
-		<thead>
-			<th>Nama Pasien</th>
-			<th>Status Pasien</th>
-			<th>Nomor Kamar</th>
-			<th>Keluarkan Pasien</th>
-		</thead>
-		<span th:each="kamar, iterator : ${allKamar}">
-			<tr>
-				<td th:text="${allPasien.get(kamar.idPasien).nama}" ></td>
-				<td th:text="${allPasien.get(kamar.idPasien).statusPasien.jenis}"></td>
-				<td th:text="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}"></td>
-				<td>
-					<form th:action="@{/daftar-ranap/pulang/{idKamar}(idKamar=${kamar.id})}" id="assignPasien" method="POST">
-						<input class="form-control" type="hidden" id="idPasien" required="required" name="idPasien" th:value="${allPasien.get(kamar.idPasien).id}"/>
-						<button class="btn btn-primary" type="submit">Keluarkan Pasien</button>
-					</form>
-				</td>
-			</tr>
-		</span>
-	</table>
+	<span th:if="${listPasienToggle}==1">
+		<table id="table">
+			<thead>
+				<th>Nama Pasien</th>
+				<th>Status Pasien</th>
+				<th>Nomor Kamar</th>
+				<th>Keluarkan Pasien</th>
+			</thead>
+			<span th:each="kamar, iterator : ${allKamar}">
+				<tr>
+					<td th:text="${allPasien.get(kamar.idPasien).nama}" ></td>
+					<td th:text="${allPasien.get(kamar.idPasien).statusPasien.jenis}"></td>
+					<td th:text="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}"></td>
+					<td>
+						<form th:action="@{/daftar-ranap/pulang/{idKamar}(idKamar=${kamar.id})}" id="assignPasien" method="POST">
+							<input class="form-control" type="hidden" id="idPasien" required="required" name="idPasien" th:value="${allPasien.get(kamar.idPasien).id}"/>
+							<button class="btn btn-primary" type="submit">Keluarkan Pasien</button>
+						</form>
+					</td>
+				</tr>
+			</span>
+		</table>
+	</span>
+	<span th:if="${listPasienToggle}==0">
+		<h3>Maaf Belum Ada Pasien Di Unit Rawat Inap</h3>
+	</span>
 </body>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
