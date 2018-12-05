@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Kamar')"></title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: fonts"></object>
+</head>
+
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class="row"  style="margin-left: 20px; margin-top:25px">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header">
+					Detail Kamar
+				</div>
+				<div class="card-body">
+					<form th:action="@{/kamar/{idKamar} (idKamar = ${kamar.id})}" method="POST">
+						<div>
+							<label>Nomor Kamar:</label>
+		            		<input type="text" id="nomorKamar" name="nomorKamar" class="form-control" th:value="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}" disabled>
+		            	</div>
+		            	<div>
+		            		<label>Nama Pasien:</label>
+		            		<div th:if="${kamar.status} == 1">
+		            			<input type="text" name="idPasien" class="form-control" th:value="${pasien.nama}" disabled>
+							</div>
+							<div th:if="${kamar.status} == 0">
+		            			<input type="text" name="idPasien" class="form-control" th:value="'Tidak Ada Pasien'" disabled>
+							</div>
+		            	</div>
+		            	<div>
+		            		<label>Paviliun :</label>
+		               		<select class="form-control" name="paviliunKamar" id="paviliun">
+							  <option th:each="paviliun : ${listOfPaviliun}" 
+							          th:value="${paviliun.id}" 
+							          th:text="${paviliun.namaPaviliun}" th:selected="${paviliun.id} == ${kamar.paviliunKamar.id}"></option>
+							</select>
+		            	</div>
+		            	<div>
+		            		<label>Status :</label>
+		            		<span th:if="${kamar.paviliunKamar.status == 1}">
+								<div th:switch="${kamar.status}">
+									<input th:case="1" type="text" name="status" class="form-control" th:value="'Kamar Terisi'" disabled/>
+									<input th:case="0" type="text" name="status" class="form-control" th:value="'Tersedia'" disabled/>
+								</div>
+							</span>
+							<span th:unless="${kamar.paviliunKamar.status == 1}">
+								<input type="text" name="status" class="form-control" th:value="'Kamar Rusak'" disabled/>			
+							</span>
+		            	</div>
+				      	<div class="card-body">
+		                	<input type="submit" name="submit" class="btn btn-primary"  value="Update">
+		            	</div>
+            		</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+	$('#paviliun').change(
+     function() {
+    	 $('#nomorKamar').val($('#paviliun').children(':selected').text() + " - " + [[${kamar.id}]]);
+     });
+</script>
+
+</html>

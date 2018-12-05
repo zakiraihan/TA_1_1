@@ -309,12 +309,30 @@ public class MainController {
 		return "view-kamar";
 	}
 	
+	@GetMapping("/kamar/update/{idKamar}")
+	private String updateFormKamar(@PathVariable ("idKamar") long idKamar, Model model) {
+		KamarModel kamar = kamarService.getKamarById(idKamar).get();
+		model.addAttribute("kamar", kamar);
+		PatienRestModel patienIdResponse = restService.getPasienById(kamar.getIdPasien());
+		if (patienIdResponse.getStatus() == 200) {
+			System.out.println(patienIdResponse.getResult().getNama());
+			model.addAttribute("pasien", patienIdResponse.getResult());
+			List<PaviliunModel> listOfPaviliun = paviliunService.getActivePaviliun();
+			model.addAttribute("listOfPaviliun",listOfPaviliun);
+		}
+		return "update-form-kamar";
+	}
+	
 	/**
 	 * TODO: Update data suatu kamar
 	 */
 	@PostMapping("/kamar/{idKamar}")
-	private String updateKamar(@PathVariable ("idKamar") long idKamar, Model model) {
-		return "view-all-kamar";
+	private RedirectView updateKamar(@PathVariable ("idKamar") long idKamar, Model model, HttpServletRequest req) {
+		Long idPaviliun=Long.valueOf(req.getParameter("paviliunKamar"));
+		KamarModel kamar = kamarService.getKamarById(idKamar).get();
+		kamar.setPaviliunKamar(paviliunService.findPaviliundById(idPaviliun).get());
+		kamarService.addKamar(kamar);
+		return new RedirectView("/kamar");
 	}
 	
 	/**
