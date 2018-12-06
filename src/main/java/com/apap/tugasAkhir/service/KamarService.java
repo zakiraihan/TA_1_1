@@ -18,4 +18,6 @@ public interface KamarService {
 
 	List<KamarModel> getActiveKamar();
 
+	List<KamarModel> getInactiveKamar();
+
 }

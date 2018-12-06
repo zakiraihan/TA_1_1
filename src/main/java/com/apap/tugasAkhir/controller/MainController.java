@@ -303,7 +303,6 @@ public class MainController {
 		model.addAttribute("kamar", kamar);
 		PatienRestModel patienIdResponse = restService.getPasienById(kamar.getIdPasien());
 		if (patienIdResponse.getStatus() == 200) {
-			System.out.println(patienIdResponse.getResult().getNama());
 			model.addAttribute("pasien", patienIdResponse.getResult());
 		}
 		return "view-kamar";
@@ -313,12 +312,26 @@ public class MainController {
 	private String updateFormKamar(@PathVariable ("idKamar") long idKamar, Model model) {
 		KamarModel kamar = kamarService.getKamarById(idKamar).get();
 		model.addAttribute("kamar", kamar);
-		PatienRestModel patienIdResponse = restService.getPasienById(kamar.getIdPasien());
-		if (patienIdResponse.getStatus() == 200) {
-			System.out.println(patienIdResponse.getResult().getNama());
-			model.addAttribute("pasien", patienIdResponse.getResult());
-			List<PaviliunModel> listOfPaviliun = paviliunService.getActivePaviliun();
-			model.addAttribute("listOfPaviliun",listOfPaviliun);
+		
+		List<RequestPasienModel> listOfPending =requestPasienService.getPendingPasien();
+		model.addAttribute("listOfPending", listOfPending);
+		
+		String[] listOfIdPasien = new String[listOfPending.size()];
+		for (int i = 0 ; i< listOfIdPasien.length ; i++) {
+			listOfIdPasien[i] = Long.toString(listOfPending.get(i).getIdPasien());
+		}
+		
+		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+		model.addAttribute("allPendingPasien", allPasienReq.getResult());
+		
+		List<PaviliunModel> listOfPaviliun = paviliunService.getActivePaviliun();
+		model.addAttribute("listOfPaviliun",listOfPaviliun);
+		
+		if (kamar.getIdPasien() != 0) {
+			PatienRestModel patienIdResponse = restService.getPasienById(kamar.getIdPasien());
+			if (patienIdResponse.getStatus() == 200) {
+				model.addAttribute("pasien", patienIdResponse.getResult());		
+			}
 		}
 		return "update-form-kamar";
 	}
@@ -329,8 +342,50 @@ public class MainController {
 	@PostMapping("/kamar/{idKamar}")
 	private RedirectView updateKamar(@PathVariable ("idKamar") long idKamar, Model model, HttpServletRequest req) {
 		Long idPaviliun=Long.valueOf(req.getParameter("paviliunKamar"));
+		Long idPasienAwal=Long.valueOf(req.getParameter("pasienAwal"));
+		Long idPasienBaru=Long.valueOf(req.getParameter("idPasien"));
+		Integer status=Integer.valueOf(req.getParameter("status"));
+		
 		KamarModel kamar = kamarService.getKamarById(idKamar).get();
+		
 		kamar.setPaviliunKamar(paviliunService.findPaviliundById(idPaviliun).get());
+		if (idPasienAwal != idPasienBaru) {
+			if (idPasienAwal != 0) {
+				RequestPasienModel requestPasien = requestPasienService.getReqByIdPasien(idPasienAwal);
+				requestPasien.setAssign(2);
+				kamar.setIdPasien(idPasienBaru);
+				PatienRestModel patienIdResponse = restService.getPasienById(idPasienAwal);
+				if (patienIdResponse.getStatus() == 200) {
+					System.out.println(patienIdResponse.getResult().getNama());
+					StatusModel statusPasien = new StatusModel();
+					statusPasien.setId((long)6);
+					statusPasien.setJenis("Selesai di Rawat Inap");
+					patienIdResponse.getResult().setStatusPasien(statusPasien);
+					String result = restService.postPasienStatus(patienIdResponse.getResult());
+					System.out.println(result);
+				}
+			}
+			if (idPasienBaru != 0) {
+				RequestPasienModel requestPasienBaru = requestPasienService.getReqByIdPasien(idPasienBaru);
+				requestPasienBaru.setAssign(1);
+				PatienRestModel patienIdResponseBaru = restService.getPasienById(idPasienBaru);
+				if (patienIdResponseBaru.getStatus() == 200) {
+					System.out.println(patienIdResponseBaru.getResult().getNama());
+					StatusModel statusPasien = new StatusModel();
+					statusPasien.setId((long)5);
+					statusPasien.setJenis("Berada di Rawat Inap");
+					patienIdResponseBaru.getResult().setStatusPasien(statusPasien);
+					String result = restService.postPasienStatus(patienIdResponseBaru.getResult());
+					System.out.println(result);
+				}
+				kamar.setIdPasien(idPasienBaru);
+				kamar.setStatus(1);
+			}
+			if (idPasienBaru == 0) {
+				kamar.setStatus(0);
+				kamar.setIdPasien(idPasienBaru);
+			}
+		}
 		kamarService.addKamar(kamar);
 		return new RedirectView("/kamar");
 	}

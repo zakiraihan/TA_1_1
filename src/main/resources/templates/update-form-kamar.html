@@ -18,18 +18,21 @@
 				</div>
 				<div class="card-body">
 					<form th:action="@{/kamar/{idKamar} (idKamar = ${kamar.id})}" method="POST">
+						<input th:if="${kamar.status} == 1" id="pasienAwal" type="hidden" name="pasienAwal" class="form-control" th:value="${pasien.id}"/>
+						<input th:if="${kamar.status} == 0" id="pasienAwal" type="hidden" name="pasienAwal" class="form-control" th:value="0"/>
 						<div>
 							<label>Nomor Kamar:</label>
 		            		<input type="text" id="nomorKamar" name="nomorKamar" class="form-control" th:value="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}" disabled>
 		            	</div>
 		            	<div>
 		            		<label>Nama Pasien:</label>
-		            		<div th:if="${kamar.status} == 1">
-		            			<input type="text" name="idPasien" class="form-control" th:value="${pasien.nama}" disabled>
-							</div>
-							<div th:if="${kamar.status} == 0">
-		            			<input type="text" name="idPasien" class="form-control" th:value="'Tidak Ada Pasien'" disabled>
-							</div>
+	            			<select class="form-control" name="idPasien" id="pasien">
+	            				<option th:text="'Kosong'" th:value="0"></option>
+	            				<option th:if="${kamar.status} == 1" th:text="${pasien.nama}" th:value="${pasien.id}" th:selected="true"></option>
+								<option th:each="pasienPending : ${listOfPending}" 
+								        th:value="${pasienPending.idPasien}" 
+								        th:text="${allPendingPasien.get(pasienPending.idPasien).nama}"></option>
+							</select>
 		            	</div>
 		            	<div>
 		            		<label>Paviliun :</label>
@@ -42,9 +45,13 @@
 		            	<div>
 		            		<label>Status :</label>
 		            		<span th:if="${kamar.paviliunKamar.status == 1}">
-								<div th:switch="${kamar.status}">
-									<input th:case="1" type="text" name="status" class="form-control" th:value="'Kamar Terisi'" disabled/>
-									<input th:case="0" type="text" name="status" class="form-control" th:value="'Tersedia'" disabled/>
+								<div th:if="${kamar.status} == 1">
+									<input id="statusText" type="text" name="statusText" class="form-control" th:value="'Kamar Terisi'" disabled/>
+									<input id="status" type="hidden" name="status" class="form-control" th:value="1"/>
+								</div>
+								<div th:if="${kamar.status} == 0">
+									<input id="statusText" type="text" name="statusText" class="form-control" th:value="'Tersedia'" disabled/>
+									<input id="status" type="hidden" name="status" class="form-control" th:value="0"/>
 								</div>
 							</span>
 							<span th:unless="${kamar.paviliunKamar.status == 1}">
@@ -65,6 +72,15 @@
 	$('#paviliun').change(
      function() {
     	 $('#nomorKamar').val($('#paviliun').children(':selected').text() + " - " + [[${kamar.id}]]);
+     });
+	$('#pasien').change(
+     function() {
+    	 if  ($('#pasien').val() == 0){
+    		 $('#statusText').val("Tersedia");
+    	 }
+    	 else {
+    		 $('#statusText').val("Kamar Terisi");
+    	 }
      });
 </script>
 
