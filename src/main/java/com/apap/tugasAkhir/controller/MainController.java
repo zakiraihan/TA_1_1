@@ -70,11 +70,6 @@ public class MainController {
 	@Autowired
 	private PemeriksaanService pemeriksaanService;
 	
-	@Bean
-	public RestTemplate RestTemplate() {
-		return new RestTemplate();
-	}
-	
 	@GetMapping("/login")
 	private String login() {
 		return "login";
@@ -226,19 +221,12 @@ public class MainController {
 			@PathVariable("idPasien") long idPasien, 
 			Model model) {
 		
-		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPasien); 
+		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPenanganan); 
 		PatienRestModel pasien = restService.getPasienById(idPasien);
 		DokterRestModel dokter = restService.getDokterById(pemeriksaanPasien.getIdDokter());
 		List<DokterModel> dokters = restService.getAllDokter().getResult();
 		//Mengambil req obat 
-		List<RequestObatModel> reqObatTemp = obatService.findAll();
-		List<RequestObatModel> reqObat = new ArrayList<RequestObatModel>();
-		for (RequestObatModel x: reqObatTemp) {
-			if (x.getPemeriksaan().getId().equals(pemeriksaanPasien.getId())) {
-				reqObat.add(x);
-			}
-		}
-		System.out.println(reqObat);
+		List<RequestObatModel> reqObat = pemeriksaanPasien.getListObat();
 		model.addAttribute("pasien", pasien.getResult());
 		model.addAttribute("dokter", dokter.getResult());
 		model.addAttribute("pemeriksaan", pemeriksaanPasien);
@@ -258,8 +246,9 @@ public class MainController {
 			) {
 		String[] waktuSplit = waktu.split("T");
 		System.out.println(waktu);
+		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[2]));
 		//1990 format new timestamp
-		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,Integer.parseInt(waktuSplit[1].split(":")[2])-1,0);
+		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,(int)Double.parseDouble(waktuSplit[1].split(":")[2])-1,0);
 		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPenanganan); 
 		pemeriksaanPasien.setIdDokter(idDokter);
 		pemeriksaanPasien.setPemeriksaan(deskripsi);
