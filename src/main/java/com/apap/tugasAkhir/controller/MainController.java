@@ -1,5 +1,6 @@
 package com.apap.tugasAkhir.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.Banner.Mode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -294,7 +296,7 @@ public class MainController {
 		jadwalJagaService.addJadwalJaga(jadwalJaga);
 		return new RedirectView("/jadwal-jaga");
 	}
-	
+
 	/**
 	 * TODO: Filter list dokter yang paling available dari jadwal rawat jalan
 	 */
