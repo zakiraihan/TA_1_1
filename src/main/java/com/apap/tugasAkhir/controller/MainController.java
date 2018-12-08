@@ -31,8 +31,6 @@ import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.DokterModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
-import com.apap.tugasAkhir.rest.KirimObatModel;
-import com.apap.tugasAkhir.rest.ObatRequestedModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.Setting;
@@ -550,18 +548,11 @@ public class MainController {
 	 * TODO: Request obat ke Farmasi IS
 	 */
     @PostMapping(value = "/obat/request/{requestObatId}")
-	private String postRequest(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
+	private RedirectView postRequestObat(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
 		String path = Setting.obatRequestUrl;
 		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
-		ObatRequestedModel obatRequested = new ObatRequestedModel();
-		obatRequested.setNama(requestObat.getNamaObat());
-		obatRequested.setJumlah(requestObat.getJumlah());
-		
-		KirimObatModel obatDikirim = new KirimObatModel();
-		obatDikirim.setObat(obatRequested);
-		obatDikirim.setIdPasien(requestObat.getIdPasien());
 		
 		//DealerDetail detail = restTemplate.postForObject(path,requestObat, RequestObatModel.class);
-		return "request-success";
+		return new RedirectView("/obat/request");
 	}
 }
