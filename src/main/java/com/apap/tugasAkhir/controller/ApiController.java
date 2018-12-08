@@ -116,26 +116,4 @@ public class ApiController {
 		sent += listOfId + "]}";
 		return sent;
 	}
-	
-    /**
-	 * TODO: Request obat ke Farmasi IS
-	 */
-	
-    @PostMapping(value = "/obat/request/{requestObatId}")
-	private String postRequest(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
-		String path = Setting.obatRequestUrl;
-		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
-		//DealerDetail detail = restTemplate.postForObject(path,requestObat, RequestObatModel.class);
-		return "request-success";
-	}
-	
-    /*
-    @GetMapping(value = "/full/{dealerId}")
-	private DealerDetail postStatus(@PathVariable ("dealerId") Long dealerId) throws Exception{
-		String path = Setting.dealerUrl + "/dealer";
-		DealerModel dealer = dealerService.getDealerDetailById(dealerId).get();
-		DealerDetail detail = restTemplate.postForObject(path,dealer, DealerDetail.class);
-		return detail;
-	}
-	*/
 }

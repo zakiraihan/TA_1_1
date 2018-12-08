@@ -8,14 +8,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,8 +31,11 @@ import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.DokterModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
+import com.apap.tugasAkhir.rest.KirimObatModel;
+import com.apap.tugasAkhir.rest.ObatRequestedModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
+import com.apap.tugasAkhir.rest.Setting;
 import com.apap.tugasAkhir.rest.StatusModel;
 import com.apap.tugasAkhir.service.JadwalJagaService;
 import com.apap.tugasAkhir.service.KamarService;
@@ -69,6 +70,9 @@ public class MainController {
 	
 	@Autowired
 	private PemeriksaanService pemeriksaanService;
+	
+	@Autowired
+	private RequestObatService requestObatService;
 	
 	@GetMapping("/login")
 	private String login() {
@@ -447,7 +451,7 @@ public class MainController {
 		jadwalJagaService.addJadwalJaga(jadwalJaga);
 		return new RedirectView("/jadwal-jaga");
 	}
-	
+
 	/**
 	 * TODO: Filter list dokter yang paling available dari jadwal rawat jalan
 	 */
@@ -465,22 +469,21 @@ public class MainController {
 		return "update-jadwal-jaga";
 	}
 	
-	@PutMapping(value = "/jadwal-jaga/update/{jadwalJagaId}")
-	private String updateJadwalJagaSubmit(
+	@PostMapping(value = "/jadwal-jaga/update/{jadwalJagaId}")
+	private RedirectView updateJadwalJagaSubmit(
 			@PathVariable(value = "jadwalJagaId") Long jadwalJagaId,
 			@RequestParam("statusDokter") String statusDokter,
 			@RequestParam("daftarHariJaga") String daftarHariJaga,
 			@RequestParam("idDokter") Long idDokter,
-			@RequestParam("paviliunJaga") PaviliunModel paviliunJaga){
+			@RequestParam("paviliunJaga") Long paviliunJaga){
 				JadwalJagaModel jadwalJaga = (JadwalJagaModel) jadwalJagaService.findById(jadwalJagaId).get();
-				if(jadwalJaga.equals(null)) {
-					return "Couldn't find yer schedule";
-				}
 				jadwalJaga.setStatusDokter(statusDokter);
 				jadwalJaga.setDaftarHariJaga(daftarHariJaga);
 				jadwalJaga.setIdDokter(idDokter);
-				jadwalJaga.setPaviliunJaga(paviliunJaga);
-				return "update success";
+				PaviliunModel paviliun = paviliunService.findPaviliundById(paviliunJaga).get();
+				jadwalJaga.setPaviliunJaga(paviliun);
+				jadwalJagaService.addJadwalJaga(jadwalJaga);
+				return new RedirectView("/jadwal-jaga");
 	}
 	
 	/**
@@ -519,5 +522,49 @@ public class MainController {
 		return "view-all-jadwal-jaga";
 	}
 	
+	/**
+	 * TODO: View request obat
+	 */
+	@GetMapping(value = "/obat/request")
+	private String viewAllRequestObat(Model model) {
+		List<RequestObatModel> allRequestObat = requestObatService.findAll();
+		
+		if (!allRequestObat.isEmpty()) {
+			model.addAttribute("allRequestObat", allRequestObat);
+			
+			String[] listOfIdPasien = new String[allRequestObat.size()];
+			for (int i = 0; i < listOfIdPasien.length; i++) {
+				listOfIdPasien[i] = Long.toString(allRequestObat.get(i).getIdPasien());
+			}
+			
+			PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+			model.addAttribute("allPasienReq", allPasienReq.getResult());
+			
+			model.addAttribute("listObatToggle", 1);
+		}
+		else {
+			model.addAttribute("listObatToggle", 0);
+		}
+		
+		return "view-all-request-obat";
+	}
 	
+	/**
+	 * TODO: Request obat ke Farmasi IS
+	 */
+    @PostMapping(value = "/obat/request/{requestObatId}")
+	private String postRequest(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
+		String path = Setting.obatRequestUrl;
+		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
+		ObatRequestedModel obatRequested = new ObatRequestedModel();
+		obatRequested.setNama(requestObat.getNamaObat());
+		obatRequested.setJumlah(requestObat.getJumlah());
+		
+		KirimObatModel obatDikirim = new KirimObatModel();
+		obatDikirim.setObat(obatRequested);
+		obatDikirim.setIdPasien(requestObat.getIdPasien());
+		
+		//DealerDetail detail = restTemplate.postForObject(path,requestObat, RequestObatModel.class);
+		return "request-success";
+	}
 }
