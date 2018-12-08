@@ -223,7 +223,10 @@ public class MainController {
 		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPenanganan); 
 		PatienRestModel pasien = restService.getPasienById(idPasien);
 		DokterRestModel dokter = restService.getDokterById(pemeriksaanPasien.getIdDokter());
-		List<DokterModel> dokters = restService.getAllDokter().getResult();
+		
+		//ini belom diganti ke dokter yang ada di idPenanganan
+		List<DokterModel> dokters = restService.getAllDokter().getResult(); 
+		
 		//Mengambil req obat 
 		List<RequestObatModel> reqObat = pemeriksaanPasien.getListObat();
 		model.addAttribute("pasien", pasien.getResult());
