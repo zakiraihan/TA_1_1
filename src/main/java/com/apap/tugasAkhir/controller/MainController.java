@@ -157,8 +157,24 @@ public class MainController {
 	 * TODO: Melakukan insert data penanganan harian rawat jalan 	
 	 */
 	@PostMapping("/penanganan/insert")
-	private RedirectView insertPenangananPasienSubmit(@ModelAttribute PemeriksaanModel pemeriksaan) {
-		pemeriksaanService.addPemeriksaan(pemeriksaan);
+	private RedirectView insertPenangananPasienSubmit(
+			@RequestParam("idPasien") long idPasien,
+			@RequestParam("dokter") long idDokter,
+			@RequestParam("deskripsi") String deskripsi,
+			@RequestParam("waktu") String waktu,
+			Model model
+			) {
+		String[] waktuSplit = waktu.split("T");
+		System.out.println(waktuSplit[1]);
+		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[1]));
+		//1990 format new timestamp
+		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,0,0);
+		PemeriksaanModel pemeriksaanPasien = new PemeriksaanModel();
+		pemeriksaanPasien.setIdPasien(idPasien);
+		pemeriksaanPasien.setIdDokter(idDokter);
+		pemeriksaanPasien.setPemeriksaan(deskripsi);
+		pemeriksaanPasien.setWaktu(dateTime);
+		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
 		return new RedirectView("/"); 
 	}
 	
@@ -215,7 +231,6 @@ public class MainController {
 	 * TODO: Update penanganan yang diterima oleh pasien
 	 */
 	@GetMapping("/penanganan/{idPasien}/{idPenanganan}")
-	//Masih salah nih mestinya nge get id Pasien bukan id Penanganan
 	private String updatePenangananPasien(
 			@PathVariable("idPenanganan") long idPenanganan, 
 			@PathVariable("idPasien") long idPasien, 
