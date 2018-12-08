@@ -1,5 +1,6 @@
 package com.apap.tugasAkhir.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -19,5 +20,17 @@ public class RequestObatServiceImpl implements RequestObatService{
 	@Override
 	public Optional<RequestObatModel> findById(Long id) {
 		return requestObatDb.findById(id);
+	}
+
+	@Override
+	public List<RequestObatModel> getByIdPasien(Long id) {
+		// TODO Auto-generated method stub
+		return requestObatDb.findByIdPasien(id);
+	}
+
+	@Override
+	public List<RequestObatModel> findAll() {
+		// TODO Auto-generated method stub
+		return requestObatDb.findAll();
 	}
 }

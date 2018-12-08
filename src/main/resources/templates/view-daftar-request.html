@@ -44,7 +44,7 @@
 								</td>
 							</tr>
 						</table>
-						<button type="submit">Submit</button>
+						<button type="submit" class="btn btn-primary">Submit</button>
 					</form>
 				</div>
 			</div>
@@ -53,45 +53,54 @@
 	<!-- End -->
 	<h3 style="margin-top:20px">List Semua Request Pasien</h3>
 	<br>
-	<table id="table">
-		<thead>
-			<th>Nama Pasien</th>
-			<th>Status Pasien</th>
-			<th>Status Assign Kamar</th>
-			<th>Assign Kamar</th>
-		</thead>
-		<span th:each="request, iterator : ${allRequest}">
-			<tr>
-				<td th:text="${allPasien.get(request.idPasien).nama}" ></td>
-				<td th:text="${allPasien.get(request.idPasien).statusPasien.jenis}"></td>
-				<td>
-					<div th:switch="${request.assign}">
-					  <p th:case="1">Assigned</p>
-					  <p th:case="0">Pending</p>
-					</div>
-				</td>
-				<td>
-					<div th:switch="${request.assign}">
-					  <a th:case="0" href="#form"class="btn btn-primary" th:namaPasien="${allPasien.get(request.idPasien).nama}" 
-					  th:idPasien="${allPasien.get(request.idPasien).id}" th:requestId="${request.id}" 
-					  th:onclick="javascript:getName(this.getAttribute('namaPasien'), this.getAttribute('idPasien'), this.getAttribute('requestId'));">Assign Kamar</a>
-					  <p th:case="1">Has Assigned</p>
-					  <p th:case="1">Has Released</p>
-					</div>
-				</td>
-			</tr>
-		</span>
-	</table>
+	<span th:if="${listRequestToggle} == 1">
+		<table id="table" class="table table-striped table-bordered table-sm display" >
+			<thead>
+				<th>Nama Pasien</th>
+				<th>Status Pasien</th>
+				<th>Status Assign Kamar</th>
+				<th>Assign Kamar</th>
+			</thead>
+			<span th:each="request, iterator : ${allRequest}">
+				<tr>
+					<td th:text="${allPasien.get(request.idPasien).nama}" ></td>
+					<td th:text="${allPasien.get(request.idPasien).statusPasien.jenis}"></td>
+					<td>
+						<div th:switch="${request.assign}">
+						  <p th:case="1">Assigned</p>
+						  <p th:case="0">Pending</p>
+						  <p th:case="2">Released</p>
+						</div>
+					</td>
+					<td>
+						<div th:switch="${request.assign}">
+						  <a th:case="0" href="#form" class="btn btn-primary" th:namaPasien="${allPasien.get(request.idPasien).nama}" 
+						  th:idPasien="${allPasien.get(request.idPasien).id}" th:requestId="${request.id}" 
+						  th:onclick="javascript:getName(this.getAttribute('namaPasien'), this.getAttribute('idPasien'), this.getAttribute('requestId'));">Assign Kamar</a>
+						  <p th:case="1">Has Assigned</p>
+						  <p th:case="2">Has Released</p>
+						</div>
+					</td>
+				</tr>
+			</span>
+		</table>
+	</span>
+	<span th:if="${listRequestToggle}==0">
+		<h3>Maaf Belum Ada Request Pendaftaran Pasien Rawat Inap</h3>
+	</span>
 </body>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
  
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
-<script th:inline="javascript">
-	/*<![CDATA[*/
+<script>
 	$(document).ready( function () {
-	    $('#table').DataTable();
+	    $('#table').DataTable( {
+	        "order": [
+	        	[ 3, "desc" ]	
+	        ]
+	    });
 	} );
 	
 	$('#paviliun').change(
@@ -127,7 +136,6 @@
 		var inputIdRequestPasien = document.getElementById("idRequestPasien");
 		inputIdRequestPasien.value= idRequestPasien;
 	}
-	/*]]>*/
 </script>
 
 

@@ -11,4 +11,6 @@ import com.apap.tugasAkhir.model.PemeriksaanModel;
 public interface PemeriksaanDb extends JpaRepository<PemeriksaanModel, Long>{
 	List<PemeriksaanModel> findByIdDokter(Long idDokter);
 	List<PemeriksaanModel> findByIdPasien(Long idPasien);
+	List<PemeriksaanModel> getPemeriksaanByIdPasien(Long id);
+	PemeriksaanModel getPemeriksaanById(Long id);
 }

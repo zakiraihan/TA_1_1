@@ -49,23 +49,59 @@ public class ApiController {
 	
 	@PostMapping(value = "/daftar-ranap")
 	private String addRequestPasien(@RequestBody JsonNode req) {
-		String resultString = req.get("idPasien").toString();
-		System.out.println(resultString);
-		RequestPasienModel newReq = new RequestPasienModel();
-		newReq.setAssign(0);
-		newReq.setIdPasien(Long.parseLong(resultString));
-		requestPasienService.addRequestPasien(newReq);
-		PatienRestModel patienIdResponse = restService.getPasienById(Long.parseLong(resultString));
-		if (patienIdResponse.getStatus() == 200) {
-			System.out.println(patienIdResponse.getResult().getNama());
-			StatusModel status = new StatusModel();
-			status.setId((long)4);
-			status.setJenis("Mendaftar di Rawat Inap");
-			patienIdResponse.getResult().setStatusPasien(status);
-			String result = restService.postPasienStatus(patienIdResponse.getResult());
-			System.out.println(result);
+		String returnMessage = "";
+		if (req.get("idPasien") !=  null) {
+			Long resultString = Long.parseLong(req.get("idPasien").toString());
+			System.out.println(resultString);
+			RequestPasienModel inSystem = requestPasienService.getReqByIdPasien(resultString);
+			
+			if (inSystem == null) {
+				RequestPasienModel newReq = new RequestPasienModel();
+				newReq.setAssign(0);
+				newReq.setIdPasien(resultString);
+				requestPasienService.addRequestPasien(newReq);
+				PatienRestModel patienIdResponse = restService.getPasienById(resultString);
+				if (patienIdResponse.getStatus() == 200) {
+					System.out.println(patienIdResponse.getResult().getNama());
+					StatusModel status = new StatusModel();
+					status.setId((long)4);
+					status.setJenis("Mendaftar di Rawat Inap");
+					patienIdResponse.getResult().setStatusPasien(status);
+					String result = restService.postPasienStatus(patienIdResponse.getResult());
+					System.out.println(result);
+				}
+				returnMessage = "{\"status\" : 200, \"message\" : \"success\"}";
+			}
+			
+			else if (inSystem.getAssign() == 1) {
+				returnMessage = "{\"status\" : 500, \"message\" : \"pasien sudah berada didalam kamar\"}";
+			}
+			
+			else if (inSystem.getAssign() == 0) {
+				returnMessage = "{\"status\" : 500, \"message\" : \"pasien sudah berada mendaftar di rawat inap\"}";
+			}
+			
+			else if (inSystem.getAssign() == 2) {
+				inSystem.setAssign(0);
+				inSystem.setIdPasien(resultString);
+				requestPasienService.addRequestPasien(inSystem);
+				PatienRestModel patienIdResponse = restService.getPasienById(resultString);
+				if (patienIdResponse.getStatus() == 200) {
+					System.out.println(patienIdResponse.getResult().getNama());
+					StatusModel status = new StatusModel();
+					status.setId((long)4);
+					status.setJenis("Mendaftar di Rawat Inap");
+					patienIdResponse.getResult().setStatusPasien(status);
+					String result = restService.postPasienStatus(patienIdResponse.getResult());
+					System.out.println(result);
+				}
+				returnMessage = "{\"status\" : 200, \"message\" : \"success\"}";
+			}
 		}
-		String returnMessage = "{\"status\" : 200, \"message\" : \"success\"}";
+		else {
+			returnMessage = "{\"status\" : 500, \"message\" : \"format masukan salah\"}";
+		}
+		
 		return returnMessage;
 	}
 	
@@ -80,26 +116,4 @@ public class ApiController {
 		sent += listOfId + "]}";
 		return sent;
 	}
-	
-    /**
-	 * TODO: Request obat ke Farmasi IS
-	 */
-	
-    @PostMapping(value = "/obat/request/{requestObatId}")
-	private String postRequest(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
-		String path = Setting.obatRequestUrl;
-		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
-		//DealerDetail detail = restTemplate.postForObject(path,requestObat, RequestObatModel.class);
-		return "request-success";
-	}
-	
-    /*
-    @GetMapping(value = "/full/{dealerId}")
-	private DealerDetail postStatus(@PathVariable ("dealerId") Long dealerId) throws Exception{
-		String path = Setting.dealerUrl + "/dealer";
-		DealerModel dealer = dealerService.getDealerDetailById(dealerId).get();
-		DealerDetail detail = restTemplate.postForObject(path,dealer, DealerDetail.class);
-		return detail;
-	}
-	*/
 }

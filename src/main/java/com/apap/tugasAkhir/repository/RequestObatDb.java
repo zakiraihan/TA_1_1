@@ -13,4 +13,5 @@ public interface RequestObatDb extends JpaRepository<RequestObatModel, Long>{
 	RequestObatModel findByPemeriksaan(PemeriksaanModel pemeriksaan);
 	List<RequestObatModel> findByIdPasien(Long idPasien);
 	List<RequestObatModel> findByNamaObat(String namaObat);
+	List<RequestObatModel> findAll();
 }

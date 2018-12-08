@@ -35,10 +35,6 @@ public class KamarModel implements Serializable{
 	@Column(name = "status", nullable = false)
 	private Integer status;
 	
-	@NotNull
-	@Column(name = "nomor_kamar", nullable = false)
-	private Integer nomorKamar;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_paviliun", referencedColumnName = "id", nullable = false)
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
@@ -62,14 +58,6 @@ public class KamarModel implements Serializable{
 
 	public void setStatus(Integer status) {
 		this.status = status;
-	}
-
-	public Integer getNomorKamar() {
-		return nomorKamar;
-	}
-
-	public void setNomorKamar(Integer nomorKamar) {
-		this.nomorKamar = nomorKamar;
 	}
 
 	public PaviliunModel getPaviliunKamar() {

@@ -38,4 +38,9 @@ public class RequestPasienServiceImpl implements RequestPasienService{
 		return requestPasienDb.findByIdPasien(idPasien);
 	}
 	
+	@Override
+	public List<RequestPasienModel> getPendingPasien(){
+		return requestPasienDb.findByAssign(0);
+	}
+	
 }

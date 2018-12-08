@@ -1,5 +1,7 @@
 package com.apap.tugasAkhir.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,16 @@ public class PemeriksaanServiceImpl implements PemeriksaanService{
 	public PemeriksaanModel addPemeriksaan(PemeriksaanModel pemeriksaan) {
 		return pemeriksaanDb.save(pemeriksaan);
 	}
-	
 
+	@Override
+	public List<PemeriksaanModel> getPemeriksaanByIdPasien(Long idPasien) {
+		// TODO Auto-generated method stub
+		return pemeriksaanDb.getPemeriksaanByIdPasien(idPasien);
+	}
+
+	@Override
+	public PemeriksaanModel getPemeriksaanByIdPemeriksaan(Long id) {
+		// TODO Auto-generated method stub
+		return pemeriksaanDb.getPemeriksaanById(id);
+	}
 }
