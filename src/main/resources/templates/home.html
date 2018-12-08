@@ -5,84 +5,174 @@
 	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Home')"></title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: fonts"></object>
 </head>
 
 <body>
-    <nav th:replace="fragments/fragment :: navbar"></nav>
-    
-    <div class="container-fluid">
-    
-    <div class="align-items-center d-flex cover section-aquamarine py-5" style="background-image: url(&quot;assets/restaurant/cover_light.jpg&quot;);">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-7 align-self-center text-lg-left text-center">
-          <h1 class="mb-0 mt-5 display-3">Sistem Informasi Rawat Inap</h1>
-          <p class="mb-5">Kelompok 1</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
-      <!-- Page Features -->
-      <div class="row text-center">
+	<div class="hero-content-wrap" style="background-image: url('images/hero.jpg')">
+		<div class="container">
+			<nav th:replace="fragments/fragment :: navbar"></nav>
+			    <div class="hero-content-overlay position-absolute w-100 h-100">
+			        <div class="container h-100">
+			            <div class="row h-100">
+			                <div class="col-12 col-lg-6 d-flex flex-column justify-content-center align-items-start">
+			                    <div>
+			                        <h1>Sistem Informasi<br>Rawat Inap</h1>
+			                        <p>Kelompok 1</p>
+			                    </div><!-- .entry-header -->
+			                </div><!-- .col -->
+			            </div><!-- .row -->
+			        </div><!-- .container -->
+			    </div><!-- .hero-content-overlay -->
+		</div>
+	</div><!-- .hero-content-wrap -->
+	
+    <div class="homepage-boxes">
+        <div class="container">
+        	
+        	<!-- ROW 1 -->
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="box">
+                    	<div class="d-flex align-items-center">
+	                    	<h2>Rujukan IGD</h2>
+	                        <a>Melihat daftar pasien Rawat Inap yang dirujuk oleh IGD</a>
+                    	</div>
+                        <br>
+                        <div class="text-center">
+                        	<a class="button gradient-bg" th:href="@{/daftar-request}">Lihat</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
 
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-            <div class="card-body">
-              <h4 class="card-title">Daftar Kamar di Rumah Sakit</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
-            </div>
-            <div class="card-footer">
-              <a href="/kamar" class="btn btn-primary">See All Kamar</a>
-            </div>
-          </div>
-        </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="box">
+                    	<div class="d-flex align-items-center">
+	                    	<h2>Pasien</h2>
+	                        <a>Melihat daftar seluruh pasien yang berada di layanan Rawat Inap</a>
+                    	</div>
+                        <br>
+                        <div class="text-center">
+                        	<a class="button gradient-bg" th:href="@{/daftar-ranap}">Lihat</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
 
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-            <div class="card-body">
-              <h4 class="card-title">Dafter Jadwal Jaga</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
-            </div>
-            <div class="card-footer">
-              <a href="/jadwal-jaga" class="btn btn-primary">Find Out More!</a>
-            </div>
-          </div>
-        </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="box">
+                    	<div class="d-flex align-items-center">
+	                    	<h2>Penanganan</h2>
+	                        <a>Melihat daftar penanganan yang telah dilakukan</a>
+                    	</div>
+                        <br>
+                        <div class="text-center">
+                        	<a class="button gradient-bg" th:href="@{/penanganan}">Lihat</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+			</div>
+			
+			<br>
+			
+			<!-- Row 2 -->
+			<div class="row">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="box">
+                    	<div class="d-flex align-items-center">
+	                    	<h2>Obat</h2>
+	                        <a>Form pemesanan obat ke SI Farmasi</a>
+                    	</div>
+                        <br>
+                        <div class="text-center">
+                        	<a class="button gradient-bg" th:href="@{/obat/request}">Next</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
 
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-            <div class="card-body">
-              <h4 class="card-title">Daftar Pasien Rawat Inap</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
-            </div>
-            <div class="card-footer">
-              <a href="/daftar-ranap" class="btn btn-primary">Lihat</a>
-            </div>
-          </div>
-        </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="box">
+                    	<div class="d-flex align-items-center">
+	                    	<h2>Jadwal Jaga</h2>
+	                        <a>Melihat daftar jaga dokter</a>
+                    	</div>
+                        <br>
+                        <div class="text-center">
+                        	<a class="button gradient-bg" th:href="@{/jadwal-jaga}">Lihat</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
 
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-            <div class="card-body">
-              <h4 class="card-title">List Semua Request Inap</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
-            </div>
-            <div class="card-footer">
-              <a href="/daftar-request" class="btn btn-primary">Find Out More!</a>
-            </div>
-          </div>
-        </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="box">
+                    	<div class="d-flex align-items-center">
+	                    	<h2>Kamar</h2>
+	                        <a>Melihat daftar kamar</a>
+                    	</div>
+                        <br>
+                        <div class="text-center">
+                        	<a class="button gradient-bg" th:href="@{/kamar}">Lihat</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+			</div>
+		</div>
+	</div>
 
-      </div>
-      <!-- /.row -->
+    <footer class="site-footer" style="background-image: url('images/footer-bg.png')">
+        <div class="footer-widgets">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="foot-about">
+                            <h2><a th:href="@{/}"><img src="images/logo.png" alt=""></a></h2>
+                            
+                            <p align="justify">Rumah Sakit Cepat Sembuh (RSCS) merupakan salah satu rumah sakit terbesar di 
+                            Indonesia. RSCS dikenal sebagai rumah sakit rujukan yang terpercaya dan dapat menyembuhkan
+                            segala penyakit. Setiap harinya RSCS bisa menangani hampir lima ribu pasien yang berdatangan
+                            dari berbagai daerah. Untuk dapat menangani ribuan pasien, tentunya RSCS memiliki tenaga 
+                            medis dengan jumlah yang tak sedikit. RSCS menawarkan layanan kesehatan utama seperti
+                            rawat inap, rawat jalan, dan IGD.<p>
 
-    </div>
-    <!-- /.container -->
+                        </div><!-- .foot-about -->
+                    </div><!-- .col -->
+
+                    <div class="col-12 col-md-6 col-lg-4 mt-5 mt-md-0">
+                        <div class="foot-links">
+                            <h2>Team</h2>
+
+                            <ul class="p-0 m-0">
+                            	<li><a>Zaki Raihan</a></li>
+                            	<li><a>Deana Almira Putri</a></li>
+                            	<li><a>Altariqh Dwiatmadja</a></li>
+                            	<li><a>Jessica Alexia Jaury</a></li>
+                            	<li><a>Savira Maharani Santoso</a></li>
+                            </ul>
+                        </div><!-- .foot-links -->
+                    </div><!-- .col -->
+                    
+
+                    <div class="col-12 col-md-6 col-lg-4 mt-5 mt-md-0">
+                         <div class="foot-about">
+                            <h2>SIRanap</h2>
+                            
+                            <p align="justify">Sistem Informasi Rawat Inap (SIRanap) merupakan sistem informasi yang dapat
+                            membantu dalam proses penanganan pasien, pengelolaan dokter jaga, dan pengelolaan kamar pada Rawat Inap. 
+                            Bertujuan untuk mempermudah interaksi pertukaran data dengan sistem lain yang dimiliki RSCS.<p>
+
+                        </div><!-- .foot-about -->
+                    </div><!-- .col -->
+
+
+                </div><!-- .row -->
+            </div><!-- .container -->
+        </div><!-- .footer-widgets -->
+    </footer><!-- .site-footer -->
 </body>
 </html>
+
