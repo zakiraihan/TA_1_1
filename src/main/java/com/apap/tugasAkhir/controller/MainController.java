@@ -519,6 +519,9 @@ public class MainController {
 		return "view-all-jadwal-jaga";
 	}
 	
+	/**
+	 * TODO: View request obat
+	 */
 	@GetMapping(value = "/obat/request")
 	private String viewAllRequestObat(Model model) {
 		List<RequestObatModel> allRequestObat = requestObatService.findAll();
@@ -546,7 +549,6 @@ public class MainController {
 	/**
 	 * TODO: Request obat ke Farmasi IS
 	 */
-	
     @PostMapping(value = "/obat/request/{requestObatId}")
 	private String postRequest(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
 		String path = Setting.obatRequestUrl;
