@@ -176,10 +176,11 @@ public class MainController {
 		}
 		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
 		DokterAllRestModel dokterAll = restService.getAllDokter();
-		model.addAttribute(new PemeriksaanModel());
+		model.addAttribute("pemeriksaan", new PemeriksaanModel());
 		model.addAttribute("allPasien", allPasienReq.getResult());
 		model.addAttribute("allDokter", dokterAll.getResult());
-		return "insert-penanganan-pasien";
+		model.addAttribute("allKamar", allKamar);
+		return "add-penanganan-pasien";
 	}
 	
 	/**
