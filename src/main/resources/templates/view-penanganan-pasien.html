@@ -30,8 +30,8 @@
 	       		<td>Request Obat</td>
 	       		<td >
 	           		<ul class="list-group">
-	               		<li th:each="requestObat : ${obats[i]}">
-	                   	<p th:text="${requestObat.namaObat}"></p>
+	               		<li th:each="requestObat : ${pemeriksaans[i].listObat}">
+	                   	<p th:text="${requestObat.namaObat}  + ' ,jumlah: ' + ${requestObat.jumlah}"></p>
 	               		</li>
 	           		</ul>
 	       		</td>

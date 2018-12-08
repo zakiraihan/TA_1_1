@@ -3,6 +3,7 @@ package com.apap.tugasAkhir.model;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -47,6 +49,10 @@ public class PemeriksaanModel implements Serializable{
 	@NotNull
 	@Column(name = "id_pasien", nullable = false)
 	private Long idPasien;
+	
+	@OneToMany(mappedBy = "pemeriksaan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<RequestObatModel> listObat;
 
 	public Long getId() {
 		return id;
@@ -88,5 +94,14 @@ public class PemeriksaanModel implements Serializable{
 		this.idPasien = idPasien;
 	}
 
+	public List<RequestObatModel> getListObat() {
+		return listObat;
+	}
+
+	public void setListObat(List<RequestObatModel> listObat) {
+		this.listObat = listObat;
+	}
+
+	
 		
 }
