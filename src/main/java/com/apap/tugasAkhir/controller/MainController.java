@@ -70,11 +70,6 @@ public class MainController {
 	@Autowired
 	private PemeriksaanService pemeriksaanService;
 	
-	@Bean
-	public RestTemplate RestTemplate() {
-		return new RestTemplate();
-	}
-	
 	@GetMapping("/login")
 	private String login() {
 		return "login";

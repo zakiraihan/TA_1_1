@@ -47,8 +47,14 @@
 						</tr>
 					</table>
 					<div class="row">
-						<div class="col-md-3">
-							<a class="btn btn-primary" th:href="'/kamar/update/' + ${kamar.id}">Update Kamar</a>
+						<div class="col-md-9">
+							<span th:if="${kamar.paviliunKamar.status == 1}">
+								<a class="btn btn-primary" th:href="'/kamar/update/' + ${kamar.id}">Update Kamar</a>
+							</span>
+							<span th:unless="${kamar.paviliunKamar.status == 1}">
+								<a class="btn btn-danger" href="#">Update Kamar</a>
+								<p style="color: red">Kamar berada di Paviliun rusak, tidak bisa di update</p>					
+							</span>
 						</div>
 					</div>
 				</div>
