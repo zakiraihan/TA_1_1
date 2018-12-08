@@ -15,4 +15,6 @@ public interface RequestPasienService {
 
 	RequestPasienModel getReqByIdPasien(Long idPasien);
 
+	List<RequestPasienModel> getPendingPasien();
+
 }

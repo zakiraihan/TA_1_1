@@ -42,4 +42,9 @@ public class KamarServiceImpl implements KamarService{
 	public List<KamarModel> getActiveKamar(){
 		return kamarDb.findByStatus(1);
 	}
+	
+	@Override
+	public List<KamarModel> getInactiveKamar(){
+		return kamarDb.findByStatus(0);
+	}
  }

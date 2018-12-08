@@ -32,32 +32,37 @@
     </div>
 	<div style="margin-left:2rem;padding-right:2rem;">
 		<h4>Jadwal Jaga Dokter</h4>
-		<table class="table table-striped table-bordered table-sm display" id="jadwalJaga">
-			<thead>
-				<tr>
-					<th>No.</th>
-					<th>Nama Dokter</th>
-					<th>Status Dokter</th>
-					<th>Nama Paviliun</th>
-					<th>Hari Jaga</th>
-					<th>Update Jadwal</th>
+		<span th:if="${listJadwalToggle}==1">
+			<table class="table table-striped table-bordered table-sm display" id="jadwalJaga">
+				<thead>
+					<tr>
+						<th>No.</th>
+						<th>Nama Dokter</th>
+						<th>Status Dokter</th>
+						<th>Nama Paviliun</th>
+						<th>Hari Jaga</th>
+						<th>Update Jadwal</th>
+					</tr>
+				</thead>
+				<tr th:each="jadwalJaga,iterationStatus : ${allJadwalJaga}">
+					<td th:text="${iterationStatus.count}"></td>
+					<!-- <td th:text="${jadwalJaga.}"></td> -->
+					
+	   				<td th:text="${allDokterReq.get(jadwalJaga.idDokter).nama}"></td>
+	   				<td th:text="${jadwalJaga.statusDokter}"></td>
+	   				<td th:text="${allPaviliun.get(jadwalJaga.paviliunJaga.id).namaPaviliun}"></td>
+	   				<td th:text="${jadwalJaga.daftarHariJaga}"></td>
+	   				<td>
+	   					<form th:action="@{/jadwal-jaga/update/{jadwalJagaId}(jadwalJagaId=${jadwalJaga.id})}" id="idJadwalJaga" method="GET">
+							<button class="btn btn-primary" type="submit">Update Jadwal</button>
+						</form>
+	   				</td>
 				</tr>
-			</thead>
-			<tr th:each="jadwalJaga,iterationStatus : ${allJadwalJaga}">
-				<td th:text="${iterationStatus.count}"></td>
-				<!-- <td th:text="${jadwalJaga.}"></td> -->
-				
-   				<td th:text="${allDokterReq.get(jadwalJaga.idDokter).nama}"></td>
-   				<td th:text="${jadwalJaga.statusDokter}"></td>
-   				<td th:text="${allPaviliun.get(jadwalJaga.paviliunJaga.id).namaPaviliun}"></td>
-   				<td th:text="${jadwalJaga.daftarHariJaga}"></td>
-   				<td>
-   					<form th:action="@{/jadwal-jaga/update/{jadwalJagaId}(jadwalJagaId=${jadwalJaga.id})}" id="idJadwalJaga" method="GET">
-						<button class="btn btn-primary" type="submit">Update Jadwal</button>
-					</form>
-   				</td>
-			</tr>
-		</table>
+			</table>
+		</span>
+		<span th:if="${listJadwalToggle}==0">
+			<h3>Maaf Belum Ada Jadwal Jaga Didalam Sistem</h3>
+		</span>
 	</div>
 </body>
 	<script>

@@ -23,9 +23,9 @@ public class PemeriksaanServiceImpl implements PemeriksaanService{
 	}
 
 	@Override
-	public List<PemeriksaanModel> getPemeriksaanByIdPasien(Long id) {
+	public List<PemeriksaanModel> getPemeriksaanByIdPasien(Long idPasien) {
 		// TODO Auto-generated method stub
-		return pemeriksaanDb.getPemeriksaanByIdPasien(id);
+		return pemeriksaanDb.getPemeriksaanByIdPasien(idPasien);
 	}
 
 	@Override
@@ -33,6 +33,4 @@ public class PemeriksaanServiceImpl implements PemeriksaanService{
 		// TODO Auto-generated method stub
 		return pemeriksaanDb.getPemeriksaanById(id);
 	}
-	
-
 }

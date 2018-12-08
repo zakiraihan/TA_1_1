@@ -6,6 +6,6 @@ import com.apap.tugasAkhir.model.PemeriksaanModel;
 
 public interface PemeriksaanService {
 	PemeriksaanModel addPemeriksaan(PemeriksaanModel pemeriksaan);
-	List<PemeriksaanModel> getPemeriksaanByIdPasien(Long id);
+	List<PemeriksaanModel> getPemeriksaanByIdPasien(Long idPasien);
 	PemeriksaanModel getPemeriksaanByIdPemeriksaan(Long id);
 }

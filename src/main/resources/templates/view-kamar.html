@@ -35,15 +35,26 @@
 						</tr>
 						<tr>
 							<td height="50">Status:</td>
-							<div th:switch="${kamar.status}">
+							<span th:if="${kamar.paviliunKamar.status == 1}">
+								<div th:switch="${kamar.status}">
 								  <td th:case="1">Kamar Terisi</td>
 								  <td th:case="0">Tersedia</td>
-							</div>
+								</div>
+							</span>
+							<span th:unless="${kamar.paviliunKamar.status == 1}">
+								<td>Kamar Rusak</td>					
+							</span>
 						</tr>
 					</table>
 					<div class="row">
-						<div class="col-md-3">
-							<a class="btn btn-primary" th:href="@{/}">Update Kamar</a>
+						<div class="col-md-9">
+							<span th:if="${kamar.paviliunKamar.status == 1}">
+								<a class="btn btn-primary" th:href="'/kamar/update/' + ${kamar.id}">Update Kamar</a>
+							</span>
+							<span th:unless="${kamar.paviliunKamar.status == 1}">
+								<a class="btn btn-danger" href="#">Update Kamar</a>
+								<p style="color: red">Kamar berada di Paviliun rusak, tidak bisa di update</p>					
+							</span>
 						</div>
 					</div>
 				</div>

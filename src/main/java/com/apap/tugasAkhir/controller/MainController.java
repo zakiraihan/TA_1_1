@@ -70,11 +70,6 @@ public class MainController {
 	@Autowired
 	private PemeriksaanService pemeriksaanService;
 	
-	@Bean
-	public RestTemplate RestTemplate() {
-		return new RestTemplate();
-	}
-	
 	@GetMapping("/login")
 	private String login() {
 		return "login";
@@ -91,17 +86,23 @@ public class MainController {
 	@GetMapping("/daftar-request")
 	private String viewDaftarRequest(Model model) {
 		List<RequestPasienModel> allRequest = requestPasienService.getAllRequest();
-		model.addAttribute("allRequest", allRequest);
-		
-		String[] listOfIdPasien = new String[allRequest.size()];
-		for (int i = 0 ; i< listOfIdPasien.length ; i++) {
-			listOfIdPasien[i] = Long.toString(allRequest.get(i).getIdPasien());
+		if (!allRequest.isEmpty()) {
+			model.addAttribute("allRequest", allRequest);
+			
+			String[] listOfIdPasien = new String[allRequest.size()];
+			for (int i = 0 ; i< listOfIdPasien.length ; i++) {
+				listOfIdPasien[i] = Long.toString(allRequest.get(i).getIdPasien());
+			}
+			
+			PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+			List<PaviliunModel> selectedPaviliun = paviliunService.getActivePaviliun();
+			model.addAttribute("allPaviliun", selectedPaviliun);
+			model.addAttribute("allPasien", allPasienReq.getResult());
+			model.addAttribute("listRequestToggle", 1);
+		}	
+		else {
+			model.addAttribute("listRequestToggle", 0);
 		}
-		
-		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
-		List<PaviliunModel> selectedPaviliun = paviliunService.getActivePaviliun();
-		model.addAttribute("allPaviliun", selectedPaviliun);
-		model.addAttribute("allPasien", allPasienReq.getResult());	
 		return "view-daftar-request";
 	}
 	
@@ -136,7 +137,7 @@ public class MainController {
 		RequestPasienModel request= requestPasienService.getReqPasienById(idRequestPasien).get();
 		request.setAssign(1);
 		requestPasienService.addRequestPasien(request);
-		return new RedirectView("/");
+		return new RedirectView("/daftar-ranap");
 		
 	}
 	//	return "assign-kamar-pasien";
@@ -257,7 +258,7 @@ public class MainController {
 	
 	@GetMapping("/kamar/insert")
 	private String insertDataKamar(Model model) {
-		List<PaviliunModel> listOfPaviliun = paviliunService.getAllPaviliun();
+		List<PaviliunModel> listOfPaviliun = paviliunService.getActivePaviliun();
 		model.addAttribute(new KamarModel());
 		model.addAttribute("listOfPaviliun",listOfPaviliun);
  		return "add-kamar";
@@ -268,7 +269,6 @@ public class MainController {
 	 */
 	@PostMapping("/kamar/insert")
 	private RedirectView insertDataKamarSubmit(@ModelAttribute KamarModel kamar) {
-		kamar.setNomorKamar(0);
 		kamarService.addKamar(kamar);
 		return new RedirectView("/kamar");
 	}
@@ -292,18 +292,91 @@ public class MainController {
 		model.addAttribute("kamar", kamar);
 		PatienRestModel patienIdResponse = restService.getPasienById(kamar.getIdPasien());
 		if (patienIdResponse.getStatus() == 200) {
-			System.out.println(patienIdResponse.getResult().getNama());
 			model.addAttribute("pasien", patienIdResponse.getResult());
 		}
 		return "view-kamar";
+	}
+	
+	@GetMapping("/kamar/update/{idKamar}")
+	private String updateFormKamar(@PathVariable ("idKamar") long idKamar, Model model) {
+		KamarModel kamar = kamarService.getKamarById(idKamar).get();
+		model.addAttribute("kamar", kamar);
+		
+		List<RequestPasienModel> listOfPending =requestPasienService.getPendingPasien();
+		model.addAttribute("listOfPending", listOfPending);
+		
+		String[] listOfIdPasien = new String[listOfPending.size()];
+		for (int i = 0 ; i< listOfIdPasien.length ; i++) {
+			listOfIdPasien[i] = Long.toString(listOfPending.get(i).getIdPasien());
+		}
+		
+		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+		model.addAttribute("allPendingPasien", allPasienReq.getResult());
+		
+		List<PaviliunModel> listOfPaviliun = paviliunService.getActivePaviliun();
+		model.addAttribute("listOfPaviliun",listOfPaviliun);
+		
+		if (kamar.getIdPasien() != 0) {
+			PatienRestModel patienIdResponse = restService.getPasienById(kamar.getIdPasien());
+			if (patienIdResponse.getStatus() == 200) {
+				model.addAttribute("pasien", patienIdResponse.getResult());		
+			}
+		}
+		return "update-form-kamar";
 	}
 	
 	/**
 	 * TODO: Update data suatu kamar
 	 */
 	@PostMapping("/kamar/{idKamar}")
-	private String updateKamar(@PathVariable ("idKamar") long idKamar, Model model) {
-		return "view-all-kamar";
+	private RedirectView updateKamar(@PathVariable ("idKamar") long idKamar, Model model, HttpServletRequest req) {
+		Long idPaviliun=Long.valueOf(req.getParameter("paviliunKamar"));
+		Long idPasienAwal=Long.valueOf(req.getParameter("pasienAwal"));
+		Long idPasienBaru=Long.valueOf(req.getParameter("idPasien"));
+		Integer status=Integer.valueOf(req.getParameter("status"));
+		
+		KamarModel kamar = kamarService.getKamarById(idKamar).get();
+		
+		kamar.setPaviliunKamar(paviliunService.findPaviliundById(idPaviliun).get());
+		if (idPasienAwal != idPasienBaru) {
+			if (idPasienAwal != 0) {
+				RequestPasienModel requestPasien = requestPasienService.getReqByIdPasien(idPasienAwal);
+				requestPasien.setAssign(2);
+				kamar.setIdPasien(idPasienBaru);
+				PatienRestModel patienIdResponse = restService.getPasienById(idPasienAwal);
+				if (patienIdResponse.getStatus() == 200) {
+					System.out.println(patienIdResponse.getResult().getNama());
+					StatusModel statusPasien = new StatusModel();
+					statusPasien.setId((long)6);
+					statusPasien.setJenis("Selesai di Rawat Inap");
+					patienIdResponse.getResult().setStatusPasien(statusPasien);
+					String result = restService.postPasienStatus(patienIdResponse.getResult());
+					System.out.println(result);
+				}
+			}
+			if (idPasienBaru != 0) {
+				RequestPasienModel requestPasienBaru = requestPasienService.getReqByIdPasien(idPasienBaru);
+				requestPasienBaru.setAssign(1);
+				PatienRestModel patienIdResponseBaru = restService.getPasienById(idPasienBaru);
+				if (patienIdResponseBaru.getStatus() == 200) {
+					System.out.println(patienIdResponseBaru.getResult().getNama());
+					StatusModel statusPasien = new StatusModel();
+					statusPasien.setId((long)5);
+					statusPasien.setJenis("Berada di Rawat Inap");
+					patienIdResponseBaru.getResult().setStatusPasien(statusPasien);
+					String result = restService.postPasienStatus(patienIdResponseBaru.getResult());
+					System.out.println(result);
+				}
+				kamar.setIdPasien(idPasienBaru);
+				kamar.setStatus(1);
+			}
+			if (idPasienBaru == 0) {
+				kamar.setStatus(0);
+				kamar.setIdPasien(idPasienBaru);
+			}
+		}
+		kamarService.addKamar(kamar);
+		return new RedirectView("/kamar");
 	}
 	
 	/**
@@ -312,13 +385,19 @@ public class MainController {
 	@GetMapping("/daftar-ranap")
 	private String viewAllRanap(Model model) {
 		List<KamarModel> allKamar = kamarService.getActiveKamar();
-		String[] listOfIdPasien = new String[allKamar.size()];
-		for (int i = 0; i < listOfIdPasien.length; i++) {
-			listOfIdPasien[i] = Long.toString(allKamar.get(i).getIdPasien());
+		if (!allKamar.isEmpty()) {
+			String[] listOfIdPasien = new String[allKamar.size()];
+			for (int i = 0; i < listOfIdPasien.length; i++) {
+				listOfIdPasien[i] = Long.toString(allKamar.get(i).getIdPasien());
+			}
+			PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+			model.addAttribute("allKamar", allKamar);
+			model.addAttribute("allPasien", allPasienReq.getResult());
+			model.addAttribute("listPasienToggle", 1);
 		}
-		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
-		model.addAttribute("allKamar", allKamar);
-		model.addAttribute("allPasien", allPasienReq.getResult());
+		else {
+			model.addAttribute("listPasienToggle", 0);
+		}
 		return "daftar-ranap";
 	}
 	
@@ -407,25 +486,33 @@ public class MainController {
 	@GetMapping(value = "/jadwal-jaga")
 	private String viewJadwalJaga(Model model){
 		List<JadwalJagaModel> allJadwalJaga = jadwalJagaService.viewAll();
-		model.addAttribute("allJadwalJaga", allJadwalJaga);
 		
-		String[] listOfIdDokter = new String[allJadwalJaga.size()];
-		for (int i = 0; i < listOfIdDokter.length; i++) {
-			listOfIdDokter[i] = Long.toString(allJadwalJaga.get(i).getIdDokter());
+		if (!allJadwalJaga.isEmpty()) {
+			model.addAttribute("allJadwalJaga", allJadwalJaga);
+			
+			String[] listOfIdDokter = new String[allJadwalJaga.size()];
+			for (int i = 0; i < listOfIdDokter.length; i++) {
+				listOfIdDokter[i] = Long.toString(allJadwalJaga.get(i).getIdDokter());
+			}
+			
+			DokterAllRestMapModel allDokterReq = restService.getListOfDokter(listOfIdDokter);
+			model.addAttribute("allDokterReq", allDokterReq.getResult());
+			
+			List<PaviliunModel> allListPaviliun = paviliunService.getAllPaviliun();
+			
+			HashMap<Long, PaviliunModel> mapOfPaviliun = new HashMap<Long, PaviliunModel>();
+			for (PaviliunModel paviliun : allListPaviliun) {
+				mapOfPaviliun.put(paviliun.getId(), paviliun);
+			}
+			
+			
+			model.addAttribute("allPaviliun", mapOfPaviliun);
+			model.addAttribute("listJadwalToggle", 1);
+		}
+		else {
+			model.addAttribute("listJadwalToggle", 0);
 		}
 		
-		DokterAllRestMapModel allDokterReq = restService.getListOfDokter(listOfIdDokter);
-		model.addAttribute("allDokterReq", allDokterReq.getResult());
-		
-		List<PaviliunModel> allListPaviliun = paviliunService.getAllPaviliun();
-		
-		HashMap<Long, PaviliunModel> mapOfPaviliun = new HashMap<Long, PaviliunModel>();
-		for (PaviliunModel paviliun : allListPaviliun) {
-			mapOfPaviliun.put(paviliun.getId(), paviliun);
-		}
-		
-		
-		model.addAttribute("allPaviliun", mapOfPaviliun);
 		return "view-all-jadwal-jaga";
 	}
 	
