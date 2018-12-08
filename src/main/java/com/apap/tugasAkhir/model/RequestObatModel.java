@@ -44,6 +44,10 @@ public class RequestObatModel implements Serializable {
 	@NotNull
 	@Column(name = "id_pasien", nullable = false)
 	private Long idPasien;
+	
+	@NotNull
+	@Column(name = "status")
+	private Integer statusObat;
 
 
 	public Long getId() {
@@ -94,6 +98,18 @@ public class RequestObatModel implements Serializable {
 	public void setIdPasien(Long idPasien) {
 		this.idPasien = idPasien;
 	}
+
+
+	public Integer getStatusObat() {
+		return statusObat;
+	}
+
+
+	public void setStatusObat(Integer statusObat) {
+		this.statusObat = statusObat;
+	}
+	
+	
 
 	
 }
