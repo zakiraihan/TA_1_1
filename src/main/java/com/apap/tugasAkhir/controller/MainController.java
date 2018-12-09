@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -271,6 +272,32 @@ public class MainController {
 		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
 		return "redirect:/penanganan/"+idPasien;
 	}
+	
+	@RequestMapping(value = "/penanganan/insert", method = RequestMethod.POST, params= {"addRow"})
+	private String addRow(@ModelAttribute PemeriksaanModel pemeriksaan, Model model, BindingResult bindingResult) {
+		if(pemeriksaan.getListObat() == null) {
+			pemeriksaan.setListObat(new ArrayList());
+		}
+		pemeriksaan.getListObat().add(new RequestObatModel());
+		model.addAttribute("pemeriksaan", pemeriksaan);
+		return "add-penanganan-pasien";
+	}
+	
+	/*@RequestMapping(value = "/pegawai/tambah", method = RequestMethod.POST, params= {"addRow"})
+	private String addRow(@ModelAttribute PegawaiModel pegawai, Model model, BindingResult bindingResult) {
+		if (pegawai.getJabatanList() == null) {
+			pegawai.setJabatanList(new ArrayList());
+		}
+		System.out.println(pegawai.getJabatanList().size());
+		pegawai.getJabatanList().add(new JabatanModel());
+		
+		List<JabatanModel> jab = jabatanDb.findAll();
+		List<ProvinsiModel> prov = provinsiDb.findAll();
+		model.addAttribute("provinsiList", prov);
+		model.addAttribute("pegawai", pegawai);
+		model.addAttribute("jabatanList",jab);
+		return "add-pegawai";
+	}*/
 	
 	@GetMapping("/kamar/insert")
 	private String insertDataKamar(Model model) {

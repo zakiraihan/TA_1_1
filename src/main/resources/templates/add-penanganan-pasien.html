@@ -14,119 +14,55 @@
 	<div class="col-md">
 		<br>
             <div class="card">
-                <div class="card-body">
-				  <div class="container">
-	      <form th:action="''" method="POST">
-	         <div class="form-group">
-		          <label for="nama">Nama Pasien</label>
-		          <br>
-		          <select name="idPasien" class="form-control">
-	          		<div th:each="kamar : ${allKamar}" >
-	          			<!-- kondisi untuk milih dokter.id di database all dokter -->
-	          			<option th:value="${kamar.idPasien}" th:text="${allPasien.get(kamar.idPasien).nama}"></option>
-	          		</div>
-	          	</select>
-		      </div>
-		      <div class="form-group">
-	          	<label for="dokter">Dokter</label>
-	          	<br>
-	          	<select name="dokter" class="form-control">
-	          		<div th:each="dokterPilih : ${allDokter}" >
-	          			<!-- kondisi untuk milih dokter.id di database all dokter -->
-	          			<option th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
-	          		</div>
-	          	</select>
-	         </div>
-	         <div class="form-group">
-	          	<label for="waktu">Waktu</label>
-	          	<input type="datetime-local" class="form-control" name="waktu" aria-describedby="emailHelp" required="required" placeholder="">
-	         </div>
-	         <div class="form-group">
-	          	<label for="deskripsi">Deskripsi Penanganan</label>
-	          	<input type="text" class="form-control" name="deskripsi" th:value="${pemeriksaan.pemeriksaan}" aria-describedby="emailHelp" required="required" placeholder="">
-     		 </div>
-     		 <ul class="list-group">
-	               		<li th:each="requestObat : ${obat}">
-	                   	<p th:text="${requestObat.namaObat}"></p>
-	               		</li>
-	        </ul>
-				
-   		 		 
-	       	 <button value="submit" class="btn btn-primary">Simpan</button> 
-     				 
-			</form>
-			
-	
+            <div class="card-header">
+            	<h5>Tambah Penanganan Pasien</h5>
+            </div>
+			<div class="card-body">
+				<div class="container">
+				<form method="POST">
+					<div class="form-group">
+						<label for="nama">Nama Pasien</label>
+						<br>
+						<select name="idPasien" class="form-control">
+	          				<div th:each="kamar : ${allKamar}" >
+	          				<!-- kondisi untuk milih dokter.id di database all dokter -->
+							<option th:value="${kamar.idPasien}" th:text="${allPasien.get(kamar.idPasien).nama}"></option>
+	          				</div>
+	          			</select>
+		      		</div>
+		      		<div class="form-group">
+	          			<label for="dokter">Dokter</label>
+	          			<br>
+	          			<select name="dokter" class="form-control">
+	          				<div th:each="dokterPilih : ${allDokter}" >
+	          				<!-- kondisi untuk milih dokter.id di database all dokter -->
+	          				<option th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
+	          				</div>
+	          			</select>
+	         		</div>
+	         		<div class="form-group">
+	          			<label for="waktu">Waktu</label>
+	          			<input type="datetime-local" class="form-control" name="waktu" aria-describedby="emailHelp" required="required" placeholder="">
+	         		</div>
+	         		<div class="form-group">
+	          			<label for="deskripsi">Deskripsi Penanganan</label>
+	          			<input type="text" class="form-control" name="deskripsi" th:value="${pemeriksaan.pemeriksaan}" aria-describedby="emailHelp" required="required" placeholder="">
+     		 		</div>
+     		 		<div class="form-group">
+     		 		<label for="requestObat">Request Obat: </label>
+            		<div th:each="jabatan,iterationStats : *{jabatanList}" style="padding:10px">
+            			<select class="form-control" th:field="*{jabatanList[__${iterationStats.index}__]}" >
+					  		<option th:each="jabatannya : ${jabatanList}" th:value="${jabatannya.id}" th:text="${jabatannya.nama}" ></option>
+						</select>
+            		</div>
+            		<button type="submit" name="addRow" class="btn">Tambah Jabatan Lainnya</button>
+     		 		</div>
+	       	 		<button value="submit" class="btn btn-primary">Simpan</button> 
+				</form>
+
 				</div>
 	 		</div>
 	 	</div>
 	</div>
-          
-	
 </body>
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
- 
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-
-<script>
-$(document).ready( function () {
-    $('#table').DataTable();
-} );
-</script>
-
-
 </html>
-<!-- <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Kamar: Tambah')"></title>
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: fonts"></object>
-</head>
-
-<body>
-    <nav th:replace="fragments/fragment :: navbar"></nav>
-	<div class="container-full-bg">
-		<div class="container vertical-center" style="padding-top: 32px;">
-			<h1>Tambah Penanganan</h1>
-			<div class="container">
-				<form th:action="@{/penanganan/insert}" th:object="${pemeriksaan}" method="POST">
-				<div>
-            		<label for="namaPasien">Pasien :</label>
-               		<select class="form-control" name="namaPasien">
-            		  <option>Pilih Pasien</option>
-					  <option th:each="kamar : ${allKamar}" 
-					          th:value="${kamar.idPasien}" 
-					          th:text="${allPasien.get(kamar.idPasien).nama}">
-					  </option>
-					</select>
-            	</div>
-            	<div>
-            		<label for="namaDokter">Dokter :</label>
-               		<select class="form-control" name="namaDokter">
-            		  <option>Pilih Dokter</option>
-					  <option th:each="dokter : ${allDokter}" 
-					          th:value="${dokter.id}" 
-					          th:text="${dokter.nama}">
-					  </option>
-					</select>
-            	</div>
-            	<div>
-            		<label for="waktu">Waktu Pemeriksaan</label>
-            		<input type="datetime-local" name="waktu" class="form-control" th:value="${pemeriksaan.waktu}">
-            	</div>
-            	<div>
-            		<label for="pemeriksaan">Deskripsi :</label>
-            		<input type="text" name="tahunMasuk" class="form-control" th:value="${pemeriksaan.pemeriksaan}">
-            	</div>
-		      	<div class="card-body">
-                	<input type="submit" name="submit" class="btn btn-primary"  value="Tambah">
-            	</div>
-            	</form>
-           	</div>
-       	</div>
-   	</div>
-            	 -->
