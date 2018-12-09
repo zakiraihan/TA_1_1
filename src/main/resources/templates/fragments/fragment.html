@@ -15,51 +15,39 @@
     <head th:fragment="js">
         <script th:src="@{/js/bootstrap.min.js}"></script>
         <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+        <script th:src="@{/js/custom.js}"></script>
     </head>
     
     <head th:fragment="fa">
     	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
-    
-    <head th:fragment="fonts">
-    	<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    </head>
 </head>
 
 <body>
-    <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">APAP</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/}">Home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/daftar-request}">Daftar Rujukan IGD</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/daftar-ranap}">Daftar Pasien Rawat Inap</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/penanganan}">Penanganan</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/obat/request}">Pesan Obat</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/jadwal-jaga}">Jadwal Jaga</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/kamar}">Kamar</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav pull-right">
-            	<li class="nav-item active">
-            		<a class="nav-link" th:href="@{/logout}">Logout</a>
-            	</li>
-            </ul>
-        </div>
-    </nav>
-</body>
-
+    <nav th:fragment="navbar">
+    	<div class="row">
+	        <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+	            <nav class="site-navigation d-flex justify-content-end align-items-center">
+	                <ul class="d-flex flex-column flex-lg-row justify-content-lg-end align-items-center text-center">
+	                	<li><a class="d-block" th:href="@{/}"><img class="d-block" src="images/logo.png" alt="logo"></a></li>
+	                    <li class="current-menu-item"><a th:href="@{/}">Home</a></li>
+	                    <li><a th:href="@{/daftar-request}">Rujukan IGD</a></li>
+	                    <li><a th:href="@{/daftar-ranap}">Pasien</a></li>
+	                    <li><a th:href="@{/penanganan}">Penanganan</a></li>
+	                    <li><a th:href="@{/obat/request}">Obat</a></li>
+	                    <li><a th:href="@{/jadwal-jaga}">Jadwal</a></li>
+	                    <li><a th:href="@{/kamar}">Kamar</a></li>
+	                    <li><a class="button gradient-bg" th:href="@{/logout}">Logout</a></li>
+	                </ul>
+	            </nav><!-- .site-navigation -->
+	
+	            <div class="hamburger-menu d-lg-none">
+	                <span></span>
+	                <span></span>
+	                <span></span>
+	                <span></span>
+	            </div><!-- .hamburger-menu -->
+	        </div><!-- .col -->
+		</div>
+    </nav></body>
 </html>
