@@ -31,7 +31,7 @@
 					<div>
 						<label for="tahunMasuk">Paviliun :</label> <select
 							class="form-control" name="paviliunKamar">
-							<option>Pilih Paviliun</option>
+							<option disabled>Pilih Paviliun</option>
 							<option th:each="paviliun : ${listOfPaviliun}"
 								th:value="${paviliun.id}" th:text="${paviliun.namaPaviliun}"></option>
 						</select>
