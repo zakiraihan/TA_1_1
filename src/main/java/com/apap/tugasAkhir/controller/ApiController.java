@@ -1,5 +1,6 @@
 package com.apap.tugasAkhir.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,6 +21,7 @@ import com.apap.tugasAkhir.model.RequestPasienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.Setting;
 import com.apap.tugasAkhir.rest.StatusModel;
+import com.apap.tugasAkhir.rest.TanggalModel;
 import com.apap.tugasAkhir.service.KamarService;
 import com.apap.tugasAkhir.service.RequestObatService;
 import com.apap.tugasAkhir.service.RequestPasienService;
@@ -115,5 +119,16 @@ public class ApiController {
 		}
 		sent += listOfId + "]}";
 		return sent;
+	}
+	
+	@GetMapping(value = "/dokter/available")
+	@ResponseBody
+	private String getAvailableDokter(@RequestParam (value = "tanggal", required = true) String tanggal) {
+		TanggalModel tanggalModel = new TanggalModel();
+		tanggalModel.setTanggal(tanggal);
+		System.out.println(tanggalModel.getTanggal());
+		String result = restService.getJadwalDokter(tanggalModel);
+		System.out.println(result);
+		return result;
 	}
 }

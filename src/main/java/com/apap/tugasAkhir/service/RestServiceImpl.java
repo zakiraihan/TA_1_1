@@ -17,6 +17,7 @@ import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.Setting;
+import com.apap.tugasAkhir.rest.TanggalModel;
 
 @Service
 @Transactional
@@ -84,6 +85,22 @@ public class RestServiceImpl implements RestService{
 	    String response = "";
 	     try{
 	        ResponseEntity<String> responseEntity = template.exchange(Setting.postPasienStatusUrl, HttpMethod.POST, requestEntity,  String.class);
+	        response = responseEntity.getBody();
+	    }
+	    catch(Exception e){
+	        response = e.getMessage();
+	    }
+	    return response;
+	}
+	
+	@Override
+	public String getJadwalDokter(TanggalModel tanggal) {
+		RestTemplate template = new RestTemplate();
+	    HttpEntity<TanggalModel> requestEntity= new HttpEntity<TanggalModel>(tanggal);
+	    System.out.println(requestEntity.getBody().toString());
+	    String response = "";
+	     try{
+	        ResponseEntity<String> responseEntity = template.exchange(Setting.getAllIUnAssignedDokterUrl, HttpMethod.GET, requestEntity,  String.class);
 	        response = responseEntity.getBody();
 	    }
 	    catch(Exception e){

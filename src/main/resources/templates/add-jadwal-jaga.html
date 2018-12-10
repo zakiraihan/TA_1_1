@@ -20,14 +20,13 @@
 				</tr>
 				<tr style="height:3rem">
 					<td>Hari Jaga</td>
-					<td><input type="date" name="daftarHariJaga" maxlength="255" class="form-control" required="required"  /></td>
+					<td><input type="date" id="tanggalDokter" name="daftarHariJaga" maxlength="255" class="form-control" required="required"  /></td>
 				</tr>
 				<tr style="height:3rem">
 					<td>Nama Dokter</td>
 					<td>
-						<select class="form-control" th:name="idDokter">
+						<select id="dokter" class="form-control" th:name="idDokter">
 							<option disabled="disabled" selected="selected" >Pilih Dokter</option>
-					    	<option th:each="dokter : ${allDokter}" th:value="${dokter.id}" th:text="${dokter.nama}"></option>
 					    </select>
 					</td>
 				</tr>
@@ -49,5 +48,26 @@
 	</div>
 </body>
 
+<script>
+$('#tanggalDokter').change(
+		function() {
+			$.getJSON("/api/dokter/available", {
+				tanggal : $(this).val(),
+				ajax : 'true'
+			}, function(data) {
+				var html = '<option disabled value="">Pilih Dokter</option>';
+				var len = data.result.length;
+				if (len > 0) {
+					for (var i = 0; i < len; i++) {
+						html += '<option value="' + data.result[i].id + '">'
+								+ data.result[i].nama + '</option>';
+					}
+					html += '</option>';
+
+				}
+				$('#dokter').html(html);
+			});
+		});
+</script>
 
 </html>

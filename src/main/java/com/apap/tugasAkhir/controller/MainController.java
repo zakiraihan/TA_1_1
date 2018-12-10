@@ -480,9 +480,7 @@ public class MainController {
 	@GetMapping(value = "/jadwal-jaga/insert")
 	private String addJadwalJaga(Model model) {
 		//model.addAttribute(new JadwalJagaModel());
-		DokterAllRestModel allDokter = restService.getAllDokter();
 		model.addAttribute("jadwalJaga", new JadwalJagaModel());
-		model.addAttribute("allDokter", allDokter.getResult());
 		model.addAttribute("allPaviliun", paviliunService.getActivePaviliun());
 		return "add-jadwal-jaga";
 	}
@@ -496,6 +494,7 @@ public class MainController {
 	/**
 	 * TODO: Filter list dokter yang paling available dari jadwal rawat jalan
 	 */
+	
 	
 	/**
 	 * TODO: Update jadwal jaga
@@ -601,4 +600,5 @@ public class MainController {
 		//DealerDetail detail = restTemplate.postForObject(path,requestObat, RequestObatModel.class);
 		return new RedirectView("/obat/request");
 	}
+        
 }

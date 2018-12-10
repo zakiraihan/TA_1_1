@@ -18,7 +18,7 @@ public class Setting {
 	
 	//url used for get all dokter assigned in rawat jalan
 	//if the dokter atleast has assigned there, tolak
-	final public static String getAllAssignedDokterUrl = "{{fill the url here}}";
+	final public static String getAllIUnAssignedDokterUrl = "http://sirawatjalan.herokuapp.com/rawat-jalan/poli/jadwal/dokter-available";
 	
 	//url for request obat
 	final public static String obatRequestUrl = "";

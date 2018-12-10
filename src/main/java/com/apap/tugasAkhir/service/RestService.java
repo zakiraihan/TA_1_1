@@ -7,6 +7,7 @@ import com.apap.tugasAkhir.rest.ObatAllRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
+import com.apap.tugasAkhir.rest.TanggalModel;
 
 public interface RestService {
 
@@ -25,4 +26,6 @@ public interface RestService {
 	String postPasienStatus(PatienModel pasien);
 
 	DokterAllRestMapModel getListOfDokter(String[] listOfString);
+
+	String getJadwalDokter(TanggalModel tanggal);
 }
