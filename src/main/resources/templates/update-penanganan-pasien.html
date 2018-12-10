@@ -5,7 +5,6 @@
 	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Penanganan Pasien')"></title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: fonts"></object>
 </head>
 
 <body  style="margin:50;padding:50">
@@ -24,13 +23,13 @@
 				       
 				       <div class="form-group">
 					          <label for="nama">Nama Pasien</label>
-					          <input type="text" disabled class="form-control" name="nama" th:field="*{nama}" aria-describedby="emailHelp" placeholder="">
+					          <input type="text" disabled class="form-control" name="nama" th:field="${pasien.nama}" aria-describedby="emailHelp" placeholder="">
 					   </div>
 					      
 					    <div class="form-group">
 				          	<label for="dokter">Dokter</label>
 				          	<br>
-					          	<select name="dokter" th:field="*{dokter}">
+					          	<select name="dokter" th:field="${dokter.nama}">
 					          		<div th:each="dokterPilih : ${dokters}" >
 					          			<!-- kondisi untuk milih dokter.id di database all dokter -->
 					          			<option th:if="${dokter.id==dokterPilih.id}" selected th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
@@ -45,44 +44,30 @@
 				         </div>
 				         <div class="form-group">
 				          	<label for="deskripsi">Deskripsi Penanganan</label>
-				          	<input type="text" class="form-control" name="deskripsi" th:field="*{pee}" aria-describedby="emailHelp" required="required" placeholder="">
+				          	<input type="text" class="form-control" name="deskripsi" th:field="${pemeriksaanPasien.pemeriksaan}" aria-describedby="emailHelp" required="required" placeholder="">
 			     		 </div>
 			     		 
 				        <div class="form-group">
-					      <label for="requestObat"><h3>Request Obat</h3></label>
-					      <hr>
-					      <table style = "width:70%" >
-					         
-						         <tr>
-						         	<td>
-						         		Nama Obat
-						         	</td>
-						         	<td>
-						         		Jumlah Obat
-						         	</td>
-						         </tr>
-						         
-						         <tr th:each="requestObat : ${obat}">
-							         	<td style="padding-right: 20px">
-							         		<input th:disabled="${requestObat.statusObat} == 1" type="text" class="form-control" name="namaObat" th:value="${requestObat.namaObat}" aria-describedby="emailHelp" placeholder="">
-								          	<!-- <select name="dokter" th:disabled="${requestObat.statusObat} == 1">
-								          		<div th:each="dokterPilih : ${dokters}" >
-								          			kondisi untuk milih dokter.id di database all dokter
-								          			<option th:if="${dokter.id==dokterPilih.id}" selected th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
-								          			<option th:unless="${dokter.id==dokterPilih.id}" th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
-								          		</div>
-								          	</select>  -->
-							         	</td>
-							         	<td>
-							         		<input th:disabled="${requestObat.statusObat} == 1" type="text" class="form-control" name="jumlahObat" th:value="${requestObat.jumlah}" aria-describedby="emailHelp" placeholder="">
-							         	</td>
-						         </tr>
-					        
-						    </table> 
-					      </div>
+     		 		<label for="requestObat">Request Obat: </label>
+            		<div th:each="obat,iterationStats : *{listObat}" style="padding:10px">
+	            		<div>
+	            			<label>Nama Obat</label>
+	            			<select class="form-control" th:field="*{listObat[__${iterationStats.index}__].namaObat}" >
+						  		<option th:each="obat : ${allObat}" th:value="${obat.nama}" th:text="${obat.nama}"></option>
+							</select>
+	            		</div>
+	            		<br>
+	            		<div class="form-group">
+	            			<label>Jumlah Obat</label>
+	            			<input type="number" class="form-control" th:field="*{listObat[__${iterationStats.index}__].jumlah}" />
+	            		</div>
+	            		<button type="submit" name="removeRow" th:value="${iterationStats.index}">Delete Obat</button>
+            		</div>
+            		<button type="submit" name="addRow" class="btn">Tambah Obat Lainnya</button>
+     		 		</div>
 	       	
      				 	 <button value="submit" class="btn btn-primary">Simpan</button>  
-     				 	 
+
 						</form>
 					</div>
 		 		</div>

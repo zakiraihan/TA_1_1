@@ -145,52 +145,19 @@ public class MainController {
 		requestPasienService.addRequestPasien(request);
 		return new RedirectView("/daftar-ranap");
 		
-	}
-	//	return "assign-kamar-pasien";
-	//}
-	
-	
+	}	
 	
 	/**
 	 * TODO: Menampilkan semua penanganan yang ada di rawat inap
 	 */
 	@GetMapping("/penanganan")
-	private String viewAllPenanganan() {	
+	private String viewAllPenanganan() {
 		return "view-all-penanganan";
 	}
 	
 	/**
 	 * TODO: Melakukan insert data penanganan harian rawat jalan 	
 	 */
-	/*@PostMapping("/penanganan/insert")
-	private RedirectView insertPenangananPasienSubmit(
-			@RequestParam("idPasien") long idPasien,
-			@RequestParam("dokter") long idDokter,
-			@RequestParam("deskripsi") String deskripsi,
-			@RequestParam("waktu") String waktu,
-			@RequestParam("namaObat") String namaObat,
-			@RequestParam("jumlahObat") long jumlahObat,
-			Model model
-			) {
-		String[] waktuSplit = waktu.split("T");
-		System.out.println(waktuSplit[1]);
-		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[1]));
-		//1990 format new timestamp
-		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,0,0);
-		PemeriksaanModel pemeriksaanPasien = new PemeriksaanModel();
-		RequestObatModel requestObat = new RequestObatModel(); 
-		requestObat.setIdPasien(idPasien);
-		requestObat.setNamaObat(namaObat);
-		requestObat.setJumlah(jumlahObat);
-		pemeriksaanPasien.setIdPasien(idPasien);
-		pemeriksaanPasien.setIdDokter(idDokter);
-		pemeriksaanPasien.setPemeriksaan(deskripsi);
-		pemeriksaanPasien.setWaktu(dateTime);
-		requestObat.setPemeriksaan(pemeriksaanPasien);
-		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
-		return new RedirectView("/");
-	}*/
-	
 	@PostMapping("/penanganan/insert")
 	private RedirectView insertPenangananPasienSubmit(@ModelAttribute PemeriksaanModel pemeriksaan, Model model, @RequestParam("waktuPemeriksaan") String waktu) {
 		
@@ -199,11 +166,7 @@ public class MainController {
 		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[1]));
 		//1990 format new timestamp
 		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,0,0);
-		
-		System.out.println(pemeriksaan.getIdDokter());
-		
 		pemeriksaan.setWaktu(dateTime);
-		
 		if (pemeriksaan.getListObat().size() != 0) {
 			for (RequestObatModel obat : pemeriksaan.getListObat()) {
 				obat.setIdPasien(pemeriksaan.getIdPasien());
@@ -211,11 +174,7 @@ public class MainController {
 				obat.setPemeriksaan(pemeriksaan);
 			}
 		}
-		
 		pemeriksaanService.addPemeriksaan(pemeriksaan);
-		
-		
-		
 		model.addAttribute("pemeriksaan", pemeriksaan);
 		return new RedirectView("/");
 	}
@@ -230,12 +189,23 @@ public class MainController {
 		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
 		DokterAllRestModel dokterAll = restService.getAllDokter();
 		List<JadwalJagaModel> allJadwalJaga = jadwalJagaService.viewAll();
+		
+		String[] listOfIdDokter = new String[allJadwalJaga.size()];
+		for (int i = 0; i < listOfIdDokter.length; i++) {
+			listOfIdDokter[i] = Long.toString(allJadwalJaga.get(i).getIdDokter());
+		}
+		
+		System.out.println(allJadwalJaga.size());
+		DokterAllRestMapModel allDokterReq = restService.getListOfDokter(listOfIdDokter);
+		model.addAttribute("allDokterReq", allDokterReq.getResult());
+		
+		model.addAttribute("allJadwal", allJadwalJaga);
 		ObatAllRestModel obatAll = restService.getAllObat();
 		model.addAttribute("allObat", obatAll.getResult());
 		model.addAttribute("pemeriksaan", new PemeriksaanModel());
 		model.addAttribute("allPasien", allPasienReq.getResult());
-		model.addAttribute("allDokter", dokterAll.getResult());
-		return "insert-penanganan-pasien";
+		model.addAttribute("allKamar", allKamar);
+		return "add-penanganan-pasien";
 	}
 	
 	/**
@@ -291,16 +261,19 @@ public class MainController {
 		
 		//Mengambil req obat 
 		List<RequestObatModel> reqObat = pemeriksaanPasien.getListObat();
+		ObatAllRestModel obatAll = restService.getAllObat();
+		model.addAttribute("allObat", obatAll.getResult());
 		model.addAttribute("pasien", pasien.getResult());
 		model.addAttribute("dokter", dokter.getResult());
-		model.addAttribute("pemeriksaan", pemeriksaanPasien);
+		model.addAttribute("pemeriksaanPasien", pemeriksaanPasien);
 		model.addAttribute("obat", reqObat);
 		model.addAttribute("dokters", dokters);
 		return "update-penanganan-pasien"; 
 	}
 	
 	@PostMapping("/penanganan/{idPasien}/{idPenanganan}")
-	private String updatePenangananPasienPost( @ModelAttribute PemeriksaanModel pemeriksaan, Model model, BindingResult bindingResult) {
+	private String updatePenangananPasienPost(@PathVariable("idPasien") long idPasien,
+			@ModelAttribute PemeriksaanModel pemeriksaan, Model model, BindingResult bindingResult) {
 		if(pemeriksaan.getListObat() == null) {
 			pemeriksaan.setListObat(new ArrayList());
 		}
@@ -350,6 +323,35 @@ public class MainController {
 //		return "redirect:/penanganan/"+idPasien;
 	}
 	
+	@RequestMapping(value="/penanganan/insert", method = RequestMethod.POST, params={"removeRow"})
+	public String removeRow(@ModelAttribute PemeriksaanModel pemeriksaan, final BindingResult bindingResult, final HttpServletRequest req, Model model) {
+	    final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+	    pemeriksaan.getListObat().remove(rowId.intValue());
+	    List<KamarModel> allKamar = kamarService.getActiveKamar();
+		String[] listOfIdPasien = new String[allKamar.size()];
+		for (int i = 0; i < listOfIdPasien.length; i++) {
+			listOfIdPasien[i] = Long.toString(allKamar.get(i).getIdPasien());
+		}
+		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+		DokterAllRestModel dokterAll = restService.getAllDokter();
+		List<JadwalJagaModel> allJadwalJaga = jadwalJagaService.viewAll();
+		
+		String[] listOfIdDokter = new String[allJadwalJaga.size()];
+		for (int i = 0; i < listOfIdDokter.length; i++) {
+			listOfIdDokter[i] = Long.toString(allJadwalJaga.get(i).getIdDokter());
+		}
+		DokterAllRestMapModel allDokterReq = restService.getListOfDokter(listOfIdDokter);
+		model.addAttribute("allDokterReq", allDokterReq.getResult());
+		
+		model.addAttribute("allJadwal", allJadwalJaga);
+		ObatAllRestModel obatAll = restService.getAllObat();
+		model.addAttribute("allObat", obatAll.getResult());
+		model.addAttribute("allPasien", allPasienReq.getResult());
+		model.addAttribute("allKamar", allKamar);
+	    model.addAttribute("pemeriksaan", pemeriksaan);
+	    return "add-penanganan-pasien";
+	}
+	
 	@RequestMapping(value = "/penanganan/insert", method = RequestMethod.POST, params= {"addRow"})
 	private String addRow(@ModelAttribute PemeriksaanModel pemeriksaan, Model model, BindingResult bindingResult) {
 		if(pemeriksaan.getListObat() == null) {
@@ -361,7 +363,6 @@ public class MainController {
 		requestnya.setStatusObat(0);
 		requestnya.setPemeriksaan(pemeriksaan);
 		pemeriksaan.getListObat().add(requestnya);
-		
 		List<KamarModel> allKamar = kamarService.getActiveKamar();
 		String[] listOfIdPasien = new String[allKamar.size()];
 		for (int i = 0; i < listOfIdPasien.length; i++) {
@@ -370,33 +371,23 @@ public class MainController {
 		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
 		DokterAllRestModel dokterAll = restService.getAllDokter();
 		List<JadwalJagaModel> allJadwalJaga = jadwalJagaService.viewAll();
+		
+		String[] listOfIdDokter = new String[allJadwalJaga.size()];
+		for (int i = 0; i < listOfIdDokter.length; i++) {
+			listOfIdDokter[i] = Long.toString(allJadwalJaga.get(i).getIdDokter());
+		}
+		DokterAllRestMapModel allDokterReq = restService.getListOfDokter(listOfIdDokter);
+		model.addAttribute("allDokterReq", allDokterReq.getResult());
+		
+		model.addAttribute("allJadwal", allJadwalJaga);
 		ObatAllRestModel obatAll = restService.getAllObat();
 		model.addAttribute("allObat", obatAll.getResult());
-		model.addAttribute("pemeriksaan", pemeriksaan);
 		model.addAttribute("allPasien", allPasienReq.getResult());
-		model.addAttribute("allDokter", dokterAll.getResult());
 		model.addAttribute("allKamar", allKamar);
-		
-		List<ObatModel> allObat = restService.getAllObat().getResult();
-		model.addAttribute("listObat", allObat);
-		return "add-penanganan-pasien";
+	    
+	    model.addAttribute("pemeriksaan", pemeriksaan);
+	    return "add-penanganan-pasien";
 	}
-	
-	/*@RequestMapping(value = "/pegawai/tambah", method = RequestMethod.POST, params= {"addRow"})
-	private String addRow(@ModelAttribute PegawaiModel pegawai, Model model, BindingResult bindingResult) {
-		if (pegawai.getJabatanList() == null) {
-			pegawai.setJabatanList(new ArrayList());
-		}
-		System.out.println(pegawai.getJabatanList().size());
-		pegawai.getJabatanList().add(new JabatanModel());
-		
-		List<JabatanModel> jab = jabatanDb.findAll();
-		List<ProvinsiModel> prov = provinsiDb.findAll();
-		model.addAttribute("provinsiList", prov);
-		model.addAttribute("pegawai", pegawai);
-		model.addAttribute("jabatanList",jab);
-		return "add-pegawai";
-	}*/
 	
 	@GetMapping("/kamar/insert")
 	private String insertDataKamar(Model model) {
