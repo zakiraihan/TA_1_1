@@ -19,19 +19,19 @@
 					th:object="${jadwalJaga}" method="POST">
 					<input type="hidden" th:field="*{id}" />
 					<table>
-						<tr style="height: 3rem">
-							<td style="width: 10rem">Status Dokter</td>
+						<tr>
+							<td>Status Dokter</td>
 							<td><input type="text" name="statusDokter" maxlength="255"
 								class="form-control" required="required"
 								th:value="${jadwalJaga.statusDokter}" /></td>
 						</tr>
-						<tr style="height: 3rem">
+						<tr>
 							<td>Hari Jaga</td>
 							<td><input type="date" name="daftarHariJaga" maxlength="255"
 								class="form-control" required="required"
 								th:value=${jadwalJaga.daftarHariJaga} /></td>
 						</tr>
-						<tr style="height: 3rem">
+						<tr>
 							<td>Nama Dokter</td>
 							<td><select class="form-control" name="idDokter">
 									<option disabled="disabled" selected="selected">Pilih
@@ -41,7 +41,7 @@
 										th:selected="${dokter.id} == ${jadwalJaga.idDokter}"></option>
 							</select></td>
 						</tr>
-						<tr style="height: 3rem">
+						<tr>
 							<td>Nama Paviliun</td>
 							<td><select class="form-control" name="paviliunJaga">
 									<option disabled="disabled" selected="selected">Pilih
@@ -60,6 +60,8 @@
 					</div>
 				</form>
 			</div>
+		</div>
+	</div>
 </body>
 
 
