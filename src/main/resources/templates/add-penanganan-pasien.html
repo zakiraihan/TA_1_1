@@ -33,9 +33,9 @@
 	          			<label for="dokter">Dokter</label>
 	          			<br>
 	          			<select name="idDokter" class="form-control">
-	          				<div th:each="dokterPilih : ${allDokter}" >
+	          				<div th:each="jadwal : ${allJadwal}" >
 	          				<!-- kondisi untuk milih dokter.id di database all dokter -->
-	          				<option th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
+	          				<option th:value="${allDokterReq.get(jadwal.idDokter).id}" th:text="${allDokterReq.get(jadwal.idDokter).nama}"></option>
 	          				</div>
 	          			</select>
 	         		</div>
