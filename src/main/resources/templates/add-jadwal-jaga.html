@@ -10,45 +10,6 @@
 <nav th:replace="fragments/fragment :: navbar"></nav>
 
 <body>
-<<<<<<< HEAD
-    <nav th:replace="fragments/fragment :: navbar"></nav>
-	<br>
-	<div style="margin-left:2rem">
-		<h4>Tambah Jadwal Jaga</h4>
-		<form th:action="@{/jadwal-jaga/insert}" th:object="${jadwalJaga}" method="POST">
-			<table>
-				<tr style="height:3rem">
-					<td style="width:10rem">Status Dokter</td>
-					<td><input type="text" name="statusDokter" maxlength="255" class="form-control" required="required" /></td>
-				</tr>
-				<tr style="height:3rem">
-					<td>Hari Jaga</td>
-					<td><input type="date" id="tanggalDokter" name="daftarHariJaga" maxlength="255" class="form-control" required="required"  /></td>
-				</tr>
-				<tr style="height:3rem">
-					<td>Nama Dokter</td>
-					<td>
-						<select id="dokter" class="form-control" th:name="idDokter">
-							<option disabled="disabled" selected="selected" >Pilih Dokter</option>
-					    </select>
-					</td>
-				</tr>
-				<tr style="height:3rem">
-					<td>Nama Paviliun</td>
-					<td>
-						<select class="form-control" th:name="paviliunJaga">
-							<option disabled="disabled" selected="selected" >Pilih Paviliun</option>
-					    	<option th:each="paviliun : ${allPaviliun}" th:value="${paviliun.id}" th:text="${paviliun.namaPaviliun}"></option>
-					    </select>
-					</td>
-				</tr>
-			
-			</table>
-			<br>
-			<a href="/jadwal-jaga"><button type="button" class="btn btn-danger">Back</button></a>
-			<button type="submit" class="btn" style="background-color: #696969; color:white">Simpan</button>
-		</form>
-=======
 	<div class="container">
 		<div class="col-md-6">
 			<div class="box">
@@ -95,7 +56,6 @@
 				</form>
 			</div>
 		</div>
->>>>>>> 16daa2aa9d36b91ca46f26d50fa70271516c965a
 	</div>
 </body>
 
