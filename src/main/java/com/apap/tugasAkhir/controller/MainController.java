@@ -663,6 +663,7 @@ public class MainController {
 		permintaan.getListPermintaanMedicalSupplies().add(medicalSupplies);
 		
 		String result = restService.postObat(permintaan);
+		requestObat.setStatusObat(0);
 		System.out.println(result);
 		return new RedirectView("/obat/request");
 	}

@@ -54,11 +54,6 @@ public class ApiController {
 	@Autowired
 	RestService restService;
 	
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
-	
 	@PostMapping(value = "/daftar-ranap")
 	private String addRequestPasien(@RequestBody JsonNode req) {
 		String returnMessage = "";
