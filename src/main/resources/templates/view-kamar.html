@@ -2,63 +2,68 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Kamar')"></title>
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<title
+	th:replace="fragments/fragment :: headerFragment (pageTitle='Kamar')"></title>
+<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
+<nav th:replace="fragments/fragment :: navbar"></nav>
 <body>
-    <nav th:replace="fragments/fragment :: navbar"></nav>
-	<div class="row"  style="margin-left: 20px; margin-top:25px">
+	<div class="container">
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					Detail Kamar
-				</div>
-				<div class="card-body">
-					<table>
-						<tr>
-							<td width="200" height="50">Nomor Kamar:</td>
-							<td th:text="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}"></td>
-						</tr>
-						<tr>
-							<td height="50">Nama Pasien:</td>
-							<div th:switch="${kamar.status}">
-								<td th:case="1" th:text="${pasien.nama}"></td>
-								<td th:case="0">Tidak Ada Pasien</td>
-							</div>
-						</tr>
-						<tr>
-							<td height="50">Paviliun:</td>
-							<td th:text="${kamar.paviliunKamar.namaPaviliun}"></td>
-						</tr>
-						<tr>
-							<td height="50">Status:</td>
-							<span th:if="${kamar.paviliunKamar.status == 1}">
-								<div th:switch="${kamar.status}">
-								  <td th:case="1">Kamar Terisi</td>
-								  <td th:case="0">Tersedia</td>
-								</div>
-							</span>
-							<span th:unless="${kamar.paviliunKamar.status == 1}">
-								<td>Kamar Rusak</td>					
-							</span>
-						</tr>
-					</table>
-					<div class="row">
-						<div class="col-md-9">
-							<span th:if="${kamar.paviliunKamar.status == 1}">
-								<a class="btn btn-primary" th:href="'/kamar/update/' + ${kamar.id}">Update Kamar</a>
-							</span>
-							<span th:unless="${kamar.paviliunKamar.status == 1}">
-								<a class="btn btn-danger" href="#">Update Kamar</a>
-								<p style="color: red">Kamar berada di Paviliun rusak, tidak bisa di update</p>					
-							</span>
+			<div class="box">
+				<h2 class="d-flex align-items-center">Detail Kamar</h2>
+				<table class="align-items-center">
+					<tr>
+						<td>Nomor Kamar	:</td>
+						<td
+							th:text="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}" class="text-center"></td>
+					</tr>
+					<tr>
+						<td>Nama Pasien	:</td>
+						<div th:switch="${kamar.status}" class="text-center">
+							<td th:case="1" th:text="${pasien.nama}" class="text-center"></td>
+							<td th:case="0" class="text-center">Tidak Ada Pasien</td>
 						</div>
+					</tr>
+					<tr>
+						<td>Paviliun	:</td>
+						<td th:text="${kamar.paviliunKamar.namaPaviliun}" class="text-center"></td>
+					</tr>
+					<tr>
+						<td>Status		:</td>
+						<span th:if="${kamar.paviliunKamar.status == 1}">
+							<div th:switch="${kamar.status}">
+								<td th:case="1" class="text-center">Kamar Terisi</td>
+								<td th:case="0" class="text-center">Tersedia</td>
+							</div>
+						</span>
+						<span th:unless="${kamar.paviliunKamar.status == 1}">
+							<td>Kamar Rusak</td>
+						</span>
+					</tr>
+				</table>
+				<br>
+				<span th:if="${kamar.paviliunKamar.status == 1}">
+					<div class="text-center">
+					<a href="/kamar"><button type="button"
+								class="button danger">Back</button></a>
+						<a class="button gradient-bg"
+							th:href="'/kamar/update/' + ${kamar.id}">Update Kamar</a>
 					</div>
-				</div>
+				</span> <span th:unless="${kamar.paviliunKamar.status == 1}">
+					<div class="text-center">
+						<button class="button gradient-bg">Update Kamar</button>
+						<p style="color: red">Kamar berada di Paviliun rusak, tidak
+							bisa di update</p>
+					</div>
+
+				</span>
 			</div>
 		</div>
+	</div>
+	</div>
 	</div>
 </body>
 </html>
