@@ -25,12 +25,12 @@
 						</tr>
 						<tr>
 							<td>Hari Jaga</td>
-							<td><input type="date" name="daftarHariJaga" maxlength="255"
+							<td><input type="date" id="tanggalDokter" name="daftarHariJaga" maxlength="255"
 								class="form-control" required="required" /></td>
 						</tr>
 						<tr>
 							<td>Nama Dokter</td>
-							<td><select class="form-control" th:name="idDokter">
+							<td><select class="form-control" id="dokter" th:name="idDokter">
 									<option disabled="disabled" selected="selected">Pilih
 										Dokter</option>
 									<option th:each="dokter : ${allDokter}" th:value="${dokter.id}"
@@ -69,7 +69,7 @@ $('#tanggalDokter').change(
 				alert("Asdshadkajshdkjasd")
 				var html = '<option disabled value="">Pilih Dokter</option>';
 				var len = data.result.length;
-				alert(data);
+				alert(len);
 				if (len > 0) {
 					for (var i = 0; i < len; i++) {
 						html += '<option value="' + data.result[i].id + '">'
