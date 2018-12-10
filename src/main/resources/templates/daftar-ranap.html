@@ -20,6 +20,7 @@
 						<th>Status Pasien</th>
 						<th>Nomor Kamar</th>
 						<th>Keluarkan Pasien</th>
+						<th>Lihat Penanganan</th>
 					</thead>
 					<span th:each="kamar, iterator : ${allKamar}">
 						<tr>
@@ -34,8 +35,12 @@
 									<input class="form-control" type="hidden" id="idPasien"
 										required="required" name="idPasien"
 										th:value="${allPasien.get(kamar.idPasien).id}" />
-									<button class="button gradient-bg" type="submit">Keluarkan
-										Pasien</button>
+									<button class="button gradient-bg" type="submit">Keluarkan Pasien</button>
+								</form>
+							</td>
+							<td>
+								<form th:action="@{/penanganan/{idPasien}(idPasien=${kamar.idPasien})}" id="idPasien" method="GET">
+									<button class="button gradient-bg" type="submit">Lihat</button>
 								</form>
 							</td>
 						</tr>
