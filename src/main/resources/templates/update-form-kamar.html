@@ -2,69 +2,88 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Kamar')"></title>
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<title
+	th:replace="fragments/fragment :: headerFragment (pageTitle='Kamar')"></title>
+<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
+<nav th:replace="fragments/fragment :: navbar"></nav>
 <body>
-    <nav th:replace="fragments/fragment :: navbar"></nav>
-	<div class="row"  style="margin-left: 20px; margin-top:25px">
+	<div class="container">
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					Detail Kamar
-				</div>
-				<div class="card-body">
-					<form th:action="@{/kamar/{idKamar} (idKamar = ${kamar.id})}" method="POST">
-						<input th:if="${kamar.status} == 1" id="pasienAwal" type="hidden" name="pasienAwal" class="form-control" th:value="${pasien.id}"/>
-						<input th:if="${kamar.status} == 0" id="pasienAwal" type="hidden" name="pasienAwal" class="form-control" th:value="0"/>
-						<div>
-							<label>Nomor Kamar:</label>
-		            		<input type="text" id="nomorKamar" name="nomorKamar" class="form-control" th:value="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}" disabled>
-		            	</div>
-		            	<div>
-		            		<label>Nama Pasien:</label>
-	            			<select class="form-control" name="idPasien" id="pasien">
-	            				<option th:text="'Kosong'" th:value="0"></option>
-	            				<option th:if="${kamar.status} == 1" th:text="${pasien.nama}" th:value="${pasien.id}" th:selected="true"></option>
-								<option th:each="pasienPending : ${listOfPending}" 
-								        th:value="${pasienPending.idPasien}" 
-								        th:text="${allPendingPasien.get(pasienPending.idPasien).nama}"></option>
-							</select>
-		            	</div>
-		            	<div>
-		            		<label>Paviliun :</label>
-		               		<select class="form-control" name="paviliunKamar" id="paviliun">
-							  <option th:each="paviliun : ${listOfPaviliun}" 
-							          th:value="${paviliun.id}" 
-							          th:text="${paviliun.namaPaviliun}" th:selected="${paviliun.id} == ${kamar.paviliunKamar.id}"></option>
-							</select>
-		            	</div>
-		            	<div>
-		            		<label>Status :</label>
-		            		<span th:if="${kamar.paviliunKamar.status == 1}">
-								<div th:if="${kamar.status} == 1">
-									<input id="statusText" type="text" name="statusText" class="form-control" th:value="'Kamar Terisi'" disabled/>
-									<input id="status" type="hidden" name="status" class="form-control" th:value="1"/>
-								</div>
-								<div th:if="${kamar.status} == 0">
-									<input id="statusText" type="text" name="statusText" class="form-control" th:value="'Tersedia'" disabled/>
-									<input id="status" type="hidden" name="status" class="form-control" th:value="0"/>
-								</div>
-							</span>
-							<span th:unless="${kamar.paviliunKamar.status == 1}">
-								<input type="text" name="status" class="form-control" th:value="'Kamar Rusak'" disabled/>			
-							</span>
-		            	</div>
-				      	<div class="card-body">
-		                	<input type="submit" name="submit" class="btn btn-primary"  value="Update">
-		            	</div>
-            		</form>
-				</div>
+			<div class="box">
+				<h2 class="d-flex align-items-center">Ubah Detail Kamar</h2>
+				<form th:action="@{/kamar/{idKamar} (idKamar = ${kamar.id})}"
+					method="POST">
+					<input th:if="${kamar.status} == 1" id="pasienAwal" type="hidden"
+						name="pasienAwal" class="form-control" th:value="${pasien.id}" />
+					<input th:if="${kamar.status} == 0" id="pasienAwal" type="hidden"
+						name="pasienAwal" class="form-control" th:value="0" />
+					<table>
+						<tr>
+							<td>Nomor Kamar</td>
+							<td><input type="text" id="nomorKamar" name="nomorKamar"
+								class="form-control"
+								th:value="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}"
+								disabled /></td>
+						</tr>
+						<tr>
+							<td>Nama Pasien</td>
+							<td><select class="form-control" name="idPasien" id="pasien">
+									<option th:text="'Kosong'" th:value="0"></option>
+									<option th:if="${kamar.status} == 1" th:text="${pasien.nama}"
+										th:value="${pasien.id}" th:selected="true"></option>
+									<option th:each="pasienPending : ${listOfPending}"
+										th:value="${pasienPending.idPasien}"
+										th:text="${allPendingPasien.get(pasienPending.idPasien).nama}"></option>
+							</select></td>
+						</tr>
+						<tr>
+							<td>Paviliun</td>
+							<td><select class="form-control" name="paviliunKamar"
+								id="paviliun">
+									<option th:each="paviliun : ${listOfPaviliun}"
+										th:value="${paviliun.id}" th:text="${paviliun.namaPaviliun}"
+										th:selected="${paviliun.id} == ${kamar.paviliunKamar.id}"></option>
+							</select></td>
+						</tr>
+						<tr>
+							<td>Status</td>
+							<td><span th:if="${kamar.paviliunKamar.status == 1}">
+									<div th:if="${kamar.status} == 1">
+										<input id="statusText" type="text" name="statusText"
+											class="form-control" th:value="'Kamar Terisi'" disabled /> <input
+											id="status" type="hidden" name="status" class="form-control"
+											th:value="1" />
+									</div>
+									<div th:if="${kamar.status} == 0">
+										<input id="statusText" type="text" name="statusText"
+											class="form-control" th:value="'Tersedia'" disabled /> <input
+											id="status" type="hidden" name="status" class="form-control"
+											th:value="0" />
+									</div>
+							</span> <span th:unless="${kamar.paviliunKamar.status == 1}"> <input
+									type="text" name="status" class="form-control"
+									th:value="'Kamar Rusak'" disabled />
+							</span></td>
+						</tr>
+
+
+					</table>
+					<br>
+					<div class="text-center">
+						<a th:href="'/kamar/' + ${kamar.id}"><button type="button"
+								class="button danger">Back</button></a>
+						<button type="submit" class="button gradient-bg" name="submit"
+							value="Update">Simpan</button>
+					</div>
+
+				</form>
 			</div>
 		</div>
 	</div>
+
 </body>
 
 <script>

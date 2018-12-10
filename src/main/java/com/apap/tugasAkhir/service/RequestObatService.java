@@ -9,4 +9,5 @@ public interface RequestObatService {
 	Optional<RequestObatModel> findById(Long id);
 	List<RequestObatModel> getByIdPasien(Long id);
 	List<RequestObatModel> findAll();
+	RequestObatModel addRequestObat(RequestObatModel req);
 }

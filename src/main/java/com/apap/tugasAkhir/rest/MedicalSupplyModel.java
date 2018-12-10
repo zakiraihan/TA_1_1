@@ -24,6 +24,4 @@ public class MedicalSupplyModel implements Serializable{
 		this.jumlah = jumlah;
 	}
 	
-	
-	
 }

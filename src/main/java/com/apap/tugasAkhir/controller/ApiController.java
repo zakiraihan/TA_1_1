@@ -131,13 +131,13 @@ public class ApiController {
 	
 	@GetMapping(value = "/dokter/available")
 	@ResponseBody
-	private List<DokterModel> getAvailableDokter(@RequestParam (value = "tanggal", required = true) String tanggal) {
+	private Object getAvailableDokter(@RequestParam (value = "tanggal", required = true) String tanggal) {
 		HttpHeaders headers = new HttpHeaders();
 	    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 	    headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
 	    HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 	    String path = Setting.getAllIUnAssignedDokterUrl + "/?tanggal=" + tanggal;
 	    Object response = restTemplate.exchange(path, HttpMethod.GET,entity,Object.class);
-		return response.getBody().getResult();
+		return response;
 	}
 }

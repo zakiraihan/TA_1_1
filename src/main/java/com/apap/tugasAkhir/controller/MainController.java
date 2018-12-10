@@ -1,5 +1,6 @@
 package com.apap.tugasAkhir.controller;
 
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,8 @@ import com.apap.tugasAkhir.rest.DokterModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
 import com.apap.tugasAkhir.rest.MedicalSupplyModel;
 import com.apap.tugasAkhir.rest.MedicineModel;
+import com.apap.tugasAkhir.rest.ObatAllRestModel;
+import com.apap.tugasAkhir.rest.ObatModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.PermintaanObatModel;
@@ -162,12 +165,14 @@ public class MainController {
 	/**
 	 * TODO: Melakukan insert data penanganan harian rawat jalan 	
 	 */
-	@PostMapping("/penanganan/insert")
+	/*@PostMapping("/penanganan/insert")
 	private RedirectView insertPenangananPasienSubmit(
 			@RequestParam("idPasien") long idPasien,
 			@RequestParam("dokter") long idDokter,
 			@RequestParam("deskripsi") String deskripsi,
 			@RequestParam("waktu") String waktu,
+			@RequestParam("namaObat") String namaObat,
+			@RequestParam("jumlahObat") long jumlahObat,
 			Model model
 			) {
 		String[] waktuSplit = waktu.split("T");
@@ -176,11 +181,45 @@ public class MainController {
 		//1990 format new timestamp
 		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,0,0);
 		PemeriksaanModel pemeriksaanPasien = new PemeriksaanModel();
+		RequestObatModel requestObat = new RequestObatModel(); 
+		requestObat.setIdPasien(idPasien);
+		requestObat.setNamaObat(namaObat);
+		requestObat.setJumlah(jumlahObat);
 		pemeriksaanPasien.setIdPasien(idPasien);
 		pemeriksaanPasien.setIdDokter(idDokter);
 		pemeriksaanPasien.setPemeriksaan(deskripsi);
 		pemeriksaanPasien.setWaktu(dateTime);
+		requestObat.setPemeriksaan(pemeriksaanPasien);
 		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
+		return new RedirectView("/");
+	}*/
+	
+	@PostMapping("/penanganan/insert")
+	private RedirectView insertPenangananPasienSubmit(@ModelAttribute PemeriksaanModel pemeriksaan, Model model, @RequestParam("waktuPemeriksaan") String waktu) {
+		
+		String[] waktuSplit = waktu.split("T");
+		System.out.println(waktuSplit[1]);
+		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[1]));
+		//1990 format new timestamp
+		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,0,0);
+		
+		System.out.println(pemeriksaan.getIdDokter());
+		
+		pemeriksaan.setWaktu(dateTime);
+		
+		if (pemeriksaan.getListObat().size() != 0) {
+			for (RequestObatModel obat : pemeriksaan.getListObat()) {
+				obat.setIdPasien(pemeriksaan.getIdPasien());
+				obat.setStatusObat(0);
+				obat.setPemeriksaan(pemeriksaan);
+			}
+		}
+		
+		pemeriksaanService.addPemeriksaan(pemeriksaan);
+		
+		
+		
+		model.addAttribute("pemeriksaan", pemeriksaan);
 		return new RedirectView("/");
 	}
 	
@@ -193,6 +232,9 @@ public class MainController {
 		}
 		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
 		DokterAllRestModel dokterAll = restService.getAllDokter();
+		List<JadwalJagaModel> allJadwalJaga = jadwalJagaService.viewAll();
+		ObatAllRestModel obatAll = restService.getAllObat();
+		model.addAttribute("allObat", obatAll.getResult());
 		model.addAttribute("pemeriksaan", new PemeriksaanModel());
 		model.addAttribute("allPasien", allPasienReq.getResult());
 		model.addAttribute("allDokter", dokterAll.getResult());
@@ -286,8 +328,30 @@ public class MainController {
 		if(pemeriksaan.getListObat() == null) {
 			pemeriksaan.setListObat(new ArrayList());
 		}
-		pemeriksaan.getListObat().add(new RequestObatModel());
+		
+		RequestObatModel requestnya = new RequestObatModel();
+		requestnya.setIdPasien(pemeriksaan.getIdPasien());
+		requestnya.setStatusObat(0);
+		requestnya.setPemeriksaan(pemeriksaan);
+		pemeriksaan.getListObat().add(requestnya);
+		
+		List<KamarModel> allKamar = kamarService.getActiveKamar();
+		String[] listOfIdPasien = new String[allKamar.size()];
+		for (int i = 0; i < listOfIdPasien.length; i++) {
+			listOfIdPasien[i] = Long.toString(allKamar.get(i).getIdPasien());
+		}
+		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+		DokterAllRestModel dokterAll = restService.getAllDokter();
+		List<JadwalJagaModel> allJadwalJaga = jadwalJagaService.viewAll();
+		ObatAllRestModel obatAll = restService.getAllObat();
+		model.addAttribute("allObat", obatAll.getResult());
 		model.addAttribute("pemeriksaan", pemeriksaan);
+		model.addAttribute("allPasien", allPasienReq.getResult());
+		model.addAttribute("allDokter", dokterAll.getResult());
+		model.addAttribute("allKamar", allKamar);
+		
+		List<ObatModel> allObat = restService.getAllObat().getResult();
+		model.addAttribute("listObat", allObat);
 		return "add-penanganan-pasien";
 	}
 	

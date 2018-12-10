@@ -2,12 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Jadwal Jaga: Tambah')"></title>
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<title
+	th:replace="fragments/fragment :: headerFragment (pageTitle='Jadwal Jaga: Tambah')"></title>
+<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
+<nav th:replace="fragments/fragment :: navbar"></nav>
 
 <body>
+<<<<<<< HEAD
     <nav th:replace="fragments/fragment :: navbar"></nav>
 	<br>
 	<div style="margin-left:2rem">
@@ -45,6 +48,54 @@
 			<a href="/jadwal-jaga"><button type="button" class="btn btn-danger">Back</button></a>
 			<button type="submit" class="btn" style="background-color: #696969; color:white">Simpan</button>
 		</form>
+=======
+	<div class="container">
+		<div class="col-md-6">
+			<div class="box">
+				<h2 class="d-flex align-items-center">Tambah Jadwal Jaga</h2>
+
+				<form th:action="@{/jadwal-jaga/insert}" th:object="${jadwalJaga}"
+					method="POST">
+					<table>
+						<tr>
+							<td>Status Dokter</td>
+							<td><input type="text" name="statusDokter" maxlength="255"
+								class="form-control" required="required" /></td>
+						</tr>
+						<tr>
+							<td>Hari Jaga</td>
+							<td><input type="date" name="daftarHariJaga" maxlength="255"
+								class="form-control" required="required" /></td>
+						</tr>
+						<tr>
+							<td>Nama Dokter</td>
+							<td><select class="form-control" th:name="idDokter">
+									<option disabled="disabled" selected="selected">Pilih
+										Dokter</option>
+									<option th:each="dokter : ${allDokter}" th:value="${dokter.id}"
+										th:text="${dokter.nama}"></option>
+							</select></td>
+						</tr>
+						<tr>
+							<td>Nama Paviliun</td>
+							<td><select class="form-control" th:name="paviliunJaga">
+									<option disabled="disabled" selected="selected">Pilih
+										Paviliun</option>
+									<option th:each="paviliun : ${allPaviliun}"
+										th:value="${paviliun.id}" th:text="${paviliun.namaPaviliun}"></option>
+							</select></td>
+						</tr>
+					</table>
+					<br>
+					<div class="text-center">
+						<a href="/jadwal-jaga"><button type="button"
+								class="button danger">Back</button></a>
+						<button type="submit" class="button gradient-bg">Simpan</button>
+					</div>
+				</form>
+			</div>
+		</div>
+>>>>>>> 16daa2aa9d36b91ca46f26d50fa70271516c965a
 	</div>
 </body>
 
