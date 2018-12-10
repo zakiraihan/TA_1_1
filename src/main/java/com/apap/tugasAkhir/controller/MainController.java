@@ -296,39 +296,58 @@ public class MainController {
 		model.addAttribute("pemeriksaan", pemeriksaanPasien);
 		model.addAttribute("obat", reqObat);
 		model.addAttribute("dokters", dokters);
-		return "update-penanganan-pasien";
+		return "update-penanganan-pasien"; 
 	}
 	
 	@PostMapping("/penanganan/{idPasien}/{idPenanganan}")
-	private String updatePenangananPasienPost(
-			@PathVariable("idPasien") long idPasien,
-			@RequestParam("id") long idPenanganan,
-			@RequestParam("dokter") long idDokter,
-			@RequestParam("deskripsi") String deskripsi,
-			@RequestParam("waktu") String waktu,
-			Model model
-			) {
+	private String updatePenangananPasienPost( @ModelAttribute PemeriksaanModel pemeriksaan, Model model, BindingResult bindingResult) {
+		if(pemeriksaan.getListObat() == null) {
+			pemeriksaan.setListObat(new ArrayList());
+		}
+		
+		RequestObatModel requestObat = new RequestObatModel();
+		requestObat.setIdPasien(pemeriksaan.getIdPasien());
+		requestObat.setStatusObat(0);
+		requestObat.setPemeriksaan(pemeriksaan);
+		pemeriksaan.getListObat().add(requestObat);
+		
+		List<KamarModel> allKamar = kamarService.getActiveKamar();
+		String[] listOfIdPasien = new String[allKamar.size()];
+		for (int i = 0; i < listOfIdPasien.length; i++) {
+			listOfIdPasien[i] = Long.toString(allKamar.get(i).getIdPasien());
+		}
+		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
+		DokterAllRestModel dokterAll = restService.getAllDokter();
+		List<JadwalJagaModel> allJadwalJaga = jadwalJagaService.viewAll();
+		ObatAllRestModel obatAll = restService.getAllObat();
+		model.addAttribute("allObat", obatAll. getResult());
+		model.addAttribute("pemeriksaan", pemeriksaan);
+		model.addAttribute("allPasien", allPasienReq.getResult());
+		model.addAttribute("allDokter", dokterAll.getResult());
+		model.addAttribute("allKamar", allKamar);
+		
+		List<ObatModel> allObat = restService.getAllObat().getResult();
+		model.addAttribute("listObat", allObat);
+		return "redirect:/penanganan/"+ pemeriksaan.getIdPasien();
+		
+//			@PathVariable("idPasien") long idPasien,
+//			@RequestParam("id") long idPenanganan,
+//			@RequestParam("dokter") long idDokter,
+//			@RequestParam("deskripsi") String deskripsi,
+//			@RequestParam("waktu") String waktu,
+//			Model model
+//			) {
+//
 //		String[] waktuSplit = waktu.split("T");
 //		System.out.println(waktu);
 //		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[2]));
-//		//1990 format new timestamp
 //		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,(int)Double.parseDouble(waktuSplit[1].split(":")[2])-1,0);
 //		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPenanganan); 
-//		pemeriksaanPasien.setIdDokter(pemeriksaan.getId());
-//		pemeriksaanPasien.setPemeriksaan(pemeriksaan.getPemeriksaan());
+//		pemeriksaanPasien.setIdDokter(idDokter);
+//		pemeriksaanPasien.setPemeriksaan(deskripsi);
 //		pemeriksaanPasien.setWaktu(dateTime);
-//		pemeriksaanPasien.setListObat(pemeriksaan.getListObat());
-		String[] waktuSplit = waktu.split("T");
-		System.out.println(waktu);
-		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[2]));
-		//1990 format new timestamp
-		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,(int)Double.parseDouble(waktuSplit[1].split(":")[2])-1,0);
-		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPenanganan); 
-		pemeriksaanPasien.setIdDokter(idDokter);
-		pemeriksaanPasien.setPemeriksaan(deskripsi);
-		pemeriksaanPasien.setWaktu(dateTime);
-		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
-		return "redirect:/penanganan/"+idPasien;
+//		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
+//		return "redirect:/penanganan/"+idPasien;
 	}
 	
 	@RequestMapping(value = "/penanganan/insert", method = RequestMethod.POST, params= {"addRow"})

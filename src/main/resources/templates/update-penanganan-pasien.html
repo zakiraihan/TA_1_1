@@ -5,6 +5,7 @@
 	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Penanganan Pasien')"></title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: fonts"></object>
 </head>
 
 <body  style="margin:50;padding:50">
@@ -18,39 +19,40 @@
                 </div>
                 <div class="card-body">
 				  <div class="container">
-				      <form th:action="''" method="POST">
-				       <input type="hidden" name="id" th:value="${pemeriksaan.id}"/>
-				         <div class="form-group">
+				      <form th:action="@{/penanganan/update }" th:object="${pemeriksaanPasien}" method="POST">
+				       <input type="hidden" name="id" th:field="*{id}"/>
+				       
+				       <div class="form-group">
 					          <label for="nama">Nama Pasien</label>
-					          <input type="text" disabled class="form-control" name="nama" th:value="${pasien.nama}" aria-describedby="emailHelp" placeholder="">
-					      </div>
-					      <div class="form-group">
+					          <input type="text" disabled class="form-control" name="nama" th:field="*{nama}" aria-describedby="emailHelp" placeholder="">
+					   </div>
+					      
+					    <div class="form-group">
 				          	<label for="dokter">Dokter</label>
 				          	<br>
-				          	<select name="dokter">
-				          		<div th:each="dokterPilih : ${dokters}" >
-				          			<!-- kondisi untuk milih dokter.id di database all dokter -->
-				          			<option th:if="${dokter.id==dokterPilih.id}" selected th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
-				          			<option th:unless="${dokter.id==dokterPilih.id}" th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
-				          		</div>
-				          	</select>
+					          	<select name="dokter" th:field="*{dokter}">
+					          		<div th:each="dokterPilih : ${dokters}" >
+					          			<!-- kondisi untuk milih dokter.id di database all dokter -->
+					          			<option th:if="${dokter.id==dokterPilih.id}" selected th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
+					          			<option th:unless="${dokter.id==dokterPilih.id}" th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
+					          		</div>
+					          	</select>
 				         </div>
+				         
 				         <div class="form-group">
 				          	<label for="waktu">Waktu</label>
-				          	<input type="datetime-local" class="form-control" name="waktu" th:value="${#strings.replace(pemeriksaan.waktu,' ','T')}" aria-describedby="emailHelp" required="required" placeholder="">
+				          	<input type="text" class="form-control" name="waktu" th:field="*{waktu}" aria-describedby="emailHelp" required="required" placeholder="">
 				         </div>
 				         <div class="form-group">
 				          	<label for="deskripsi">Deskripsi Penanganan</label>
-				          	<input type="text" class="form-control" name="deskripsi" th:value="${pemeriksaan.pemeriksaan}" aria-describedby="emailHelp" required="required" placeholder="">
+				          	<input type="text" class="form-control" name="deskripsi" th:field="*{pee}" aria-describedby="emailHelp" required="required" placeholder="">
 			     		 </div>
 			     		 
-			     		 
-	    
 				        <div class="form-group">
 					      <label for="requestObat"><h3>Request Obat</h3></label>
 					      <hr>
-					       
-					         <table style = "width:70%" >
+					      <table style = "width:70%" >
+					         
 						         <tr>
 						         	<td>
 						         		Nama Obat
@@ -59,27 +61,28 @@
 						         		Jumlah Obat
 						         	</td>
 						         </tr>
-						         <tr th:each="requestObat : ${obat}">
-						         	<td>
-						         		<input th:disabled="${requestObat.statusObat} == 1" type="text" class="form-control" name="namaObat" th:value="${requestObat.namaObat}" aria-describedby="emailHelp" placeholder="">
-							          	<!-- <select name="dokter" th:disabled="${requestObat.statusObat} == 1">
-							          		<div th:each="dokterPilih : ${dokters}" >
-							          			kondisi untuk milih dokter.id di database all dokter
-							          			<option th:if="${dokter.id==dokterPilih.id}" selected th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
-							          			<option th:unless="${dokter.id==dokterPilih.id}" th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
-							          		</div>
-							          	</select>  -->
-						         	</td>
-						         	<td>
-						         		<input th:disabled="${requestObat.statusObat} == 1" type="text" class="form-control" name="jumlahObat" th:value="${requestObat.jumlah}" aria-describedby="emailHelp" placeholder="">
-						         	</td>
 						         
+						         <tr th:each="requestObat : ${obat}">
+							         	<td style="padding-right: 20px">
+							         		<input th:disabled="${requestObat.statusObat} == 1" type="text" class="form-control" name="namaObat" th:value="${requestObat.namaObat}" aria-describedby="emailHelp" placeholder="">
+								          	<!-- <select name="dokter" th:disabled="${requestObat.statusObat} == 1">
+								          		<div th:each="dokterPilih : ${dokters}" >
+								          			kondisi untuk milih dokter.id di database all dokter
+								          			<option th:if="${dokter.id==dokterPilih.id}" selected th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
+								          			<option th:unless="${dokter.id==dokterPilih.id}" th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
+								          		</div>
+								          	</select>  -->
+							         	</td>
+							         	<td>
+							         		<input th:disabled="${requestObat.statusObat} == 1" type="text" class="form-control" name="jumlahObat" th:value="${requestObat.jumlah}" aria-describedby="emailHelp" placeholder="">
+							         	</td>
 						         </tr>
 					        
-						       </table> 
+						    </table> 
 					      </div>
 	       	
      				 	 <button value="submit" class="btn btn-primary">Simpan</button>  
+     				 	 
 						</form>
 					</div>
 		 		</div>
@@ -91,7 +94,7 @@
 	
 </body>
 
-<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
  
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
@@ -99,6 +102,7 @@
 $(document).ready( function () {
     $('#table').DataTable();
 } );
-</script> -->
+</script>
+
 
 </html>
