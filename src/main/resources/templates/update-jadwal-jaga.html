@@ -2,51 +2,64 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Jadwal Jaga: Update')"></title>
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<title
+	th:replace="fragments/fragment :: headerFragment (pageTitle='Jadwal Jaga: Update')"></title>
+<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
+<nav th:replace="fragments/fragment :: navbar"></nav>
 
 <body>
-    <nav th:replace="fragments/fragment :: navbar"></nav>
-	<br>
-	<div style="margin-left:2rem">
-		<h4>Ubah Jadwal Jaga</h4>
-		<form th:action="@{/jadwal-jaga/update/{jadwalJagaId} (jadwalJagaId=${jadwalJaga.id})}" th:object="${jadwalJaga}" method="POST">
-			<input type="hidden" th:field="*{id}" />
-			<table>
-				<tr style="height:3rem">
-					<td style="width:10rem">Status Dokter</td>
-					<td><input type="text" name="statusDokter" maxlength="255" class="form-control" required="required" th:value="${jadwalJaga.statusDokter}"/></td>
-				</tr>
-				<tr style="height:3rem">
-					<td>Hari Jaga</td>
-					<td><input type="date" name="daftarHariJaga" maxlength="255" class="form-control" required="required" th:value=${jadwalJaga.daftarHariJaga}  /></td>
-				</tr>
-				<tr style="height:3rem">
-					<td>Nama Dokter</td>
-					<td>
-						<select class="form-control" name="idDokter">
-							<option disabled="disabled" selected="selected" >Pilih Dokter</option>
-					    	<option th:each="dokter : ${allDokter}" th:value="${dokter.id}" th:text="${dokter.nama}" th:selected="${dokter.id} == ${jadwalJaga.idDokter}"></option>
-					    </select>
-					</td>
-				</tr>
-				<tr style="height:3rem">
-					<td>Nama Paviliun</td>
-					<td>
-						<select class="form-control" name="paviliunJaga">
-							<option disabled="disabled" selected="selected" >Pilih Paviliun</option>
-					    	<option th:each="paviliun : ${allPaviliun}" th:value="${paviliun.id}" th:text="${paviliun.namaPaviliun}" th:selected="${paviliun.id} == ${jadwalJaga.paviliunJaga.id}"></option>
-					    </select>
-					</td>
-				</tr>
-			</table>
-			<br>
-			<a href="/jadwal-jaga"><button type="button" class="btn btn-danger">Back</button></a>
-			<button type="submit" class="btn" style="background-color: #696969; color:white">Simpan</button>
-		</form>
-	</div>
+	<div class="container">
+		<div class="col-md-6">
+			<div class="box">
+				<h2 class="d-flex align-items-center">Ubah Jadwal Jaga</h2>
+				<form
+					th:action="@{/jadwal-jaga/update/{jadwalJagaId} (jadwalJagaId=${jadwalJaga.id})}"
+					th:object="${jadwalJaga}" method="POST">
+					<input type="hidden" th:field="*{id}" />
+					<table>
+						<tr style="height: 3rem">
+							<td style="width: 10rem">Status Dokter</td>
+							<td><input type="text" name="statusDokter" maxlength="255"
+								class="form-control" required="required"
+								th:value="${jadwalJaga.statusDokter}" /></td>
+						</tr>
+						<tr style="height: 3rem">
+							<td>Hari Jaga</td>
+							<td><input type="date" name="daftarHariJaga" maxlength="255"
+								class="form-control" required="required"
+								th:value=${jadwalJaga.daftarHariJaga} /></td>
+						</tr>
+						<tr style="height: 3rem">
+							<td>Nama Dokter</td>
+							<td><select class="form-control" name="idDokter">
+									<option disabled="disabled" selected="selected">Pilih
+										Dokter</option>
+									<option th:each="dokter : ${allDokter}" th:value="${dokter.id}"
+										th:text="${dokter.nama}"
+										th:selected="${dokter.id} == ${jadwalJaga.idDokter}"></option>
+							</select></td>
+						</tr>
+						<tr style="height: 3rem">
+							<td>Nama Paviliun</td>
+							<td><select class="form-control" name="paviliunJaga">
+									<option disabled="disabled" selected="selected">Pilih
+										Paviliun</option>
+									<option th:each="paviliun : ${allPaviliun}"
+										th:value="${paviliun.id}" th:text="${paviliun.namaPaviliun}"
+										th:selected="${paviliun.id} == ${jadwalJaga.paviliunJaga.id}"></option>
+							</select></td>
+						</tr>
+					</table>
+					<br>
+					<div class="text-center">
+						<a href="/jadwal-jaga"><button type="button"
+								class="button danger">Back</button></a>
+						<button type="submit" class="button gradient-bg">Simpan</button>
+					</div>
+				</form>
+			</div>
 </body>
 
 
