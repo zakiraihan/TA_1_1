@@ -59,5 +59,28 @@
 	</div>
 </body>
 
+<script>
+$('#tanggalDokter').change(
+		function() {
+			$.getJSON("/api/dokter/available", {
+				tanggal : $(this).val(),
+				ajax : 'true'
+			}, function(data) {
+				alert("Asdshadkajshdkjasd")
+				var html = '<option disabled value="">Pilih Dokter</option>';
+				var len = data.result.length;
+				alert(data);
+				if (len > 0) {
+					for (var i = 0; i < len; i++) {
+						html += '<option value="' + data.result[i].id + '">'
+								+ data.result[i].nama + '</option>';
+					}
+					html += '</option>';
+
+				}
+				$('#dokter').html(html);
+			});
+		});
+</script>
 
 </html>

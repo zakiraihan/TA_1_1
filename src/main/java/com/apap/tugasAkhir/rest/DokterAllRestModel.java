@@ -13,10 +13,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DokterAllRestModel implements Serializable{
+	private Integer status;
 	
 	private String message;
 	
 	private List<DokterModel> result;
+	
+	public Integer getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
 	public String getMessage() {
 		return message;

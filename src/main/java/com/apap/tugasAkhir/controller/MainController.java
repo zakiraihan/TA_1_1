@@ -33,10 +33,13 @@ import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.DokterModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
+import com.apap.tugasAkhir.rest.MedicalSupplyModel;
+import com.apap.tugasAkhir.rest.MedicineModel;
 import com.apap.tugasAkhir.rest.ObatAllRestModel;
 import com.apap.tugasAkhir.rest.ObatModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
+import com.apap.tugasAkhir.rest.PermintaanObatModel;
 import com.apap.tugasAkhir.rest.Setting;
 import com.apap.tugasAkhir.rest.StatusModel;
 import com.apap.tugasAkhir.service.JadwalJagaService;
@@ -565,9 +568,7 @@ public class MainController {
 	@GetMapping(value = "/jadwal-jaga/insert")
 	private String addJadwalJaga(Model model) {
 		//model.addAttribute(new JadwalJagaModel());
-		DokterAllRestModel allDokter = restService.getAllDokter();
 		model.addAttribute("jadwalJaga", new JadwalJagaModel());
-		model.addAttribute("allDokter", allDokter.getResult());
 		model.addAttribute("allPaviliun", paviliunService.getActivePaviliun());
 		return "add-jadwal-jaga";
 	}
@@ -581,6 +582,7 @@ public class MainController {
 	/**
 	 * TODO: Filter list dokter yang paling available dari jadwal rawat jalan
 	 */
+	
 	
 	/**
 	 * TODO: Update jadwal jaga
@@ -675,5 +677,29 @@ public class MainController {
 		return "view-all-request-obat";
 	}
 	
-
+	/**
+	 * TODO: Request obat ke Farmasi IS
+	 */
+    @PostMapping(value = "/obat/request/{requestObatId}")
+	private RedirectView postRequestObat(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
+		String path = Setting.obatRequestUrl;
+		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
+		
+		MedicineModel medicine = new MedicineModel();
+		medicine.setNama(requestObat.getNamaObat());
+		
+		MedicalSupplyModel medicalSupplies = new MedicalSupplyModel();
+		medicalSupplies.setMedicalSupplies(medicine);
+		medicalSupplies.setJumlah((long)requestObat.getJumlah());
+		
+		PermintaanObatModel permintaan = new PermintaanObatModel();
+		permintaan.setListPermintaanMedicalSupplies(new ArrayList<MedicalSupplyModel>());
+		permintaan.getListPermintaanMedicalSupplies().add(medicalSupplies);
+		
+		String result = restService.postObat(permintaan);
+		requestObat.setStatusObat(0);
+		System.out.println(result);
+		return new RedirectView("/obat/request");
+	}
+        
 }
