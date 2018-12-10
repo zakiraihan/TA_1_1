@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +31,8 @@ import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.DokterModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
+//import com.apap.tugasAkhir.rest.KirimObatModel;
+//import com.apap.tugasAkhir.rest.ObatRequestedModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
 import com.apap.tugasAkhir.rest.Setting;
@@ -160,25 +161,9 @@ public class MainController {
 	 * TODO: Melakukan insert data penanganan harian rawat jalan 	
 	 */
 	@PostMapping("/penanganan/insert")
-	private RedirectView insertPenangananPasienSubmit(
-			@RequestParam("idPasien") long idPasien,
-			@RequestParam("dokter") long idDokter,
-			@RequestParam("deskripsi") String deskripsi,
-			@RequestParam("waktu") String waktu,
-			Model model
-			) {
-		String[] waktuSplit = waktu.split("T");
-		System.out.println(waktuSplit[1]);
-		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[1]));
-		//1990 format new timestamp
-		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,0,0);
-		PemeriksaanModel pemeriksaanPasien = new PemeriksaanModel();
-		pemeriksaanPasien.setIdPasien(idPasien);
-		pemeriksaanPasien.setIdDokter(idDokter);
-		pemeriksaanPasien.setPemeriksaan(deskripsi);
-		pemeriksaanPasien.setWaktu(dateTime);
-		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
-		return new RedirectView("/");
+	private RedirectView insertPenangananPasienSubmit(@ModelAttribute PemeriksaanModel pemeriksaan) {
+		pemeriksaanService.addPemeriksaan(pemeriksaan);
+		return new RedirectView("/"); 
 	}
 	
 	@GetMapping("/penanganan/insert")
@@ -190,11 +175,10 @@ public class MainController {
 		}
 		PatienAllRestModel allPasienReq = restService.getListOfPasien(listOfIdPasien);
 		DokterAllRestModel dokterAll = restService.getAllDokter();
-		model.addAttribute("pemeriksaan", new PemeriksaanModel());
+		model.addAttribute(new PemeriksaanModel());
 		model.addAttribute("allPasien", allPasienReq.getResult());
 		model.addAttribute("allDokter", dokterAll.getResult());
-		model.addAttribute("allKamar", allKamar);
-		return "add-penanganan-pasien";
+		return "insert-penanganan-pasien";
 	}
 	
 	/**
@@ -234,6 +218,7 @@ public class MainController {
 	 * TODO: Update penanganan yang diterima oleh pasien
 	 */
 	@GetMapping("/penanganan/{idPasien}/{idPenanganan}")
+	//Masih salah nih mestinya nge get id Pasien bukan id Penanganan
 	private String updatePenangananPasien(
 			@PathVariable("idPenanganan") long idPenanganan, 
 			@PathVariable("idPasien") long idPasien, 
@@ -266,6 +251,16 @@ public class MainController {
 			@RequestParam("waktu") String waktu,
 			Model model
 			) {
+//		String[] waktuSplit = waktu.split("T");
+//		System.out.println(waktu);
+//		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[2]));
+//		//1990 format new timestamp
+//		Timestamp dateTime = new Timestamp(Integer.parseInt(waktuSplit[0].split("-")[0])-1900,Integer.parseInt(waktuSplit[0].split("-")[1])-1,Integer.parseInt(waktuSplit[0].split("-")[2])-1,Integer.parseInt(waktuSplit[1].split(":")[0])-1,Integer.parseInt(waktuSplit[1].split(":")[1])-1,(int)Double.parseDouble(waktuSplit[1].split(":")[2])-1,0);
+//		PemeriksaanModel pemeriksaanPasien = pemeriksaanService.getPemeriksaanByIdPemeriksaan(idPenanganan); 
+//		pemeriksaanPasien.setIdDokter(pemeriksaan.getId());
+//		pemeriksaanPasien.setPemeriksaan(pemeriksaan.getPemeriksaan());
+//		pemeriksaanPasien.setWaktu(dateTime);
+//		pemeriksaanPasien.setListObat(pemeriksaan.getListObat());
 		String[] waktuSplit = waktu.split("T");
 		System.out.println(waktu);
 		System.out.println((int)Double.parseDouble(waktuSplit[1].split(":")[2]));
@@ -277,34 +272,7 @@ public class MainController {
 		pemeriksaanPasien.setWaktu(dateTime);
 		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
 		return "redirect:/penanganan/"+idPasien;
-
 	}
-	
-	@RequestMapping(value = "/penanganan/insert", method = RequestMethod.POST, params= {"addRow"})
-	private String addRow(@ModelAttribute PemeriksaanModel pemeriksaan, Model model, BindingResult bindingResult) {
-		if(pemeriksaan.getListObat() == null) {
-			pemeriksaan.setListObat(new ArrayList());
-		}
-		pemeriksaan.getListObat().add(new RequestObatModel());
-		model.addAttribute("pemeriksaan", pemeriksaan);
-		return "add-penanganan-pasien";
-	}
-	
-	/*@RequestMapping(value = "/pegawai/tambah", method = RequestMethod.POST, params= {"addRow"})
-	private String addRow(@ModelAttribute PegawaiModel pegawai, Model model, BindingResult bindingResult) {
-		if (pegawai.getJabatanList() == null) {
-			pegawai.setJabatanList(new ArrayList());
-		}
-		System.out.println(pegawai.getJabatanList().size());
-		pegawai.getJabatanList().add(new JabatanModel());
-		
-		List<JabatanModel> jab = jabatanDb.findAll();
-		List<ProvinsiModel> prov = provinsiDb.findAll();
-		model.addAttribute("provinsiList", prov);
-		model.addAttribute("pegawai", pegawai);
-		model.addAttribute("jabatanList",jab);
-		return "add-pegawai";
-	}*/
 	
 	@GetMapping("/kamar/insert")
 	private String insertDataKamar(Model model) {
@@ -592,15 +560,22 @@ public class MainController {
 		return "view-all-request-obat";
 	}
 	
-	/**
-	 * TODO: Request obat ke Farmasi IS
-	 */
-    @PostMapping(value = "/obat/request/{requestObatId}")
-	private RedirectView postRequestObat(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
-		String path = Setting.obatRequestUrl;
-		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
-		
-		//DealerDetail detail = restTemplate.postForObject(path,requestObat, RequestObatModel.class);
-		return new RedirectView("/obat/request");
-	}
+//	/**
+//	 * TODO: Request obat ke Farmasi IS
+//	 */
+//    @PostMapping(value = "/obat/request/{requestObatId}")
+//	private String postRequest(@PathVariable ("requestObatId") Long requestObatId) throws Exception{
+//		String path = Setting.obatRequestUrl;
+//		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
+//		ObatRequestedModel obatRequested = new ObatRequestedModel();
+//		obatRequested.setNama(requestObat.getNamaObat());
+//		obatRequested.setJumlah(requestObat.getJumlah());
+//		
+//		KirimObatModel obatDikirim = new KirimObatModel();
+//		obatDikirim.setObat(obatRequested);
+//		obatDikirim.setIdPasien(requestObat.getIdPasien());
+//		
+//		//DealerDetail detail = restTemplate.postForObject(path,requestObat, RequestObatModel.class);
+//		return "request-success";
+//	}
 }
