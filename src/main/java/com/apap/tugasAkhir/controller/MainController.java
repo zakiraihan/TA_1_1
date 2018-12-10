@@ -228,6 +228,7 @@ public class MainController {
 		PatienRestModel pasien = restService.getPasienById(idPasien);
 		DokterRestModel dokter = restService.getDokterById(pemeriksaanPasien.getIdDokter());
 		
+		
 		//ini belom diganti ke dokter yang ada di idPenanganan
 		List<DokterModel> dokters = restService.getAllDokter().getResult(); 
 		
@@ -261,6 +262,7 @@ public class MainController {
 		pemeriksaanPasien.setWaktu(dateTime);
 		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
 		return "redirect:/penanganan/"+idPasien;
+
 	}
 	
 	@GetMapping("/kamar/insert")
