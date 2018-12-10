@@ -7,43 +7,49 @@
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
-<nav th:replace="fragments/fragment :: navbar"></nav>
-<body>
-	<div class="container">
-		<div class="col-md-6">
-			<div class="box">
-				<h2 class="d-flex align-items-center">Tambah Penanganan</h2>	
+<body  style="margin:50;padding:50">
+<nav th:replace="fragments/fragment :: navbar"></nav>	
+	<!-- <h3 style="margin-top:20px" th:text="'Penanganan Pasien '+${pasien.nama}"></h3> -->
+	<div class="col-md">
+		<br>
+            <div class="card">
+            <div class="card-header">
+            	<h5>Tambah Penanganan Pasien</h5>
+            </div>
+			<div class="card-body">
+				<div class="container">
 				<form method="POST" th:action="@{/penanganan/insert}" th:object="${pemeriksaan}" >
-					<table>
-						<tr>
-							<td for="nama">Nama Pasien</td>
-							<td><select name="idPasien" class="form-control">
+					<div class="form-group">
+						<label for="nama">Nama Pasien</label>
+						<br>
+						<select name="idPasien" class="form-control">
 	          				<div th:each="kamar : ${allKamar}" >
 	          				<!-- kondisi untuk milih dokter.id di database all dokter -->
 							<option th:value="${kamar.idPasien}" th:text="${allPasien.get(kamar.idPasien).nama}" th:selected="${kamar.idPasien} == ${pemeriksaan.idPasien}"></option>
 	          				</div>
-	          			</select></td>
-						</tr>
-						<tr>
-							<td for="dokter">Dokter</td>
-							<td><select name="idDokter" class="form-control">
+	          			</select>
+		      		</div>
+		      		<div class="form-group">
+	          			<label for="dokter">Dokter</label>
+	          			<br>
+	          			<select name="idDokter" class="form-control">
 	          				<div th:each="dokterPilih : ${allDokter}" >
 	          				<!-- kondisi untuk milih dokter.id di database all dokter -->
 	          				<option th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
 	          				</div>
-	          			</select></td>
-						</tr>
-						<tr>
-							<td for="waktu">Waktu</td>
-							<td><input type="datetime-local" class="form-control" name="waktuPemeriksaan" aria-describedby="emailHelp" th:value="${pemeriksaan.waktu}" required="required" placeholder=""></td>
-						</tr>
-						<tr>
-							<td for="pemeriksaan">Deskripsi Penanganan</td>
-							<td><input type="text" class="form-control" name="pemeriksaan" aria-describedby="emailHelp" required="required" th:value="${pemeriksaan.pemeriksaan}" placeholder=""></td>
-						</tr>
-						<tr>
-							<td for="requestObat">Request Obat</td>
-							<td><div th:each="obat,iterationStats : *{listObat}" style="padding:10px">
+	          			</select>
+	         		</div>
+	         		<div class="form-group">
+	          			<label for="waktu">Waktu</label>
+	          			<input type="datetime-local" class="form-control" name="waktuPemeriksaan" aria-describedby="emailHelp" th:value="${pemeriksaan.waktu}" required="required" placeholder="">
+	         		</div>
+	         		<div class="form-group">
+	          			<label for="pemeriksaan">Deskripsi Penanganan</label>
+	          			<input type="text" class="form-control" name="pemeriksaan" aria-describedby="emailHelp" required="required" th:value="${pemeriksaan.pemeriksaan}" placeholder="">
+     		 		</div>
+     		 		<div class="form-group">
+     		 		<label for="requestObat">Request Obat: </label>
+            		<div th:each="obat,iterationStats : *{listObat}" style="padding:10px">
 	            		<div>
 	            			<label>Nama Obat</label>
 	            			<select class="form-control" th:field="*{listObat[__${iterationStats.index}__].namaObat}" >
@@ -55,18 +61,14 @@
 	            			<label>Jumlah Obat</label>
 	            			<input type="number" class="form-control" th:field="*{listObat[__${iterationStats.index}__].jumlah}" />
 	            		</div>
-            		</div></td>
-						</tr>
-					</table>
-					<br>
-
-     		 		<div class="text-center">
-     		 			<button type="submit" name="addRow" class="button gradient-bg">Tambah Obat Lainnya</button>
-	       	 			<button value="submit" class="button gradient-bg">Simpan</button>
-	       	 		</div> 
+            		</div>
+            		<button type="submit" name="addRow" class="btn">Tambah Obat Lainnya</button>
+     		 		</div>
+	       	 		<button value="submit" class="btn btn-primary">Simpan</button> 
 				</form>
 				</div>
 	 		</div>
 	 	</div>
+	</div>
 </body>
 </html>
