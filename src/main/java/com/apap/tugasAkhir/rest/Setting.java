@@ -18,10 +18,10 @@ public class Setting {
 	
 	//url used for get all dokter assigned in rawat jalan
 	//if the dokter atleast has assigned there, tolak
-	final public static String getAllAssignedDokterUrl = "{{fill the url here}}";
+	final public static String getAllIUnAssignedDokterUrl = "http://sirawatjalan.herokuapp.com/rawat-jalan/poli/jadwal/dokter-available";
 	
 	//url for request obat
-	final public static String obatRequestUrl = "";
+	final public static String obatRequestUrl = "http://sifarmasi.herokuapp.com/api/medical-supplies/permintaan/";
 	
 	//url used for get all pasien with coresponding id in list
 	//example: "http://si-appointment.herokuapp.com/api/getPasien?listId=5,10,15,908" used for getting pasien with id 5, 10, 15, 908

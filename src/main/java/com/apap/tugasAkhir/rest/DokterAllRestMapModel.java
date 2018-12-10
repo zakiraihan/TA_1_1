@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DokterAllRestMapModel {
-private Integer status;
+	private Integer status;
 	
 	private String message;
 	
