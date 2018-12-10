@@ -213,6 +213,11 @@ a:hover, a:active {
     color: #fff;
 }
 
+.button.danger {
+	border-color: transparent;
+	background: linear-gradient(to right, rgb(147, 41, 30), rgb(237, 33, 58));
+	color: #fff;
+}
 /*
 # box
 --------------------------------*/
@@ -268,7 +273,8 @@ a:hover, a:active {
 
 .box form select,
 .box form input[type="text"],
-.box form input[type="number"] {
+.box form input[type="number"],
+.box form input[type="date"], {
     display: block;
     padding: 12px 16px;
     margin-bottom: 10px;
@@ -288,6 +294,14 @@ a:hover, a:active {
 .box table {
 	margin: 0 auto;
 	float: none;
+}
+
+.box table tr {
+	height: 3rem;
+}
+
+.box table td {
+	width: 10rem;
 }
 
 /*--------------------------------------------------------------

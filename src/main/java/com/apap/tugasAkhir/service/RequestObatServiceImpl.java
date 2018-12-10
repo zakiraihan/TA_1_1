@@ -33,4 +33,9 @@ public class RequestObatServiceImpl implements RequestObatService{
 		// TODO Auto-generated method stub
 		return requestObatDb.findAll();
 	}
+	
+	@Override
+	public RequestObatModel addRequestObat(RequestObatModel req) {
+		return requestObatDb.save(req);
+	}
 }

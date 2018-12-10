@@ -18,21 +18,21 @@
             </div>
 			<div class="card-body">
 				<div class="container">
-				<form method="POST">
+				<form method="POST" th:action="@{/penanganan/insert}" th:object="${pemeriksaan}" >
 					<div class="form-group">
 						<label for="nama">Nama Pasien</label>
 						<br>
 						<select name="idPasien" class="form-control">
 	          				<div th:each="kamar : ${allKamar}" >
 	          				<!-- kondisi untuk milih dokter.id di database all dokter -->
-							<option th:value="${kamar.idPasien}" th:text="${allPasien.get(kamar.idPasien).nama}"></option>
+							<option th:value="${kamar.idPasien}" th:text="${allPasien.get(kamar.idPasien).nama}" th:selected="${kamar.idPasien} == ${pemeriksaan.idPasien}"></option>
 	          				</div>
 	          			</select>
 		      		</div>
 		      		<div class="form-group">
 	          			<label for="dokter">Dokter</label>
 	          			<br>
-	          			<select name="dokter" class="form-control">
+	          			<select name="idDokter" class="form-control">
 	          				<div th:each="dokterPilih : ${allDokter}" >
 	          				<!-- kondisi untuk milih dokter.id di database all dokter -->
 	          				<option th:value="${dokterPilih.id}" th:text="${dokterPilih.nama}"></option>
@@ -41,20 +41,28 @@
 	         		</div>
 	         		<div class="form-group">
 	          			<label for="waktu">Waktu</label>
-	          			<input type="datetime-local" class="form-control" name="waktu" aria-describedby="emailHelp" required="required" placeholder="">
+	          			<input type="datetime-local" class="form-control" name="waktuPemeriksaan" aria-describedby="emailHelp" th:value="${pemeriksaan.waktu}" required="required" placeholder="">
 	         		</div>
 	         		<div class="form-group">
-	          			<label for="deskripsi">Deskripsi Penanganan</label>
-	          			<input type="text" class="form-control" name="deskripsi" th:value="${pemeriksaan.pemeriksaan}" aria-describedby="emailHelp" required="required" placeholder="">
+	          			<label for="pemeriksaan">Deskripsi Penanganan</label>
+	          			<input type="text" class="form-control" name="pemeriksaan" aria-describedby="emailHelp" required="required" th:value="${pemeriksaan.pemeriksaan}" placeholder="">
      		 		</div>
      		 		<div class="form-group">
      		 		<label for="requestObat">Request Obat: </label>
-            		<div th:each="jabatan,iterationStats : *{jabatanList}" style="padding:10px">
-            			<select class="form-control" th:field="*{jabatanList[__${iterationStats.index}__]}" >
-					  		<option th:each="jabatannya : ${jabatanList}" th:value="${jabatannya.id}" th:text="${jabatannya.nama}" ></option>
-						</select>
+            		<div th:each="obat,iterationStats : *{listObat}" style="padding:10px">
+	            		<div>
+	            			<label>Nama Obat</label>
+	            			<select class="form-control" th:field="*{listObat[__${iterationStats.index}__].namaObat}" >
+						  		<option th:each="obat : ${allObat}" th:value="${obat.nama}" th:text="${obat.nama}"></option>
+							</select>
+	            		</div>
+	            		<br>
+	            		<div class="form-group">
+	            			<label>Jumlah Obat</label>
+	            			<input type="number" class="form-control" th:field="*{listObat[__${iterationStats.index}__].jumlah}" />
+	            		</div>
             		</div>
-            		<button type="submit" name="addRow" class="btn">Tambah Jabatan Lainnya</button>
+            		<button type="submit" name="addRow" class="btn">Tambah Obat Lainnya</button>
      		 		</div>
 	       	 		<button value="submit" class="btn btn-primary">Simpan</button> 
 				</form>

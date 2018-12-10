@@ -25,7 +25,6 @@ public class RequestObatModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	
 	@NotNull
 	@Size(max = 255)
 	@Column(name = "nama_obat", nullable = false)
@@ -33,13 +32,12 @@ public class RequestObatModel implements Serializable {
 	
 	@NotNull
 	@Column(name = "jumlah", nullable = false)
-	private Integer jumlah;
+	private Long jumlah;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_pemeriksaan", referencedColumnName = "id", nullable = false)
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private PemeriksaanModel pemeriksaan;
-	
 	
 	@NotNull
 	@Column(name = "id_pasien", nullable = false)
@@ -70,12 +68,12 @@ public class RequestObatModel implements Serializable {
 	}
 
 
-	public Integer getJumlah() {
+	public Long getJumlah() {
 		return jumlah;
 	}
 
 
-	public void setJumlah(Integer jumlah) {
+	public void setJumlah(Long jumlah) {
 		this.jumlah = jumlah;
 	}
 
@@ -108,8 +106,5 @@ public class RequestObatModel implements Serializable {
 	public void setStatusObat(Integer statusObat) {
 		this.statusObat = statusObat;
 	}
-	
-	
-
 	
 }
