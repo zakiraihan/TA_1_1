@@ -2,46 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Pendaftaran Rawat Inap')"></title>
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<title
+	th:replace="fragments/fragment :: headerFragment (pageTitle='Pendaftaran Rawat Inap')"></title>
+<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
-<body  style="margin:50;padding:50">
-	<nav th:replace="fragments/fragment :: navbar"></nav>
-	<h3 style="margin-top:20px">List Semua Pasien</h3>
-	<br>
-	<span th:if="${listPasienToggle}==1">
-		<table id="table">
-			<thead>
-				<th>Nama Pasien</th>
-				<th>Status Pasien</th>
-				<th>Nomor Kamar</th>
-				<th>Keluarkan Pasien</th>
-			</thead>
-			<span th:each="kamar, iterator : ${allKamar}">
-				<tr>
-					<td th:text="${allPasien.get(kamar.idPasien).nama}" ></td>
-					<td th:text="${allPasien.get(kamar.idPasien).statusPasien.jenis}"></td>
-					<td th:text="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}"></td>
-					<td>
-						<form th:action="@{/daftar-ranap/pulang/{idKamar}(idKamar=${kamar.id})}" id="assignPasien" method="POST">
-							<input class="form-control" type="hidden" id="idPasien" required="required" name="idPasien" th:value="${allPasien.get(kamar.idPasien).id}"/>
-							<button class="btn btn-primary" type="submit">Keluarkan Pasien</button>
-						</form>
-					</td>
-				</tr>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<body>
+	<div class="container">
+		<div class="box">
+			<h2 class="d-flex align-items-center">Daftar Pasien Rawat Inap</h2>
+			<span th:if="${listPasienToggle}==1">
+				<table id="table" class="text-center">
+					<thead>
+						<th>Nama Pasien</th>
+						<th>Status Pasien</th>
+						<th>Nomor Kamar</th>
+						<th>Keluarkan Pasien</th>
+					</thead>
+					<span th:each="kamar, iterator : ${allKamar}">
+						<tr>
+							<td th:text="${allPasien.get(kamar.idPasien).nama}"></td>
+							<td th:text="${allPasien.get(kamar.idPasien).statusPasien.jenis}"></td>
+							<td
+								th:text="${kamar.paviliunKamar.namaPaviliun} + ' - ' + ${kamar.id}"></td>
+							<td>
+								<form
+									th:action="@{/daftar-ranap/pulang/{idKamar}(idKamar=${kamar.id})}"
+									id="assignPasien" method="POST">
+									<input class="form-control" type="hidden" id="idPasien"
+										required="required" name="idPasien"
+										th:value="${allPasien.get(kamar.idPasien).id}" />
+									<button class="button gradient-bg" type="submit">Keluarkan
+										Pasien</button>
+								</form>
+							</td>
+						</tr>
+					</span>
+				</table>
+			</span> <span th:if="${listPasienToggle}==0">
+				<h3>Maaf Belum Ada Pasien Di Unit Rawat Inap</h3>
 			</span>
-		</table>
-	</span>
-	<span th:if="${listPasienToggle}==0">
-		<h3>Maaf Belum Ada Pasien Di Unit Rawat Inap</h3>
-	</span>
+		</div>
+	</div>
 </body>
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
- 
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8"
+	src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
 <script>
 $(document).ready( function () {

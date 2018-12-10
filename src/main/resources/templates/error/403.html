@@ -6,9 +6,10 @@
 	<object th:include = "fragments/fragment :: css" th:remove = "tag"></object>
 	<object th:include = "fragments/fragment :: js" th:remove = "tag"></object>
 </head>
+
+<nav th:replace = "fragments/fragment :: navbar"></nav>
+
 <body>
-	<nav th:replace = "fragments/fragment :: navbar"></nav>
-	<br>
 	<h4>Maaf, halaman tidak dapat diakses oleh Anda.</h4>
 </body>
 </html>

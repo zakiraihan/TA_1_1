@@ -51,6 +51,11 @@ body {
     font-family: 'Raleway', sans-serif;
 }
 
+.col-md-6 {
+	margin: 0 auto;
+	float: none;
+}
+
 img {
     vertical-align: baseline;
 }
@@ -79,32 +84,13 @@ a:hover, a:active {
     list-style: none;
 }
 
-/*--------------------------------------------------------------
-# Site Header
---------------------------------------------------------------*/
-.site-header {
-    position: relative;
-}
-
-.nav-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    width: 100%;
-    padding: 20px 0;
-}
-
 /*
 # Site Branding
 --------------------------------*/
-.site-branding {
-    width: calc(100% - 70px);
-    padding: 20px 0;
-}
-
 .site-branding a {
     margin-top: 6px;
+    width: calc(100% - 24px);
+    padding: 20px 0;
 }
 
 @media screen and (min-width: 992px){
@@ -113,23 +99,19 @@ a:hover, a:active {
     }
 }
 
+
 /*
 # Main Menu
 --------------------------------*/
+.site-navigation {
+	background: linear-gradient(270deg, rgba(50,200,250,1) 0%, rgba(88,125,228,1) 100%); /* w3c */
+	padding: 0;
+}
+
 .site-navigation ul {
-    position: fixed;
-    top: 0;
-    left: -320px;
-    z-index: 9999;
-    width: 320px;
-    max-width: calc(100% - 120px);
-    height: 100%;
-    padding: 30px 15px;
-    margin: 0;
-    background: #dde4ea;
-    list-style: none;
-    overflow-x: scroll;
-    transition: all 0.35s;
+	margin: 0;
+	padding: 0;
+	width: 100%;
 }
 
 .site-navigation.show ul {
@@ -141,44 +123,25 @@ a:hover, a:active {
 }
 
 .site-navigation ul li a {
-    display: block;
     padding: 16px 0;
     font-size: 16px;
     font-weight: 600;
     line-height: 1;
-    color: #404040;
+    color: #ffffff;
     text-decoration: none;
     transition: color .35s;
 }
 
-@media screen and (min-width: 992px) {
-    .site-navigation ul {
-        position: relative;
-        top: auto;
-        left: auto;
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-        padding: 0;
-        overflow: auto;
-        background: transparent;
-    }
-
-    .site-navigation ul li a {
-        padding: 30px 0;
-    }
-}
-
 .site-navigation ul li a:hover,
 .site-navigation ul li.current-menu-item a {
-    color: #18a3eb;
+    color: #404040;
 }
 
 /*--------------------------------------------------------------
-# Hero Section
+# image Section
 --------------------------------------------------------------*/
 
-.hero-content-wrap {
+.image-content-wrap {
     min-height: 700px;
     position: relative;
     color: #fff;
@@ -187,13 +150,13 @@ a:hover, a:active {
     background-position: center;
 }
 
-.hero-content-overlay {
+.image-content-overlay {
     top: 0;
     left: 0;
     background: rgba(0,0,0,0);
 }
 
-.hero-content-overlay h1 {
+.image-content-overlay h1 {
     margin: 0;
     font-size: 60px;
     font-weight: 600;
@@ -201,51 +164,11 @@ a:hover, a:active {
     color: #404040;
 }
 
-.hero-content-overlay p {
+.image-content-overlay p {
     font-size: 14px;
     font-weight: 500;
     line-height: 2;
     color: #828282;
-}
-
-@media screen and (max-width: 1400px) {
-    .hero-slider .swiper-pagination-bullet {
-        width: 60px;
-    }
-}
-
-@media screen and (max-width: 576px) {
-    .hero-slider .pagination-wrap {
-        top: auto;
-        bottom: 60px;
-        margin-top: 0;
-    }
-
-    .hero-slider .swiper-pagination-bullet {
-        width: 30px;
-        margin-left: 15px;
-    }
-}
-
-/*--------------------------------------------------------------
-# Elements Page
---------------------------------------------------------------*/
-.elements-wrap {
-    margin-top: 80px;
-}
-
-.elements-page .elements-heading .entry-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #262626;
-}
-
-.elements-page .elements-container {
-    margin-top: 54px;
-}
-
-.elements-page .btn {
-    margin-right: 20px;
 }
 
 /*
@@ -289,13 +212,12 @@ a:hover, a:active {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a3eb', endColorstr='#587de4',GradientType=1 ); /* ie6-9 */
     color: #fff;
 }
-/*--------------------------------------------------------------
-# Homepage
---------------------------------------------------------------*/
-.homepage-boxes {
-    padding: 110px 0;
-}
 
+.button.danger {
+	border-color: transparent;
+	background: linear-gradient(to right, rgb(147, 41, 30), rgb(237, 33, 58));
+	color: #fff;
+}
 /*
 # box
 --------------------------------*/
@@ -304,6 +226,7 @@ a:hover, a:active {
     padding: 32px;
     border-radius: 20px;
     border: 2px solid #dde4ea;
+	margin-top: 50px;
 }
 
 .box {
@@ -339,6 +262,46 @@ a:hover, a:active {
 .box ul li span {
     display: inline-block;
     margin-left: 5px;
+}
+
+/*
+# box form
+--------------------------------*/}
+.box form {
+    margin-top: 24px;
+}
+
+.box form select,
+.box form input[type="text"],
+.box form input[type="number"],
+.box form input[type="date"], {
+    display: block;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border: 0;
+
+    font-size: 14px;
+    font-style: italic;
+    color: #828282;
+    background: #f0f4f8;
+    outline: none;
+}
+
+.box form input[type="submit"] {
+    margin-top: 16px;
+}
+
+.box table {
+	margin: 0 auto;
+	float: none;
+}
+
+.box table tr {
+	height: 3rem;
+}
+
+.box table td {
+	width: 10rem;
 }
 
 /*--------------------------------------------------------------
