@@ -7,12 +7,13 @@
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
+<nav th:replace="fragments/fragment :: navbar"></nav>
 <body>
 
-	<div class="hero-content-wrap" style="background-image: url('images/hero.jpg')">
+	<div class="image-content-wrap" style="background-image: url('images/home.jpg')">
 		<div class="container">
-			<nav th:replace="fragments/fragment :: navbar"></nav>
-			    <div class="hero-content-overlay position-absolute w-100 h-100">
+			
+			    <div class="image-content-overlay position-absolute w-100 h-100">
 			        <div class="container h-100">
 			            <div class="row h-100">
 			                <div class="col-12 col-lg-6 d-flex flex-column justify-content-center align-items-start">
