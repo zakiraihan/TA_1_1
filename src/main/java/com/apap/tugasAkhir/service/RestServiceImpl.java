@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
+import com.apap.tugasAkhir.rest.ObatAllRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
@@ -36,6 +37,11 @@ public class RestServiceImpl implements RestService{
 		String pathDokter = Setting.getDokterByIdUrl + Long.toString(idDokter);
 		DokterRestModel dokterIdResponse = restTemplate.getForObject(pathDokter, DokterRestModel.class);
 		return dokterIdResponse;
+	}
+	
+	@Override
+	public ObatAllRestModel getAllObat() {
+		return restTemplate.getForObject(Setting.getAllObatUrl, ObatAllRestModel.class);
 	}
 	
 	@Override
