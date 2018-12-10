@@ -178,7 +178,7 @@ public class MainController {
 		pemeriksaanPasien.setPemeriksaan(deskripsi);
 		pemeriksaanPasien.setWaktu(dateTime);
 		pemeriksaanService.addPemeriksaan(pemeriksaanPasien);
-		return new RedirectView("/"); 
+		return new RedirectView("/");
 	}
 	
 	@GetMapping("/penanganan/insert")

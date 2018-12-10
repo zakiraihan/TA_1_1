@@ -31,9 +31,11 @@ public class Setting {
 	//example: "http://si-appointment.herokuapp.com/api/getDokter?listId=5,10,15,908" used for getting dokter with id 5, 10, 15, 908
 	final public static String getDokterByListIdUrl = "http://si-appointment.herokuapp.com/api/getDokter?listId=";
 
-	
 	//url used for update patien status
 	//using post method
 	final public static String postPasienStatusUrl = "http://si-appointment.herokuapp.com/api/1/updatePasien";
+	
+	//url used to get all obat from farmawsi
+	final public static String getAllObatUrl = "{{fill the url here}}";
 }
 
