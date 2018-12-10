@@ -2,178 +2,208 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title th:replace = "fragments/fragment :: headerFragment (pageTitle='Home')"></title>
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<title
+	th:replace="fragments/fragment :: headerFragment (pageTitle='Home')"></title>
+<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
 <nav th:replace="fragments/fragment :: navbar"></nav>
 <body>
 
-	<div class="image-content-wrap" style="background-image: url('images/home.jpg')">
+	<div class="image-content-wrap"
+		style="background-image: url('images/home.jpg')">
 		<div class="container">
-			
-			    <div class="image-content-overlay position-absolute w-100 h-100">
-			        <div class="container h-100">
-			            <div class="row h-100">
-			                <div class="col-12 col-lg-6 d-flex flex-column justify-content-center align-items-start">
-			                    <div>
-			                        <h1>Sistem Informasi<br>Rawat Inap</h1>
-			                        <p>Kelompok 1</p>
-			                    </div><!-- .entry-header -->
-			                </div><!-- .col -->
-			            </div><!-- .row -->
-			        </div><!-- .container -->
-			    </div><!-- .hero-content-overlay -->
-		</div>
-	</div><!-- .hero-content-wrap -->
-	
-    <div class="homepage-boxes">
-        <div class="container">
-        	
-        	<!-- ROW 1 -->
-            <div class="row">
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="box">
-                    	<div class="d-flex align-items-center">
-	                    	<h2>Rujukan IGD</h2>
-	                        <a>Melihat daftar pasien Rawat Inap yang dirujuk oleh IGD</a>
-                    	</div>
-                        <br>
-                        <div class="text-center">
-                        	<a class="button gradient-bg" th:href="@{/daftar-request}">Lihat</a>
-                        </div>
-                    </div>
-                </div>
-                <br>
 
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="box">
-                    	<div class="d-flex align-items-center">
-	                    	<h2>Pasien</h2>
-	                        <a>Melihat daftar seluruh pasien yang berada di layanan Rawat Inap</a>
-                    	</div>
-                        <br>
-                        <div class="text-center">
-                        	<a class="button gradient-bg" th:href="@{/daftar-ranap}">Lihat</a>
-                        </div>
-                    </div>
-                </div>
-                <br>
-
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="box">
-                    	<div class="d-flex align-items-center">
-	                    	<h2>Penanganan</h2>
-	                        <a>Melihat daftar penanganan yang telah dilakukan</a>
-                    	</div>
-                        <br>
-                        <div class="text-center">
-                        	<a class="button gradient-bg" th:href="@{/penanganan}">Lihat</a>
-                        </div>
-                    </div>
-                </div>
-                <br>
+			<div class="image-content-overlay position-absolute w-100 h-100">
+				<div class="container h-100">
+					<div class="row h-100">
+						<div
+							class="col-12 col-lg-6 d-flex flex-column justify-content-center align-items-start">
+							<div>
+								<h1>
+									Sistem Informasi<br>Rawat Inap
+								</h1>
+								<p>Kelompok 1</p>
+							</div>
+							<!-- .entry-header -->
+						</div>
+						<!-- .col -->
+					</div>
+					<!-- .row -->
+				</div>
+				<!-- .container -->
 			</div>
-			
+			<!-- .hero-content-overlay -->
+		</div>
+	</div>
+	<!-- .hero-content-wrap -->
+
+	<div class="homepage-boxes">
+		<div class="container">
+
+			<!-- ROW 1 -->
+			<div class="row">
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="box">
+						<div class="d-flex align-items-center">
+							<h2>Rujukan IGD</h2>
+							<a>Melihat daftar pasien Rawat Inap yang dirujuk oleh IGD</a>
+						</div>
+						<br>
+						<div class="text-center">
+							<a class="button gradient-bg" th:href="@{/daftar-request}">Lihat</a>
+						</div>
+					</div>
+				</div>
+				<br>
+
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="box">
+						<div class="d-flex align-items-center">
+							<h2>Pasien</h2>
+							<a>Melihat daftar seluruh pasien yang berada di layanan Rawat
+								Inap</a>
+						</div>
+						<br>
+						<div class="text-center">
+							<a class="button gradient-bg" th:href="@{/daftar-ranap}">Lihat</a>
+						</div>
+					</div>
+				</div>
+				<br>
+
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="box">
+						<div class="d-flex align-items-center">
+							<h2>Penanganan</h2>
+							<a>Melihat daftar penanganan yang telah dilakukan</a>
+						</div>
+						<br>
+						<div class="text-center">
+							<a class="button gradient-bg" th:href="@{/penanganan}">Lihat</a>
+						</div>
+					</div>
+				</div>
+				<br>
+			</div>
+
 			<br>
-			
+
 			<!-- Row 2 -->
 			<div class="row">
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="box">
-                    	<div class="d-flex align-items-center">
-	                    	<h2>Obat</h2>
-	                        <a>Form pemesanan obat ke SI Farmasi</a>
-                    	</div>
-                        <br>
-                        <div class="text-center">
-                        	<a class="button gradient-bg" th:href="@{/obat/request}">Next</a>
-                        </div>
-                    </div>
-                </div>
-                <br>
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="box">
+						<div class="d-flex align-items-center">
+							<h2>Obat</h2>
+							<a>Form pemesanan obat ke SI Farmasi</a>
+						</div>
+						<br>
+						<div class="text-center">
+							<a class="button gradient-bg" th:href="@{/obat/request}">Next</a>
+						</div>
+					</div>
+				</div>
+				<br>
 
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="box">
-                    	<div class="d-flex align-items-center">
-	                    	<h2>Jadwal Jaga</h2>
-	                        <a>Melihat daftar jaga dokter</a>
-                    	</div>
-                        <br>
-                        <div class="text-center">
-                        	<a class="button gradient-bg" th:href="@{/jadwal-jaga}">Lihat</a>
-                        </div>
-                    </div>
-                </div>
-                <br>
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="box">
+						<div class="d-flex align-items-center">
+							<h2>Jadwal Jaga</h2>
+							<a>Melihat daftar jaga dokter</a>
+						</div>
+						<br>
+						<div class="text-center">
+							<a class="button gradient-bg" th:href="@{/jadwal-jaga}">Lihat</a>
+						</div>
+					</div>
+				</div>
+				<br>
 
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="box">
-                    	<div class="d-flex align-items-center">
-	                    	<h2>Kamar</h2>
-	                        <a>Melihat daftar kamar</a>
-                    	</div>
-                        <br>
-                        <div class="text-center">
-                        	<a class="button gradient-bg" th:href="@{/kamar}">Lihat</a>
-                        </div>
-                    </div>
-                </div>
-                <br>
+				<div class="col-12 col-md-6 col-lg-4">
+					<div class="box">
+						<div class="d-flex align-items-center">
+							<h2>Kamar</h2>
+							<a>Melihat daftar kamar</a>
+						</div>
+						<br>
+						<div class="text-center">
+							<a class="button gradient-bg" th:href="@{/kamar}">Lihat</a>
+						</div>
+					</div>
+				</div>
+				<br>
 			</div>
 		</div>
 	</div>
 
-    <footer class="site-footer" style="background-image: url('images/footer-bg.png')">
-        <div class="footer-widgets">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="foot-about">
-                            <h2><a th:href="@{/}"><img src="images/logo.png" alt=""></a></h2>
-                            
-                            <p align="justify">Rumah Sakit Cepat Sembuh (RSCS) merupakan salah satu rumah sakit terbesar di 
-                            Indonesia. RSCS dikenal sebagai rumah sakit rujukan yang terpercaya dan dapat menyembuhkan
-                            segala penyakit. Setiap harinya RSCS bisa menangani hampir lima ribu pasien yang berdatangan
-                            dari berbagai daerah. Untuk dapat menangani ribuan pasien, tentunya RSCS memiliki tenaga 
-                            medis dengan jumlah yang tak sedikit. RSCS menawarkan layanan kesehatan utama seperti
-                            rawat inap, rawat jalan, dan IGD.<p>
+	<footer class="site-footer"
+		style="background-image: url('images/footer-bg.png')">
+		<div class="footer-widgets">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 col-md-6 col-lg-4">
+						<div class="foot-about">
+							<h2>
+								<a th:href="@{/}"><img src="images/logo-blue.png" alt=""></a>
+							</h2>
 
-                        </div><!-- .foot-about -->
-                    </div><!-- .col -->
+							<p align="justify">Rumah Sakit Cepat Sembuh (RSCS) merupakan
+								salah satu rumah sakit terbesar di Indonesia. RSCS dikenal
+								sebagai rumah sakit rujukan yang terpercaya dan dapat
+								menyembuhkan segala penyakit. Setiap harinya RSCS bisa menangani
+								hampir lima ribu pasien yang berdatangan dari berbagai daerah.
+								Untuk dapat menangani ribuan pasien, tentunya RSCS memiliki
+								tenaga medis dengan jumlah yang tak sedikit. RSCS menawarkan
+								layanan kesehatan utama seperti rawat inap, rawat jalan, dan
+								IGD.
+							<p>
+						</div>
+						<!-- .foot-about -->
+					</div>
+					<!-- .col -->
 
-                    <div class="col-12 col-md-6 col-lg-4 mt-5 mt-md-0">
-                        <div class="foot-links">
-                            <h2>Team</h2>
+					<div class="col-12 col-md-6 col-lg-4 mt-5 mt-md-0">
+						<div class="foot-links">
+							<h2>Team</h2>
 
-                            <ul class="p-0 m-0">
-                            	<li><a>Zaki Raihan</a></li>
-                            	<li><a>Deana Almira Putri</a></li>
-                            	<li><a>Altariqh Dwiatmadja</a></li>
-                            	<li><a>Jessica Alexia Jaury</a></li>
-                            	<li><a>Savira Maharani Santoso</a></li>
-                            </ul>
-                        </div><!-- .foot-links -->
-                    </div><!-- .col -->
-                    
-
-                    <div class="col-12 col-md-6 col-lg-4 mt-5 mt-md-0">
-                         <div class="foot-about">
-                            <h2>SIRanap</h2>
-                            
-                            <p align="justify">Sistem Informasi Rawat Inap (SIRanap) merupakan sistem informasi yang dapat
-                            membantu dalam proses penanganan pasien, pengelolaan dokter jaga, dan pengelolaan kamar pada Rawat Inap. 
-                            Bertujuan untuk mempermudah interaksi pertukaran data dengan sistem lain yang dimiliki RSCS.<p>
-
-                        </div><!-- .foot-about -->
-                    </div><!-- .col -->
+							<ul class="p-0 m-0">
+								<li><a>Zaki Raihan</a></li>
+								<li><a>Deana Almira Putri</a></li>
+								<li><a>Altariqh Dwiatmadja</a></li>
+								<li><a>Jessica Alexia Jaury</a></li>
+								<li><a>Savira Maharani Santoso</a></li>
+							</ul>
+						</div>
+						<!-- .foot-links -->
+					</div>
+					<!-- .col -->
 
 
-                </div><!-- .row -->
-            </div><!-- .container -->
-        </div><!-- .footer-widgets -->
-    </footer><!-- .site-footer -->
+					<div class="col-12 col-md-6 col-lg-4 mt-5 mt-md-0">
+						<div class="foot-about">
+							<h2>SIRanap</h2>
+
+							<p align="justify">Sistem Informasi Rawat Inap (SIRanap)
+								merupakan sistem informasi yang dapat membantu dalam proses
+								penanganan pasien, pengelolaan dokter jaga, dan pengelolaan
+								kamar pada Rawat Inap. Bertujuan untuk mempermudah interaksi
+								pertukaran data dengan sistem lain yang dimiliki RSCS.
+							<p>
+						</div>
+						<!-- .foot-about -->
+					</div>
+					<!-- .col -->
+
+
+				</div>
+				<!-- .row -->
+			</div>
+			<!-- .container -->
+		</div>
+		<!-- .footer-widgets -->
+	</footer>
+	<!-- .site-footer -->
 </body>
 </html>
 
