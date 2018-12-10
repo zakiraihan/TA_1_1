@@ -32,8 +32,11 @@ import com.apap.tugasAkhir.rest.DokterAllRestMapModel;
 import com.apap.tugasAkhir.rest.DokterAllRestModel;
 import com.apap.tugasAkhir.rest.DokterModel;
 import com.apap.tugasAkhir.rest.DokterRestModel;
+import com.apap.tugasAkhir.rest.MedicalSupplyModel;
+import com.apap.tugasAkhir.rest.MedicineModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
+import com.apap.tugasAkhir.rest.PermintaanObatModel;
 import com.apap.tugasAkhir.rest.Setting;
 import com.apap.tugasAkhir.rest.StatusModel;
 import com.apap.tugasAkhir.service.JadwalJagaService;
@@ -597,7 +600,19 @@ public class MainController {
 		String path = Setting.obatRequestUrl;
 		RequestObatModel requestObat = requestObatService.findById(requestObatId).get();
 		
-		//DealerDetail detail = restTemplate.postForObject(path,requestObat, RequestObatModel.class);
+		MedicineModel medicine = new MedicineModel();
+		medicine.setNama(requestObat.getNamaObat());
+		
+		MedicalSupplyModel medicalSupplies = new MedicalSupplyModel();
+		medicalSupplies.setMedicalSupplies(medicine);
+		medicalSupplies.setJumlah((long)requestObat.getJumlah());
+		
+		PermintaanObatModel permintaan = new PermintaanObatModel();
+		permintaan.setListPermintaanMedicalSupplies(new ArrayList<MedicalSupplyModel>());
+		permintaan.getListPermintaanMedicalSupplies().add(medicalSupplies);
+		
+		String result = restService.postObat(permintaan);
+		System.out.println(result);
 		return new RedirectView("/obat/request");
 	}
         

@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public class MedicalSupplyModel implements Serializable{
 	
-	private MedicineModel medicalSupply;
+	private MedicineModel medicalSupplies;
 	
 	private Long jumlah;
 
-	public MedicineModel getMedicalSupply() {
-		return medicalSupply;
+	public MedicineModel getMedicalSupplies() {
+		return medicalSupplies;
 	}
 
-	public void setMedicalSupply(MedicineModel medicalSupply) {
-		this.medicalSupply = medicalSupply;
+	public void setMedicalSupplies(MedicineModel medicalSupplies) {
+		this.medicalSupplies = medicalSupplies;
 	}
 
 	public Long getJumlah() {

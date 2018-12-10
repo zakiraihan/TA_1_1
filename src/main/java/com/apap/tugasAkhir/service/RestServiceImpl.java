@@ -1,7 +1,10 @@
 package com.apap.tugasAkhir.service;
 
+import java.io.IOException;
+
 import javax.transaction.Transactional;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -16,8 +19,11 @@ import com.apap.tugasAkhir.rest.ObatAllRestModel;
 import com.apap.tugasAkhir.rest.PatienAllRestModel;
 import com.apap.tugasAkhir.rest.PatienModel;
 import com.apap.tugasAkhir.rest.PatienRestModel;
+import com.apap.tugasAkhir.rest.PermintaanObatModel;
 import com.apap.tugasAkhir.rest.Setting;
 import com.apap.tugasAkhir.rest.TanggalModel;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @Transactional
@@ -94,13 +100,15 @@ public class RestServiceImpl implements RestService{
 	}
 	
 	@Override
-	public String getJadwalDokter(TanggalModel tanggal) {
+	public String postObat(PermintaanObatModel permintaan) throws JsonProcessingException {
 		RestTemplate template = new RestTemplate();
-	    HttpEntity<TanggalModel> requestEntity= new HttpEntity<TanggalModel>(tanggal);
-	    System.out.println(requestEntity.getBody().toString());
+		//ObjectMapper objectMapper = new ObjectMapper();
+		//String permintaanAsString = objectMapper.writeValueAsString(permintaan);
+	    HttpEntity<PermintaanObatModel> requestEntity= new HttpEntity<PermintaanObatModel>(permintaan);
+	    System.out.println(requestEntity);
 	    String response = "";
 	     try{
-	        ResponseEntity<String> responseEntity = template.exchange(Setting.getAllIUnAssignedDokterUrl, HttpMethod.GET, requestEntity,  String.class);
+	        ResponseEntity<String> responseEntity = template.exchange(Setting.postPasienStatusUrl, HttpMethod.POST, requestEntity,  String.class);
 	        response = responseEntity.getBody();
 	    }
 	    catch(Exception e){

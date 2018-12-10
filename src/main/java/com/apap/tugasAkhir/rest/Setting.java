@@ -21,7 +21,7 @@ public class Setting {
 	final public static String getAllIUnAssignedDokterUrl = "http://sirawatjalan.herokuapp.com/rawat-jalan/poli/jadwal/dokter-available";
 	
 	//url for request obat
-	final public static String obatRequestUrl = "";
+	final public static String obatRequestUrl = "http://sifarmasi.herokuapp.com/api/medical-supplies/permintaan/";
 	
 	//url used for get all pasien with coresponding id in list
 	//example: "http://si-appointment.herokuapp.com/api/getPasien?listId=5,10,15,908" used for getting pasien with id 5, 10, 15, 908
