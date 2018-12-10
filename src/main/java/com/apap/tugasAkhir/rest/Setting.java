@@ -36,6 +36,6 @@ public class Setting {
 	final public static String postPasienStatusUrl = "http://si-appointment.herokuapp.com/api/1/updatePasien";
 	
 	//url used to get all obat from farmawsi
-	final public static String getAllObatUrl = "{{fill the url here}}";
+	final public static String getAllObatUrl = "http://sifarmasi.herokuapp.com/api/daftar-medical-service";
 }
 
