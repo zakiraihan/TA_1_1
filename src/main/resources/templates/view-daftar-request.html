@@ -24,13 +24,13 @@
 						required="required" name="idPasien" />
 
 					<table>
-						<tr style="height: 3rem">
+						<tr>
 							<td style="width: 10rem">Nama Pasien</td>
 							<td><input class="form-control" type="text" id="namaPasien"
 								required="required" name="namaPasien" disabled /></td>
 						</tr>
 						<tr>
-							<td height="50">Paviliun</td>
+							<td>Paviliun</td>
 							<td><select class="form-control" required="required"
 								name="paviliun" id="paviliun" th:value="${allPaviliun}"
 								form="assignPasien">
@@ -41,7 +41,7 @@
 							</select></td>
 						</tr>
 						<tr>
-							<td height="50">Kamar</td>
+							<td>Kamar</td>
 							<td><select class="form-control" required="required"
 								name="kamar" id="kamar" form="assignPasien">
 									<option disabled="disabled" selected="selected">Pilih
@@ -61,7 +61,7 @@
 		<div class="box">
 			<h2 class="d-flex align-items-center">Daftar Pasien Rujukan IGD</h2>
 			<span th:if="${listRequestToggle} == 1">
-				<table id="table">
+				<table id="table" class="text-center">
 					<thead>
 						<th>Nama Pasien</th>
 						<th>Status Pasien</th>
