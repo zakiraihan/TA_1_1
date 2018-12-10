@@ -132,7 +132,7 @@ public class ApiController {
 	    headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
 	    HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 	    String path = Setting.getAllIUnAssignedDokterUrl + "/?tanggal=" + tanggal;
-	    Object response = restTemplate.exchange(path, HttpMethod.GET,entity,Object.class);
+	    ResponseEntity<String> response = restTemplate.exchange(path, HttpMethod.GET,entity,String.class);
 		return response;
 	}
 }

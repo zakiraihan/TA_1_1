@@ -535,7 +535,9 @@ public class MainController {
 	private String addJadwalJaga(Model model) {
 		//model.addAttribute(new JadwalJagaModel());
 		model.addAttribute("jadwalJaga", new JadwalJagaModel());
+		DokterAllRestModel allDokter = restService.getAllDokter();
 		model.addAttribute("allPaviliun", paviliunService.getActivePaviliun());
+		model.addAttribute("allDokter", allDokter.getResult());
 		return "add-jadwal-jaga";
 	}
 	
